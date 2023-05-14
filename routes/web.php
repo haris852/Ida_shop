@@ -1,0 +1,31 @@
+<?php
+
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::post('register/store', [LoginController::class, 'registerStore'])->name('register.store');
+Route::get('register', [LoginController::class, 'register'])->name('register');
+Route::post('login', [LoginController::class, 'loginStore'])->name('login.store');
+Route::get('/', [LoginController::class, 'index'])->name('login');
+
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], function () {
+    Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/', DashboardController::class)->name('admin.dashboard');
+
+    // Setting
+    Route::get('setting/user/list', [SettingController::class, 'userList'])->name('admin.setting.user.list');
+    Route::resource('setting', SettingController::class, ['as' => 'admin']);
+});
