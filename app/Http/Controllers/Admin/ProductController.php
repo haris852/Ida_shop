@@ -10,40 +10,41 @@ class ProductController extends Controller
 {
     private $product;
 
-    public function __construct(ProductInterface $product) {
+    public function __construct(ProductInterface $product)
+    {
         $this->product = $product;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->product->get())
-            ->addColumn('name', function($data) {
-                return $data->name;
-            })
-            ->addColumn('category', function($data) {
-                return $data->category;
-            })
-            ->addColumn('weight', function($data) {
-                return $data->weight . 'g';
-            })
-            ->addColumn('stock', function($data) {
-                return $data->stock . 'pcs';
-            })
-            ->addColumn('price', function($data) {
-                return 'Rp. ' . number_format($data->price, 0, ',', '.');
-            })
-            ->addColumn('status', function($data) {
-                return  $data->is_active == 1 ? 'Aktif' : 'Tidak aktif';
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.product.column.action', [
-                    'data' => $data
-                ]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->product->get())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('category', function ($data) {
+                    return $data->category;
+                })
+                ->addColumn('weight', function ($data) {
+                    return $data->weight . ' g';
+                })
+                ->addColumn('stock', function ($data) {
+                    return $data->stock . ' item';
+                })
+                ->addColumn('price', function ($data) {
+                    return 'Rp. ' . number_format($data->price, 0, ',', '.');
+                })
+                ->addColumn('status', function ($data) {
+                    return view('admin.product.column.status', ['data' => $data]);
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.product.column.action', [
+                        'data' => $data
+                    ]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.product.index');
     }
@@ -53,7 +54,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.product.create');
     }
 
     /**
@@ -61,7 +62,32 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'string', 'max:255'],
+            'weight' => ['required'],
+            'stock' => ['required'],
+            'price' => ['required'],
+            'description' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+        ], [
+            'name.required' => 'Nama produk tidak boleh kosong!',
+            'category.required' => 'Kategori produk tidak boleh kosong!',
+            'weight.required' => 'Berat produk tidak boleh kosong!',
+            'stock.required' => 'Stok produk tidak boleh kosong!',
+            'price.required' => 'Harga produk tidak boleh kosong!',
+            'description.required' => 'Deskripsi produk tidak boleh kosong!',
+            'image.image' => 'File yang diupload harus berupa gambar!',
+            'image.mimes' => 'File yang diupload harus berupa gambar!',
+            'image.max' => 'Ukuran file yang diupload maksimal 2MB!',
+        ]);
+
+        try {
+            $this->product->store($request->all());
+            return redirect()->route('admin.product.index')->with('success', 'Produk berhasil ditambahkan!');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.product.index')->with('error', 'Produk gagal ditambahkan!');
+        }
     }
 
     /**
@@ -77,7 +103,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admin.product.edit', [
+            'data' => $this->product->getById($id)
+        ]);
     }
 
     /**
@@ -85,7 +113,32 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'string', 'max:255'],
+            'weight' => ['required'],
+            'stock' => ['required'],
+            'price' => ['required'],
+            'description' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+        ], [
+            'name.required' => 'Nama produk tidak boleh kosong!',
+            'category.required' => 'Kategori produk tidak boleh kosong!',
+            'weight.required' => 'Berat produk tidak boleh kosong!',
+            'stock.required' => 'Stok produk tidak boleh kosong!',
+            'price.required' => 'Harga produk tidak boleh kosong!',
+            'description.required' => 'Deskripsi produk tidak boleh kosong!',
+            'image.image' => 'File yang diupload harus berupa gambar!',
+            'image.mimes' => 'File yang diupload harus berupa gambar!',
+            'image.max' => 'Ukuran file yang diupload maksimal 2MB!',
+        ]);
+
+        try {
+            $this->product->update($id, $request->all());
+            return redirect()->route('admin.product.index')->with('success', 'Produk berhasil diperbarui!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui produk!');
+        }
     }
 
     /**
@@ -93,6 +146,10 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->product->delete($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Produk berhasil dihapus!'
+        ]);
     }
 }

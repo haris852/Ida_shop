@@ -1,13 +1,9 @@
-@props(['disable' => false, 'type' => 'text', 'name' => '', 'placeholder' => '', 'id' => '', 'value' => '', 'required' => false])
+@props(['disable' => false, 'type' => 'text', 'name' => '', 'placeholder' => '', 'id' => '', 'value' => '', 'required' => false, 'label' => ''])
 <div class="form-group">
-    <input type="{{ $type }}" name="{{ $name }}" class="form-control form-control-lg"
-        id="{{ $id }}" placeholder="{{ $placeholder }}" value="{{ $value }}"
-        {{ $disable ? 'disabled' : '' }} autocomplete="off" {{
-        $required ? 'required' : '' }} />
-
-    @error($name)
-        <div class="text-danger mt-1">
-            {{ $message }}
-        </div>
-    @enderror
+    <label for="{{ $id }}">{{ $label }}
+        {!! $required ? '<span class="text-danger">*</span>' : '' !!}
+    </label>
+    <input type="{{ $type }}" id="{{ $id }}" placeholder="{{ $placeholder }}" name="{{ $name }}"
+        value="{{ $value }}" class="ps-3 form-control @error($name) is-invalid @enderror"
+        {{ $required ? 'required' : '' }} {{ $disable ? 'disabled' : '' }}>
 </div>

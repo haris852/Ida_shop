@@ -1,8 +1,8 @@
 @props(['icon' => '', 'title' => '', 'active' => false, 'href' => '#', 'id' => ''])
 <li class="nav-item {{ $active ? '' : 'collapsed' }}">
-    <a class="nav-link" data-bs-toggle="{{ $active ? 'collapse' : '' }}" href="{{ $href }}"
+    <a class="nav-link" data-bs-toggle="{{ $active ? 'collapse' : '' }}"
         aria-expanded="{{ $active ? 'true' : 'false' }}" aria-controls="{{ $id }}">
-        <i class="menu-icon mdi mdi-account-circle-outline"></i>
+        <i class="{{ $icon }}"></i>
         <span class="menu-title">
             {{ $title }}
         </span>

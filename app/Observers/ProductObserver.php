@@ -4,14 +4,14 @@ namespace App\Observers;
 
 class ProductObserver
 {
-    protected function creating($model)
+    public function creating($model)
     {
         if (auth()->check()) {
             $model->created_by = auth()->user()->id;
         }
     }
 
-    protected function updating($model)
+    public function updating($model)
     {
         if (auth()->check()) {
             $model->updated_by = auth()->user()->id;
