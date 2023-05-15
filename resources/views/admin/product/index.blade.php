@@ -25,10 +25,6 @@
     @push('js-internal')
         <script>
             $(function() {
-                // disable twice init
-                if ($.fn.dataTable.isDataTable('#productTable')) {
-                    $('#productTable').DataTable().destroy();
-                }
                 $('#productTable').DataTable({
                     processing: true,
                     serverSide: true,
