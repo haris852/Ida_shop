@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     // Setting
     Route::get('setting/user/list', [SettingController::class, 'userList'])->name('admin.setting.user.list');
     Route::resource('setting', SettingController::class, ['as' => 'admin']);
+
+    // Product
+    Route::resource('product', ProductController::class, ['as' => 'admin']);
 });

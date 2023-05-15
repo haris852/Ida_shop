@@ -8,6 +8,8 @@
         <x-sidebar-item title="Daftar Pengguna" href="{{ route('admin.setting.user.list') }}"
             icon="menu-icon mdi mdi-account-multiple-outline"
             active="{{ request()->routeIs('admin.setting.user.list') }}" />
-            <x-sidebar-item title="Keluar" href="{{ route('logout') }}" icon="menu-icon mdi mdi-logout" />
+        <x-sidebar-item title="Produk" href="{{ route('admin.product.index') }}"
+            icon="menu-icon mdi mdi-package-variant-closed" active="{{ request()->routeIs('admin.product.index') }}" />
+        <x-sidebar-item title="Keluar" href="{{ route('logout') }}" icon="menu-icon mdi mdi-logout" />
     </ul>
 </nav>

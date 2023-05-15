@@ -10,7 +10,7 @@
                 <img src="{{ asset('assets/image/logo.png') }}" alt="logo" />
             </a>
             <a class="navbar-brand brand-logo-mini" href="index.html">
-                <img src="{{asset('assets/image/logo.png')}}" alt="logo" />
+                <img src="{{ asset('assets/image/logo.png') }}" alt="logo" />
             </a>
         </div>
     </div>
@@ -160,33 +160,18 @@
             </li> --}}
             <li class="nav-item dropdown d-none d-lg-block user-dropdown">
                 <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{-- <img class="img-xs rounded-circle" src="images/faces/face8.jpg" alt="Profile image">  --}}
+                    <img class="img-xs rounded-circle me-2"
+                        src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
+                        alt="Profile image">
                     <span class="font-weight-normal">{{ Auth::user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                    <div class="dropdown-header text-center">
-                        {{-- <img class="img-md rounded-circle" src="images/faces/face8.jpg" alt="Profile image"> --}}
-                        <p class="mb-1 mt-3 font-weight-semibold">
-                            {{ Auth::user()->name }}
-                        </p>
-                        <p class="fw-light text-muted mb-0">
-                            {{ Auth::user()->email }}
-                        </p>
-                    </div>
-                    <a class="dropdown-item"><i
-                            class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My
-                        Profile <span class="badge badge-pill badge-danger">1</span></a>
-                    <a class="dropdown-item"><i
-                            class="dropdown-item-icon mdi mdi-message-text-outline text-primary me-2"></i>
-                        Messages</a>
-                    <a class="dropdown-item"><i
-                            class="dropdown-item-icon mdi mdi-calendar-check-outline text-primary me-2"></i>
-                        Activity</a>
-                    <a class="dropdown-item"><i
-                            class="dropdown-item-icon mdi mdi-help-circle-outline text-primary me-2"></i>
-                        FAQ</a>
-                    <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign
-                        Out</a>
+                    <a class="dropdown-item py-2" href="{{ route('admin.setting.index') }}">
+                        Pengaturan
+                    </a>
+                    <a class="dropdown-item py-2" href="{{ route('logout') }}">
+                        Keluar
+                    </a>
                 </div>
             </li>
         </ul>
