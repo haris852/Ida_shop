@@ -17,4 +17,15 @@ class ProductRepository implements ProductInterface
     {
         return $this->product->get();
     }
+
+    public function getById($id)
+    {
+        return $this->product->find($id);
+    }
+
+    public function delete($id)
+    {
+        return $this->product->find($id)->update(['is_active' => 0]);
+    }
 }
+

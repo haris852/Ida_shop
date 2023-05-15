@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <div class="row pt-4">
                         <div class="col-lg-4">
-                            <div class="border-bottom text-center">
+                            <div class="text-center">
                                 <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
                                     alt="profile" id="thumbnail" class="img-lg rounded-circle mb-3">
                                 <div class="mb-3">
@@ -38,7 +38,7 @@
                                 </div>
                                 <x-input id="name" name="name" type="text" label="Nama"
                                     value="{{ Auth::user()->name }}" placeholder="Masukkan nama" />
-                                <div class="form-group row">
+                                <div class="form-group row mb-0">
                                     <div class="col-sm-4">
                                         <div class="form-check">
                                             <label class="form-check-label">

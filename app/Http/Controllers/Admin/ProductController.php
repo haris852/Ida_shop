@@ -35,7 +35,7 @@ class ProductController extends Controller
                 return 'Rp. ' . number_format($data->price, 0, ',', '.');
             })
             ->addColumn('status', function($data) {
-                return  $data->is_active == 1 ? 'Aktif' : 'Tidak aktif';
+                return view('admin.product.column.status', ['data' => $data]);
             })
             ->addColumn('action', function($data) {
                 return view('admin.product.column.action', [
@@ -53,7 +53,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.product.create');
     }
 
     /**
@@ -93,6 +93,10 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->product->delete($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Produk berhasil dihapus!'
+        ]);
     }
 }

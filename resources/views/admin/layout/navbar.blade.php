@@ -6,12 +6,12 @@
             </button>
         </div>
         <div>
-            <a class="navbar-brand brand-logo" href="index.html">
+            {{-- <a class="navbar-brand brand-logo" href="index.html">
                 <img src="{{ asset('assets/image/logo.png') }}" alt="logo" />
             </a>
             <a class="navbar-brand brand-logo-mini" href="index.html">
                 <img src="{{ asset('assets/image/logo.png') }}" alt="logo" />
-            </a>
+            </a> --}}
         </div>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-top">

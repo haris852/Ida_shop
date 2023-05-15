@@ -9,6 +9,14 @@ class Product extends Model
 {
     use HasFactory;
 
+    // add global scope is active
+    protected static function booted()
+    {
+        static::addGlobalScope('is_active', function ($query) {
+            $query->where('is_active', 1);
+        });
+    }
+
     public $table = 'products';
     protected $fillable = [
         'image',
