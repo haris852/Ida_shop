@@ -7,7 +7,7 @@
                     <div class="row pt-4">
                         <div class="col-lg-4">
                             <div class="border-bottom text-center">
-                                <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
+                                <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
                                     alt="profile" id="thumbnail" class="img-lg rounded-circle mb-3">
                                 <div class="mb-3">
                                     <h4>
@@ -28,7 +28,8 @@
                             <h4>
                                 Informasi Akun
                             </h4>
-                            <form action="" method="POST" class="mt-4" enctype="multipart/form-data">
+                            <form action="{{ route('admin.setting.update', auth()->user()->id) }}" method="POST"
+                                class="mt-4" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="d-none">
@@ -42,7 +43,7 @@
                                         <div class="form-check">
                                             <label class="form-check-label">
                                                 <input type="radio" class="form-check-input" name="sex" id="sex1"
-                                                    value="1" {{auth()->user()->sex == 1 ? 'checked' : ''}}>
+                                                    value="1" {{ auth()->user()->sex == 1 ? 'checked' : '' }}>
                                                 Pria
                                                 <i class="input-helper"></i></label>
                                         </div>
@@ -51,7 +52,7 @@
                                         <div class="form-check">
                                             <label class="form-check-label">
                                                 <input type="radio" class="form-check-input" name="sex" id="sex2"
-                                                    value="2" {{auth()->user()->sex == 2 ? 'checked' : ''}}>
+                                                    value="2" {{ auth()->user()->sex == 2 ? 'checked' : '' }}>
                                                 Wanita
                                                 <i class="input-helper"></i></label>
                                         </div>
@@ -59,12 +60,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <x-input id="phone" name="phone" type="text" placeholder="Nomor Telepon" value="{{ Auth::user()->phone }}"
-                                            required />
+                                        <x-input id="phone" name="phone" type="text" placeholder="Nomor Telepon"
+                                            value="{{ Auth::user()->phone }}" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <x-input id="address" name="address" type="text" placeholder="Alamat" value="{{ Auth::user()->address }}"
-                                            required />
+                                        <x-input id="address" name="address" type="text" placeholder="Alamat"
+                                            value="{{ Auth::user()->address }}" required />
                                     </div>
                                 </div>
                                 <x-input id="email" name="email" type="email" label="Email"
@@ -101,6 +102,22 @@
                     reader.readAsDataURL(this.files[0]);
                 });
             }
+
+            @if (Session::has('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: '{{ Session::get('success') }}',
+                })
+            @endif
+
+            @if (Session::has('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: '{{ Session::get('error') }}',
+                })
+            @endif
         </script>
     @endpush
 @endsection
