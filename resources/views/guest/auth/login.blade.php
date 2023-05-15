@@ -14,8 +14,8 @@
                             </h6>
                             <form class="pt-3" action="{{ route('login.store') }}" method="POST">
                                 @csrf
-                                <x-input id="email" name="email" type="email" placeholder="Email" />
-                                <x-input id="password" name="password" type="password" placeholder="Password" />
+                                <x-input id="email" label="Email" name="email" type="email" placeholder="Email" required />
+                                <x-input id="password" label="Kata sandi" name="password" type="password" placeholder="Password" required />
                                 <div class="mt-3">
                                     <x-button type="submit">
                                         Masuk
