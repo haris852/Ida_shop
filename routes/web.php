@@ -21,8 +21,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register/store', [LoginController::class, 'registerStore'])->name('register.store');
 Route::get('register', [LoginController::class, 'register'])->name('register');
-Route::post('login', [LoginController::class, 'loginStore'])->name('login.store');
-Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::post('login/store', [LoginController::class, 'loginStore'])->name('login.store');
+Route::get('login', [LoginController::class, 'index'])->name('login');
+
+Route::get('/', function () {
+    return view('customer.layout.master');
+});
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], function () {
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');

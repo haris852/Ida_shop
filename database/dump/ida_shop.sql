@@ -12,11 +12,17 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Membuang data untuk tabel ida_shop.configuration_store: ~0 rows (lebih kurang)
+/*!40000 ALTER TABLE `configuration_store` DISABLE KEYS */;
+INSERT IGNORE INTO `configuration_store` (`id`, `code`, `name`, `address`, `phone`, `email`, `open_at`, `close_at`, `shipping_cost`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, 'STORE-001', 'Ida\'s Shop', 'Jl. Raya Kedung Halang No. 1', '081515144981', 'idashop@mail.com', '07:00:00', '16:00:00', 5000, 1, '2023-05-16 03:43:06', '2023-05-16 09:26:24');
+/*!40000 ALTER TABLE `configuration_store` ENABLE KEYS */;
+
 -- Membuang data untuk tabel ida_shop.failed_jobs: ~0 rows (lebih kurang)
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
--- Membuang data untuk tabel ida_shop.migrations: ~6 rows (lebih kurang)
+-- Membuang data untuk tabel ida_shop.migrations: ~7 rows (lebih kurang)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
@@ -24,7 +30,10 @@ INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(3, '2019_08_19_000000_create_failed_jobs_table', 1),
 	(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 	(5, '2023_05_15_021015_create_products_table', 1),
-	(7, '2023_05_15_024221_add_image_column_products', 2);
+	(6, '2023_05_15_024221_add_image_column_products', 1),
+	(7, '2023_05_15_153409_change_category_products', 1),
+	(8, '2023_05_16_033917_create_confguration_store_table', 2),
+	(9, '2023_05_16_045704_add_unit_column_products', 3);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Membuang data untuk tabel ida_shop.password_reset_tokens: ~0 rows (lebih kurang)
@@ -35,17 +44,18 @@ INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 
--- Membuang data untuk tabel ida_shop.products: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel ida_shop.products: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT IGNORE INTO `products` (`id`, `category`, `name`, `image`, `weight`, `description`, `stock`, `price`, `is_active`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'food', 'Sapi', NULL, 100, 'Sapi', 100, 100000, 1, 1, 1, '2023-05-15 02:46:13', '2023-05-15 02:46:13');
+INSERT IGNORE INTO `products` (`id`, `category`, `name`, `image`, `weight`, `unit`, `description`, `stock`, `price`, `is_active`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(1, 'meat', 'Ayam Utuh', '646252f16fb0cDaging ayam utuh.jpg', 500, 'gr', 'Dada ayam tanpa kulit dan tanpa tulang di jual per 1kg. Harga yg tercantum adalah harga 1kg/kemasan  Ayam yang kami jual secara online adalah Fresh frozen Fresh frozen adalah ayam atau daging segar (FRESH) BERKUALITAS yang sengaja kami bekukan untuk menjaga kualitas produk tetap higenis dan baik.  Kami menganjurkan produk yang telah di beli langsung di masukan kedalam freezer atau dimasak agar kualitas tetap terjaga', 100, 45000, 1, 1, 1, '2023-05-15 15:41:49', '2023-05-16 05:01:58'),
+	(2, 'meat', 'Dada Ayam', '646254479b989daging dada-ayam.jpeg', 1, 'kg', 'Dada ayam tanpa kulit dan tanpa tulang di jual per 1kg. Harga yg tercantum adalah harga 1kg/kemasan  Ayam yang kami jual secara online adalah Fresh frozen Fresh frozen adalah ayam atau daging segar (FRESH) BERKUALITAS yang sengaja kami bekukan untuk menjaga kualitas produk tetap higenis dan baik.  Kami menganjurkan produk yang telah di beli langsung di masukan kedalam freezer atau dimasak agar kualitas tetap terjaga', 500, 28000, 1, 1, 1, '2023-05-15 15:48:23', '2023-05-16 05:02:06');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 
--- Membuang data untuk tabel ida_shop.users: ~1 rows (lebih kurang)
+-- Membuang data untuk tabel ida_shop.users: ~0 rows (lebih kurang)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT IGNORE INTO `users` (`id`, `name`, `sex`, `phone`, `address`, `avatar`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 'admin', 1, '081515144982', 'Sumber Sari, Jember, Jawa Timur', '64619e1d9e6a7ccoS9xfa_400x400.jpg', 'admin@mail.com', NULL, '$2y$10$vGkiGd6F74Z9tf209PT5PO/nMM4ZG7JVDhuFAiYXRCz30v8eOnKOS', 'admin', NULL, '2023-05-15 02:21:50', '2023-05-15 02:51:09'),
-	(2, 'Faqih', 1, '08384738287', 'Sumber Sari, Jember, Jawa Timur', '64619e512e58030soccer-ronaldo-1-76fd-mediumSquareAt3X.jpg', 'faqih@mail.com', NULL, '$2y$10$SSDl0wYBZ3DYs2hS0dR4t.OW7rFp8Tgkr.KmBn1yce4eDEV83DQ8O', 'user', NULL, '2023-05-15 02:52:01', '2023-05-15 02:52:01');
+	(1, 'admin', 1, NULL, NULL, NULL, 'admin@mail.com', NULL, '$2y$10$iAOYtTh9EDR/H9Nz6rtCPupH2OIYjnT7bIYv3VL9BUvaNr71V7/..', 'admin', NULL, '2023-05-15 15:39:51', '2023-05-15 15:39:51'),
+	(2, 'Sani', 1, '081515144982', 'Sumber Sari, Jember, Jawa Timur', '6463083d9295b30soccer-ronaldo-1-76fd-mediumSquareAt3X.jpg', 'sani@mail.com', NULL, '$2y$10$Cz6cVaMTeGVgRYIXDCYQSebd4EiNLEkMiR/nJcLwgwynIzZrzk..y', 'user', NULL, '2023-05-16 04:15:35', '2023-05-16 04:36:13');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
