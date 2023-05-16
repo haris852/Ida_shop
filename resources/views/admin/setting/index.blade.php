@@ -10,9 +10,9 @@
                                 <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
                                     alt="profile" id="thumbnail" class="img-lg rounded-circle mb-3">
                                 <div class="mb-3">
-                                    <h4>
+                                    <h5>
                                         {{ Auth::user()->name }}
-                                    </h4>
+                                    </h5>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <h6 class="mb-0 me-2 text-muted">
                                             {{ Auth::user()->email }}
@@ -37,9 +37,10 @@
                                         placeholder="Masukkan foto" />
                                 </div>
                                 <x-input id="name" name="name" type="text" label="Nama"
-                                    value="{{ Auth::user()->name }}" placeholder="Masukkan nama" />
+                                    value="{{ Auth::user()->name }}" placeholder="Masukkan nama" required />
                                 <div class="form-group row mb-0">
-                                    <div class="col-sm-4">
+                                    <label for="">Jenis Kelamin</label>
+                                    <div class="col-sm-4 mb-3">
                                         <div class="form-check">
                                             <label class="form-check-label">
                                                 <input type="radio" class="form-check-input" name="sex" id="sex1"
@@ -60,12 +61,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <x-input id="phone" name="phone" type="text" placeholder="Nomor Telepon"
-                                            value="{{ Auth::user()->phone }}" required />
+                                        <x-input id="phone" name="phone" type="text" label="No. Telepon"
+                                            placeholder="Nomor Telepon" value="{{ Auth::user()->phone }}" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <x-input id="address" name="address" type="text" placeholder="Alamat"
-                                            value="{{ Auth::user()->address }}" required />
+                                        <div class="form-group">
+                                            <label for="address">Alamat</label>
+                                            <textarea class="form-control" id="address" name="address" rows="4" required>{{ auth()->user()->address }}</textarea>
+                                        </div>
                                     </div>
                                 </div>
                                 <x-input id="email" name="email" type="email" label="Email"

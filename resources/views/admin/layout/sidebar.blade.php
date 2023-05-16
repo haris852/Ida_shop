@@ -9,12 +9,11 @@
             active="{{ request()->routeIs('admin.product.create') }}" icon="menu-icon mdi mdi-plus-circle-outline" />
         <li class="nav-item nav-category">Pengguna</li>
         <x-sidebar-item title="Daftar Pengguna" href="{{ route('admin.user.index') }}"
-            icon="menu-icon mdi mdi-account-multiple-outline"
-            active="{{ request()->routeIs('admin.setting.user.list') }}" />
+            icon="menu-icon mdi mdi-account-multiple-outline" active="{{ request()->routeIs('admin.user.index') }}" />
         <x-sidebar-item title="Tambah" href="{{ route('admin.user.create') }}"
-            active="{{ request()->routeIs('admin.product.create') }}" icon="menu-icon mdi mdi-plus-circle-outline" />
+            active="{{ request()->routeIs('admin.user.create') }}" icon="menu-icon mdi mdi-plus-circle-outline" />
         <li class="nav-item nav-category">Konfigurasi</li>
-        <x-sidebar-item title="Usaha" href="{{route('admin.store-configuration.index')}}"
+        <x-sidebar-item title="Usaha" href="{{ route('admin.store-configuration.index') }}"
             icon="menu-icon mdi mdi-store" active="{{ request()->routeIs('admin.store-configuration.index') }}" />
         <li class="nav-item nav-category">Pengaturan</li>
         <x-sidebar-item title="Profil" href="{{ route('admin.setting.index') }}"

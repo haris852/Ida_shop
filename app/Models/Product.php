@@ -23,6 +23,7 @@ class Product extends Model
         'category',
         'name',
         'weight',
+        'unit',
         'description',
         'stock',
         'price',
