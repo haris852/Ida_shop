@@ -24,8 +24,22 @@
                                         <input type="file" name="image" id="image" class="d-none">
                                         <x-input id="name" type="text" name="name" label="Nama Produk"
                                             :value="$data->name" required />
-                                        <x-input id="weight" type="number" name="weight" label="Berat (gram)"
-                                            :value="$data->weight" required />
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <x-input id="weight" type="number" name="weight" label="Berat"
+                                                    required :value="$data->weight" />
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <label for="unit">Satuan</label>
+                                                    <select class="form-control text-sm" name="unit" id="unit">
+                                                        <option value="kg" {{$data->unit == 'kg' ? 'selected' : ''}} >Kilogram</option>
+                                                        <option value="gr" {{$data->unit == 'gr' ? 'selected' : ''}} >Gram</option>
+                                                        <option value="ons" {{$data->unit == 'ons' ? 'selected' : ''}} >Ons</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label for="category">Kategori</label>
                                             <div class="form-group row">

@@ -1,0 +1,7 @@
+textarea.form-control {
+    min-height: 6rem;
+}
+
+select.form-control {
+    color: black;
+}

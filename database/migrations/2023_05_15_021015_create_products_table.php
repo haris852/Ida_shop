@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('category', ['food', 'seafood']);
             $table->string('name');
-            $table->integer('weight'); // gram
+        $table->integer('weight');
             $table->longText('description')->nullable();
             $table->integer('stock');
             $table->integer('price');

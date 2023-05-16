@@ -20,7 +20,7 @@ class ProductController extends Controller
         if ($request->ajax()) {
             return datatables()
                 ->of($this->product->get())
-                ->addColumn('image', function($data) {
+                ->addColumn('image', function ($data) {
                     return view('admin.product.column.image', ['data' => $data]);
                 })
                 ->addColumn('name', function ($data) {
@@ -30,7 +30,7 @@ class ProductController extends Controller
                     return $data->category;
                 })
                 ->addColumn('weight', function ($data) {
-                    return $data->weight . ' g';
+                    return $data->weight . ' ' . $data->unit;
                 })
                 ->addColumn('stock', function ($data) {
                     return $data->stock . ' item';
@@ -70,6 +70,7 @@ class ProductController extends Controller
             'category' => ['required', 'string', 'max:255'],
             'weight' => ['required'],
             'stock' => ['required'],
+            'unit' => ['required'],
             'price' => ['required'],
             'description' => ['required', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
@@ -77,6 +78,7 @@ class ProductController extends Controller
             'name.required' => 'Nama produk tidak boleh kosong!',
             'category.required' => 'Kategori produk tidak boleh kosong!',
             'weight.required' => 'Berat produk tidak boleh kosong!',
+            'unit.required' => 'Satuan produk tidak boleh kosong!',
             'stock.required' => 'Stok produk tidak boleh kosong!',
             'price.required' => 'Harga produk tidak boleh kosong!',
             'description.required' => 'Deskripsi produk tidak boleh kosong!',
@@ -121,6 +123,7 @@ class ProductController extends Controller
             'category' => ['required', 'string', 'max:255'],
             'weight' => ['required'],
             'stock' => ['required'],
+            'unit' => ['required'],
             'price' => ['required'],
             'description' => ['required', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
@@ -128,6 +131,7 @@ class ProductController extends Controller
             'name.required' => 'Nama produk tidak boleh kosong!',
             'category.required' => 'Kategori produk tidak boleh kosong!',
             'weight.required' => 'Berat produk tidak boleh kosong!',
+            'unit.required' => 'Satuan produk tidak boleh kosong!',
             'stock.required' => 'Stok produk tidak boleh kosong!',
             'price.required' => 'Harga produk tidak boleh kosong!',
             'description.required' => 'Deskripsi produk tidak boleh kosong!',
