@@ -11,9 +11,12 @@
         <x-sidebar-item title="Tambah" href="{{ route('admin.product.create') }}"
             active="{{ request()->routeIs('admin.product.create') }}" icon="menu-icon mdi mdi-plus-circle-outline" />
         <li class="nav-item nav-category">Pengguna</li>
-        <x-sidebar-item title="Daftar Pengguna" href="{{ route('admin.setting.user.list') }}"
+        <x-sidebar-item title="Daftar Pengguna" href="{{ route('admin.user.index') }}"
             icon="menu-icon mdi mdi-account-multiple-outline"
             active="{{ request()->routeIs('admin.setting.user.list') }}" />
+        <x-sidebar-item title="Tambah" href="{{ route('admin.user.create') }}"
+            active="{{ request()->routeIs('admin.product.create') }}" icon="menu-icon mdi mdi-plus-circle-outline" />
+
         <x-sidebar-item title="Keluar" href="{{ route('logout') }}" icon="menu-icon mdi mdi-logout" />
     </ul>
 </nav>
