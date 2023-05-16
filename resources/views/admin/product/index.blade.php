@@ -8,6 +8,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Gambar</th>
                                 <th>Nama</th>
                                 <th>Kategori</th>
                                 <th>Berat</th>
@@ -77,6 +78,10 @@
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'image',
+                            name: 'image'
                         },
                         {
                             data: 'name',
