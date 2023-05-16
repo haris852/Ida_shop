@@ -66,7 +66,6 @@ class SettingController extends Controller
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
-
         try {
             $user = User::find($id);
             if (isset($request->avatar)) {

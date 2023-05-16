@@ -15,7 +15,7 @@ class UserRepository implements UserInterface
 
     public function get()
     {
-        return $this->user->get();
+        return $this->user->where('role', 'user')->get();
     }
 
     public function getById($id)

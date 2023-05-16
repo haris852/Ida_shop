@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\StoreConfigurationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     // Setting
     Route::post('setting/user/list', [SettingController::class, 'store'])->name('admin.setting.user.list');
 
+    // Setting
     Route::resource('setting', SettingController::class, ['as' => 'admin']);
 
     // Product
@@ -38,6 +40,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     //User
     Route::resource('user', UserController::class, ['as' => 'admin']);
 
-
-
+    // Configuration Store
+    Route::resource('store-configuration', StoreConfigurationController::class, ['as' => 'admin']);
 });

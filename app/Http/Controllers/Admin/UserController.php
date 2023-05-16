@@ -13,40 +13,41 @@ class UserController extends Controller
 {
     private $user;
 
-    public function __construct(UserInterface $user) {
+    public function __construct(UserInterface $user)
+    {
         $this->user = $user;
     }
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request){
-        if($request->ajax()) {
+    public function index(Request $request)
+    {
+        // dd($this->user->get());
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->user->get())
-            ->addColumn('name', function($data) {
-                return $data->name;
-            })
-            ->addColumn('phone', function($data) {
-                return $data->phone;
-            })
-            ->addColumn('address', function($data) {
-                return $data->address;
-            })
-            ->addColumn('email', function($data) {
-                return $data->email;
-            })
-            ->addColumn('role', function($data) {
-                return $data->role;
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.dashboard.user.column.action', [
-                    'data' => $data
-                ]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->user->get())
+                ->addColumn('name', function ($data) {
+                    return $data->name ?? '-';
+                })
+                ->addColumn('phone', function ($data) {
+                    return $data->phone ?? '-';
+                })
+                ->addColumn('address', function ($data) {
+                    return $data->address ?? '-';
+                })
+                ->addColumn('email', function ($data) {
+                    return $data->email ?? '-';
+                })
+                ->addColumn('role', function ($data) {
+                    return $data->role;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.user.column.action', ['data' => $data]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
-        return view("admin.dashboard.user.index");
+        return view("admin.user.index");
     }
 
     /**
@@ -54,7 +55,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.dashboard.user.create');
+        return view('admin.user.create');
     }
 
     /**
@@ -62,19 +63,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'email' => ['nullable', 'string', 'email', 'max:255'],
-        //     'password' => ['nullable', 'string', 'min:8'],
-        //     'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
-        // ], [
-        //     'image.image' => 'File yang diupload harus berupa gambar!',
-        //     'image.mimes' => 'File yang diupload harus berupa gambar!',
-        //     'image.max' => 'Ukuran file yang diupload maksimal 2MB!',
-        // ]);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'sex' => ['required'],
+            'phone' => ['required', 'string', 'max:255'],
+            'address' => ['required'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+        ]);
+
         try {
-            //
-            $filename = uniqid() . $request->image->getClientOriginalName();
-            $request->image->storeAs('public/avatar', $filename);
+            $filename = uniqid() . $request->avatar->getClientOriginalName();
+            $request->avatar->storeAs('public/avatar', $filename);
             $request['avatar'] = $filename;
             //
             $request['password'] = Hash::make($request->password);
@@ -82,9 +83,8 @@ class UserController extends Controller
 
             return redirect()->route('admin.user.index')->with('success', 'Pengguna berhasil ditambah!');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', $th->getMessage());
+            dd($th->getMessage());
         }
-
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.dashboard.user.edit', [
+        return view('admin.user.edit', [
             'data' => $this->user->getById($id)
         ]);
     }
@@ -110,34 +110,40 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
-        // $request->validate([
-        //     'email' => ['nullable', 'string', 'email', 'max:255'],
-        //     'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-        //     'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
-        // ], [
-        //     'avatar.image' => 'File yang diupload harus berupa gambar!',
-        //     'avatar.mimes' => 'File yang diupload harus berupa gambar!',
-        //     'avatar.max' => 'Ukuran file yang diupload maksimal 2MB!',
-        // ]);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'sex' => ['required'],
+            'phone' => ['required', 'string', 'max:255'],
+            'address' => ['required'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+        ]);
 
         try {
             $user = User::find($id);
-            if (isset($request->image)) {
-                $filename = uniqid() . $request->image->getClientOriginalName();
-                $request->image->storeAs('public/avatar', $filename);
-                $request['avatar'] = $filename;
-
+            if (isset($request->avatar)) {
                 $oldAvatar = $user->avatar;
                 if ($oldAvatar != null) {
                     Storage::delete('public/avatar/' . $oldAvatar);
                 }
-            }
-            //
-            $request['password'] = Hash::make($request->password);
-            $user->update($request->all());
+                $filename = uniqid() . $request->avatar->getClientOriginalName();
+                $request->avatar->storeAs('public/avatar', $filename);
 
-            return redirect()->route('admin.user.index')->with('success', 'Pengguna berhasil diperbarui!');
+                $user->avatar = $filename;
+            }
+
+            $user->name = $request->name;
+            $user->sex = $request->sex;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+            $user->email = $request->email;
+            if (isset($request->password)) {
+                $user->password = password_hash($request->password, PASSWORD_DEFAULT);
+            }
+            $user->save();
+
+            return redirect()->route('admin.user.index')->with('success', 'Profil pengguna berhasil diperbarui!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
@@ -154,6 +160,4 @@ class UserController extends Controller
             'message' => 'Produk berhasil dihapus!'
         ]);
     }
-
-
 }
