@@ -66,8 +66,10 @@
                                 <div class="col-md-6">
                                     <x-input id="stock" type="number" name="stock" label="Stok" required />
                                     <x-input id="price" type="number" name="price" label="Harga satuan" required />
-                                    <x-input id="description" type="text" name="description" label="Deskripsi"
-                                        required />
+                                    <div class="form-group">
+                                        <label for="description">Deskripsi</label>
+                                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
