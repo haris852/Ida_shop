@@ -4,17 +4,15 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="productTable" class="table">
+                    <table id="userTable" class="table">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Gambar</th>
                                 <th>Nama</th>
-                                <th>Kategori</th>
-                                <th>Berat</th>
-                                <th>Stok</th>
-                                <th>Harga</th>
-                                <th>Status</th> {{-- 1 = aktif, 0 = nonaktif --}}
+                                <th>No. HP</th>
+                                <th>Alamat</th>
+                                <th>Email</th>
+                                <th>Role</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -26,11 +24,11 @@
     @push('js-internal')
         <script>
             function btnDelete(id, name) {
-                let url = "{{ route('admin.product.destroy', ':id') }}";
+                let url = "{{ route('admin.user.destroy', ':id') }}";
                 url = url.replace(':id', id);
                 Swal.fire({
                     icon: 'warning',
-                    text: `Apakah anda yakin ingin menghapus produk ${name}?`,
+                    text: `Apakah anda yakin ingin menghapus user ${name} dengan id ${id}?`,
                     showCancelButton: true,
                     confirmButtonText: 'Hapus',
                     cancelButtonText: 'Batal',
@@ -40,7 +38,7 @@
                             url: url,
                             method: 'DELETE',
                             data: {
-                                _token: '{{ csrf_token() }}'
+                                _token: "{{ csrf_token() }}"
                             },
                             success: function(response) {
                                 if (response.status) {
@@ -69,43 +67,34 @@
             }
 
             $(function() {
-                $('#productTable').DataTable({
+                $('#userTable').DataTable({
+                    responsive: true,
                     processing: true,
                     serverSide: true,
-                    autoWidth: false,
-                    responsive: true,
-                    ajax: "{{ route('admin.product.index') }}",
+                    ajax: "{{ route('admin.user.index') }}",
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'
-                        },
-                        {
-                            data: 'image',
-                            name: 'image'
                         },
                         {
                             data: 'name',
                             name: 'name'
                         },
                         {
-                            data: 'category',
-                            name: 'category'
+                            data: 'phone',
+                            name: 'phone'
                         },
                         {
-                            data: 'weight',
-                            name: 'weight'
+                            data: 'address',
+                            name: 'address'
                         },
                         {
-                            data: 'stock',
-                            name: 'stock'
+                            data: 'email',
+                            name: 'email'
                         },
                         {
-                            data: 'price',
-                            name: 'price'
-                        },
-                        {
-                            data: 'status',
-                            name: 'status'
+                            data: 'role',
+                            name: 'role'
                         },
                         {
                             data: 'action',
@@ -120,16 +109,14 @@
             @if (Session::has('success'))
                 Swal.fire({
                     icon: 'success',
-                    title: 'Berhasil',
-                    text: '{{ Session::get('success') }}',
+                    text: "{{ Session::get('success') }}",
                 })
             @endif
 
             @if (Session::has('error'))
                 Swal.fire({
                     icon: 'error',
-                    title: 'Gagal',
-                    text: '{{ Session::get('error') }}',
+                    text: "{{ Session::get('error') }}",
                 })
             @endif
         </script>

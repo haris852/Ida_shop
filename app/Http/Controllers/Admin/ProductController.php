@@ -20,6 +20,9 @@ class ProductController extends Controller
         if ($request->ajax()) {
             return datatables()
                 ->of($this->product->get())
+                ->addColumn('image', function($data) {
+                    return view('admin.product.column.image', ['data' => $data]);
+                })
                 ->addColumn('name', function ($data) {
                     return $data->name;
                 })

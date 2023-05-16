@@ -42,6 +42,7 @@
     </div>
     <!-- container-scroller -->
     @include('admin.layout.footer')
+
     @stack('js-internal')
 </body>
 
