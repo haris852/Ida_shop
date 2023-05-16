@@ -7,7 +7,6 @@
                     <form action="{{ route('admin.store-configuration.update', $data->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-
                         <div class="row">
                             <div class="col-md-6">
                                 <x-input id="code" name="code" type="text" label="Kode Toko" :value="$data->code"
@@ -28,10 +27,7 @@
                         </div>
                         <x-input id="shipping_cost" name="shipping_cost" type="number" label="Biaya Pengiriman"
                             :value="$data->shipping_cost" required />
-                        <div class="form-group">
-                            <label for="address">Alamat</label>
-                            <textarea class="form-control" id="address" name="address" rows="4"></textarea>
-                        </div>
+                        <x-textarea id="address" name="address" label="Alamat" :value="$data->address" required />
                         <div class="text-end">
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </div>
@@ -40,4 +36,21 @@
             </div>
         </div>
     </div>
+    @push('js-internal')
+        <script>
+            @if (Session::has('success'))
+                Swal.fire({
+                    icon: 'success',
+                    text: '{{ Session::get('success') }}',
+                })
+            @endif
+
+            @if (Session::has('error'))
+                Swal.fire({
+                    icon: 'error',
+                    text: '{{ Session::get('error') }}',
+                })
+            @endif
+        </script>
+    @endpush
 @endsection

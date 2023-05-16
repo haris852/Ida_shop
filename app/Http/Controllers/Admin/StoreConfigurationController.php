@@ -55,7 +55,18 @@ class StoreConfigurationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'unique:configuration_store,name,' . $id],
+            'address' => ['required'],
+            'phone' => ['required'],
+            'email' => ['required', 'email'],
+            'open_at' => ['required'],
+            'close_at' => ['required'],
+            'shipping_cost' => ['required']
+        ]);
+
+        ConfigurationStore::find($id)->update($request->all());
+        return redirect()->route('admin.store-configuration.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
