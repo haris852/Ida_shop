@@ -28,6 +28,9 @@
             font-family: 'Manrope', sans-serif;
         }
 
+        button {
+            font-family: 'Manrope', sans-serif;
+        }
 
         .btn-primary {
             background-color: #1F3BB3;
@@ -95,19 +98,43 @@
                     <a class="nav-link" href="#">Menu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pesanan</a>
+                    <a class="nav-link {{
+                        request()->routeIs('customer.order.index') ? 'active' : ''
+                    }}" href="{{route('customer.order.index')}}">Pesanan</a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('cart') }}">Keranjang
-                        @if (session()->has('cart') && count(session()->get('cart')) > 0)
-                            <span class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) }}</span>
-                        @endif
-                    </a>
-                </li>
+                @auth
+                    @if (session()->has('cart') && count(session()->get('cart')) > 0)
+                        <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('cart') }}">Keranjang
+                                @if (session()->has('cart') && count(session()->get('cart')) > 0)
+                                    <span
+                                        class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) }}</span>
+                                @endif
+                            </a>
+                        </li>
+                    @endif
+                @endauth
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <a href="{{ route('login') }}" class="btn btn-primary my-2 my-sm-0">Masuk</a>
-            </form>
+            @if (auth()->check())
+                {{-- dropdown image and name --}}
+                <div class="dropdown">
+                    <a class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
+                            width="40" height="40" alt="" class="rounded-circle mr-2"
+                            style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);">
+                        {{ auth()->user()->name }}
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a href="{{ route('logout') }}" class="dropdown-item">Keluar</a>
+                    </div>
+                </div>
+            @else
+                <form class="form-inline my-2 my-lg-0">
+                    <a href="{{ route('login') }}" class="btn btn-primary my-2 my-sm-0">Masuk</a>
+                </form>
+            @endif
         </div>
     </nav>
 

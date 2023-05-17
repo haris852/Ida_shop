@@ -15,7 +15,7 @@
                 <p class="mbr-text mbr-fonts-style display-7 w-75">
                     Kami menyediakan berbagai macam daging dan seafood dengan kualitas terbaik dan harga yang terjangkau.
                 </p>
-                <div class="mbr-section-btn"><a class="btn btn-primary display-7" href="">Pesan Sekarang</a></div>
+                <div class="mbr-section-btn"><a href="#" class="btn btn-primary display-7">Pesan Sekarang</a></div>
             </div>
         </div>
         <div class="d-none d-md-block col-md">
@@ -50,28 +50,30 @@
                         <div>
                             <div class="price">
                                 <h5 class="mt-4">
-                                    Rp {{number_format($product->price, 0, ',', '.')}}
+                                    Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </h5>
                             </div>
-                            <div class="">
-                                @if (session()->has('cart.' . $product->id))
-                                    <a href="{{route('cart')}}" class="btn btn-secondary btn-block mt-3" disabled>
-                                        <i class="fas fa-shopping-cart mr-1"></i>
-                                        Lihat Keranjang
-                                    </a>
-                                @else
-                                    @if ($product->stock != 0)
-                                        <button onclick="addToCart('{{ $product->id }}')"
-                                            class="btn btn-block btn-primary mt-3">
-                                            {{ __('Tambah ke Keranjang') }}
-                                        </button>
+                            @auth
+                                <div class="">
+                                    @if (session()->has('cart.' . $product->id))
+                                        <a href="{{ route('cart') }}" class="btn btn-secondary btn-block mt-3" disabled>
+                                            <i class="fas fa-shopping-cart mr-1"></i>
+                                            Lihat Keranjang
+                                        </a>
                                     @else
-                                        <button class="btn btn-block btn-seconday mt-3">
-                                            {{ __('Stok Habis') }}
-                                        </button>
+                                        @if ($product->stock != 0)
+                                            <button onclick="addToCart('{{ $product->id }}')"
+                                                class="btn btn-block btn-primary mt-3">
+                                                {{ __('Tambah ke Keranjang') }}
+                                            </button>
+                                        @else
+                                            <button class="btn btn-block btn-seconday mt-3">
+                                                {{ __('Stok Habis') }}
+                                            </button>
+                                        @endif
                                     @endif
-                                @endif
-                            </div>
+                                </div>
+                            @endauth
                         </div>
                     </div>
                 </div>

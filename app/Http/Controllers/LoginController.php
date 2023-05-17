@@ -25,7 +25,11 @@ class LoginController extends Controller
         ]);
         if(Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.dashboard'));
+            if(auth()->user()->role == User::ADMIN_ROLE) {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('home');
+            }
         }
 
         return back()->with('error', 'Login gagal!');
