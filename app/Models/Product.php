@@ -31,4 +31,9 @@ class Product extends Model
         'created_by',
         'updated_by',
     ];
+
+    public function transactionDetail()
+    {
+        return $this->hasMany(TransactionDetail::class, 'product_id', 'id');
+    }
 }

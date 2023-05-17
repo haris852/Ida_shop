@@ -14,8 +14,11 @@
                             </h6>
                             <form class="pt-3" action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                <x-input id="name" name="name" type="text" placeholder="Nama Lengkap" required/>
+                                <x-input id="name" name="name" type="text" placeholder="Nama Lengkap" required label="Nama Lengkap"/>
                                 <div class="form-group row">
+                                    <label for="">
+                                        Jenis Kelamin
+                                    </label>
                                     <div class="col-sm-4">
                                         <div class="form-check">
                                             <label class="form-check-label">
@@ -35,13 +38,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <x-input id="avatar" name="avatar" type="file" placeholder="Foto Profil" required/>
-                                <x-input id="phone" name="phone" type="text" placeholder="Nomor Telepon" required/>
-                                <x-input id="address" name="address" type="text" placeholder="Alamat" required/>
-                                <x-input id="email" name="email" type="email" placeholder="Email" required/>
-                                <x-input id="password" name="password" type="password" placeholder="Password" required/>
+                                <x-input id="avatar" name="avatar" type="file" placeholder="Foto Profil" required label="Foto Profil"/>
+                                <x-input id="phone" name="phone" type="text" placeholder="Nomor Telepon" required label="Nomor Telepon"/>
+                                <x-input id="address" name="address" type="text" placeholder="Alamat" required label="Alamat"/>
+                                <x-input id="email" name="email" type="email" placeholder="Email" required label="Email"/>
+                                <x-input id="password" name="password" type="password" placeholder="Password" required label="Password"/>
                                 <x-input id="password_confirmation" name="password_confirmation" type="password"
-                                    placeholder="Konfirmasi Password" required/>
+                                    placeholder="Konfirmasi Password" required label="Konfirmasi Password"/>
                                 <div class="mt-3">
                                     <x-button type="submit">
                                         Daftar
