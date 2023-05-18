@@ -178,7 +178,8 @@
                     <!-- Label Nomor Dana -->
                     <div class="mt-1 border-top border-bottom py-4" id="emoney_phone">
                         <span class="">Nomor Dana</span>
-                        <span class="font-weight-bold float-right" id="accountNumber">{{ $storeConfiguration->phone }} (a.n
+                        <span class="font-weight-bold float-right" id="accountNumber">{{ $storeConfiguration->phone }}
+                            (a.n
                             {{ $storeConfiguration->name }})
                     </div>
                     <div class="d-none mt-3" id="proof_container">
@@ -188,7 +189,8 @@
                             Silahkan lakukan pembayaran sesuai dengan total pembayaran ke nomor dana diatas dan upload bukti
                             pembayaran disini.
                         </small>
-                        <x-input type="file" name="proof_of_payment" id="proof_of_payment" placeholder="Bukti Pembayaran" />
+                        <x-input type="file" name="proof_of_payment" id="proof_of_payment"
+                            placeholder="Bukti Pembayaran" />
                         <img src="" alt="" id="proof_of_payment_preview" class="img-fluid">
                     </div>
 
@@ -244,10 +246,11 @@
                         } else if (data.status == 'paid') {
                             $('#cod_label').html('Pesanan sedang diproses').removeClass('d-none').addClass(
                                 'd-block');
-                                // show proof of payment
-                                $('#proof_container').removeClass('d-none');
-                                $('#proof_of_payment').addClass('d-none');
-                                $('#proof_of_payment_preview').attr('src', "{{ asset('storage/payment') }}/" + data.proof_of_payment);
+                            // show proof of payment
+                            $('#proof_container').removeClass('d-none');
+                            $('#proof_of_payment').addClass('d-none');
+                            $('#proof_of_payment_preview').attr('src', "{{ asset('storage/payment') }}/" + data
+                                .proof_of_payment);
                         } else if (data.status == 'failed') {
                             $('#cod_label').html('Pembayaran gagal').removeClass('d-none').addClass('d-block');
                         } else if (data.status == 'delivered') {

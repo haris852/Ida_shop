@@ -18,6 +18,10 @@ class OrderController extends Controller
 
     public function index()
     {
+        if(!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         return view('customer.order', [
             'storeConfiguration' => ConfigurationStore::first(),
             'orders' => $this->transaction->getTransactionByUserId(auth()->user()->id),

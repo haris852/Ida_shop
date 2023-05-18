@@ -2,6 +2,9 @@
     <ul class="nav">
         <x-sidebar-item title="Dashboard" href="{{ route('admin.dashboard') }}" icon="menu-icon mdi mdi-floor-plan"
             active="{{ request()->routeIs('admin.dashboard') }}" />
+        <li class="nav-item nav-category">Transaksi</li>
+        <x-sidebar-item title="Daftar Transaksi" href="{{ route('admin.order.index') }}"
+            active="{{ request()->routeIs('admin.order.index') }}" icon="menu-icon mdi mdi-cart" />
         <li class="nav-item nav-category">Produk</li>
         <x-sidebar-item title="Daftar Produk" href="{{ route('admin.product.index') }}"
             active="{{ request()->routeIs('admin.product.index') }}" icon="menu-icon mdi mdi-package" />
