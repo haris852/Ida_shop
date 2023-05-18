@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreConfigurationController;
@@ -42,6 +43,9 @@ Route::prefix('dashboard')->group(function () {
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
+
+    // Order
+    Route::resource('order', AdminOrderController::class, ['as' => 'admin']);
 
     // Setting
     Route::post('setting/user/list', [SettingController::class, 'store'])->name('admin.setting.user.list');

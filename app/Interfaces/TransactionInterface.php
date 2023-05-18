@@ -4,6 +4,7 @@ namespace App\Interfaces;
 
 interface TransactionInterface
 {
+    public function getAll();
     public function getById($id);
     public function getTransactionByUserId($userId);
     public function store($attributes);

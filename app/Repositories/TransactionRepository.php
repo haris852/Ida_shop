@@ -21,6 +21,11 @@ class TransactionRepository implements TransactionInterface
         $this->storeConfiguration = $storeConfiguration;
     }
 
+    public function getAll()
+    {
+        return $this->transaction->with(['user', 'transactionDetail.product'])->orderBy('created_at', 'desc')->get();
+    }
+
     public function store($attributes)
     {
         $shippingCost = $this->storeConfiguration->first()->shipping_cost;
@@ -38,7 +43,7 @@ class TransactionRepository implements TransactionInterface
                 'status' => $this->transaction::STATUS_PENDING,
                 'user_id' => auth()->user()->id,
                 'payment_method' => $attributes['payment_method'],
-                'total_price' => $attributes['subTotal'],
+                'total_price' => $attributes['subTotal'] + $shippingCost,
                 'shipping_price' => $shippingCost,
                 'total_payment' => $attributes['total']
             ]);

@@ -111,4 +111,14 @@ select.form-control {
     background: rgb(35, 53, 172);
 }
 
+.table td img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
 
+.dtr-details li span {
+    margin-top: 5px;
+    display: block;
+}
