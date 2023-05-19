@@ -1,4 +1,4 @@
-<a href="{{ asset('storage/payment/' . $data->proof_of_payment) }}">
+<a href="{{ asset('storage/payment/' . $data->proof_of_payment) }}" target="_blank">
     <img src="{{ $data->proof_of_payment
         ? asset('storage/payment/' . $data->proof_of_payment)
         : asset('assets/image/defaultmenu.jpg') }}"
