@@ -53,27 +53,29 @@
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </h5>
                             </div>
-                            @auth
-                                <div class="">
-                                    @if (session()->has('cart.' . $product->id))
-                                        <a href="{{ route('cart') }}" class="btn btn-secondary btn-block mt-3" disabled>
-                                            <i class="fas fa-shopping-cart mr-1"></i>
-                                            Lihat Keranjang
+                            <div class="">
+                                @if (session()->has('cart.' . $product->id))
+                                    <a href="{{ route('cart') }}" class="btn btn-secondary btn-block mt-3" disabled>
+                                        <i class="fas fa-shopping-cart mr-1"></i>
+                                        Lihat Keranjang
+                                    </a>
+                                @else
+                                    @if ($product->stock != 0)
+                                        <a
+                                            @if (auth()->check()) onclick="addToCart('{{ $product->id }}')"
+                                                @else
+                                                href="{{ route('login') }}"
+                                            @endif
+                                            class="btn btn-block text-white btn-primary mt-3">
+                                            {{ __('Tambah ke Keranjang') }}
                                         </a>
                                     @else
-                                        @if ($product->stock != 0)
-                                            <button onclick="addToCart('{{ $product->id }}')"
-                                                class="btn btn-block btn-primary mt-3">
-                                                {{ __('Tambah ke Keranjang') }}
-                                            </button>
-                                        @else
-                                            <button class="btn btn-block btn-seconday mt-3">
-                                                {{ __('Stok Habis') }}
-                                            </button>
-                                        @endif
+                                        <button class="btn btn-block btn-seconday mt-3">
+                                            {{ __('Stok Habis') }}
+                                        </button>
                                     @endif
-                                </div>
-                            @endauth
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

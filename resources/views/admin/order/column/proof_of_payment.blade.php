@@ -1,5 +1,6 @@
-<img src="{{
-    $data->proof_of_payment
+<a href="{{ asset('storage/payment/' . $data->proof_of_payment) }}">
+    <img src="{{ $data->proof_of_payment
         ? asset('storage/payment/' . $data->proof_of_payment)
-        : asset('assets/image/defaultmenu.jpg')
-}}" alt="proof" class="img-thumbnail">
+        : asset('assets/image/defaultmenu.jpg') }}"
+        alt="proof" class="img-thumbnail">
+</a>

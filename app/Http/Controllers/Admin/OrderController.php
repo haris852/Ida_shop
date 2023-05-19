@@ -104,4 +104,9 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function changeStatus(Request $request)
+    {
+        dd($request->all());
+    }
 }

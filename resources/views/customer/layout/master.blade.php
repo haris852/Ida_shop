@@ -98,9 +98,8 @@
                     <a class="nav-link" href="#">Menu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{
-                        request()->routeIs('customer.order.index') ? 'active' : ''
-                    }}" href="{{route('customer.order.index')}}">Pesanan</a>
+                    <a class="nav-link {{ request()->routeIs('user-customer.order.index') ? 'active' : '' }}"
+                        href="{{ route('user-customer.order.index') }}">Pesanan</a>
                 </li>
                 @auth
                     @if (session()->has('cart') && count(session()->get('cart')) > 0)
