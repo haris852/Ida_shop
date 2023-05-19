@@ -5,7 +5,7 @@
             Daftar Pesanan
         </h4>
         <p class="mt-2">
-            <span class="text-danger">*</span>Segera lakukan pembayaran dalam 1x24 jam
+            <span class="text-danger">*</span>Segera lakukan pembayaran dalam 2 jam kedepan semenjak pemesanan produk
         </p>
     </div>
     @if (isset($orders) && count($orders) > 0)
