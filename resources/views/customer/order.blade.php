@@ -15,7 +15,7 @@
                     <div class="card rounded-lg">
                         <div class="card-body">
                             <h6 class="card-title">
-                                Invoice #{{ $order->id }}
+                                Invoice
                             </h6>
                             <div class=" d-sm-block d-md-flex justify-content-between mb-4">
                                 <p class="card-text m-0">
@@ -88,22 +88,24 @@
                             </div>
                             <div class="mt-4"></div>
                             <div class="progress-track">
-                                @if ($order->status == 'pending')
-                                    <ul id="progressbar" class="mb-4">
-                                        <li class="step0 active" id="step1">Menunggu</li>
-                                        <li class="step0 text-center" id="step2">Dibayar</li>
-                                        <li class="step0 text-right" id="step3">Diantar</li>
-                                        <li class="step0 text-right" id="step4">Diterima</li>
-                                    </ul>
-                                @endif
+                                @if ($order->payment_method == 1)
+                                    @if ($order->status == 'pending')
+                                        <ul id="progressbar" class="mb-4">
+                                            <li class="step0 active" id="step1">Menunggu</li>
+                                            <li class="step0 text-center" id="step2">Dibayar</li>
+                                            <li class="step0 text-right" id="step3">Diantar</li>
+                                            <li class="step0 text-right" id="step4">Diterima</li>
+                                        </ul>
+                                    @endif
 
-                                @if ($order->status == 'paid')
-                                    <ul id="progressbar" class="mb-4">
-                                        <li class="step0 active" id="step1">Menunggu</li>
-                                        <li class="step0 active text-center" id="step2">Dibayar</li>
-                                        <li class="step0 text-right" id="step3">Diantar</li>
-                                        <li class="step0 text-right" id="step4">Diterima</li>
-                                    </ul>
+                                    @if ($order->status == 'paid')
+                                        <ul id="progressbar" class="mb-4">
+                                            <li class="step0 active" id="step1">Menunggu</li>
+                                            <li class="step0 active text-center" id="step2">Dibayar</li>
+                                            <li class="step0 text-right" id="step3">Diantar</li>
+                                            <li class="step0 text-right" id="step4">Diterima</li>
+                                        </ul>
+                                    @endif
                                 @endif
                             </div>
 
@@ -223,7 +225,7 @@
 
             function pay(id) {
                 $('#payment').modal('show');
-                let url = "{{ route('customer.order.show', ':id') }}";
+                let url = "{{ route('user-customer.order.show', ':id') }}";
                 url = url.replace(':id', id);
                 $.ajax({
                     url: url,
@@ -279,7 +281,7 @@
             }
 
             function cancelOrder(id) {
-                let url = "{{ route('customer.order.destroy', ':id') }}";
+                let url = "{{ route('user-customer.order.destroy', ':id') }}";
                 url = url.replace(':id', id);
 
                 Swal.fire({
@@ -335,7 +337,7 @@
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            let url = "{{ route('customer.order.confirm', ':id') }}";
+                            let url = "{{ route('user-customer.order.confirm', ':id') }}";
                             url = url.replace(':id', $('#order_id').val());
 
                             let formData = new FormData();

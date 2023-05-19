@@ -11,11 +11,11 @@
                                 <th>Kode</th>
                                 <th>Metode Pembayaran</th>
                                 <th>Pelanggan</th>
-                                <th>Penerima</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
+                                <th>Penerima</th>
                                 <th>No. Telefon</th>
                                 <th>Bukti Pembayaran</th>
-                                <th>Status</th>
                                 <th>Biaya Pengiriman</th>
                                 <th>Total Pembayaran</th>
                                 <th>Tanggal</th>
@@ -28,6 +28,46 @@
     </div>
     @push('js-internal')
         <script>
+            function changeStatus(id, status) {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda akan mengubah status pesanan ini menjadi " + status + "! Pesanan yang sudah dikonfirmasi tidak dapat dikembalikan lagi!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: 'rgb(35, 53, 172)',
+                    cancelButtonColor: '#aaa',
+                    confirmButtonText: 'Ya, saya yakin!',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('admin.order.change-status') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                id: id,
+                                status: status,
+                            },
+                            success: function (response) {
+                                if (response.status == 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: response.message,
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: response.message,
+                                    });
+                                }
+                            },
+                        });
+                    }
+                })
+            }
+
             $(function () {
                 $('#orderTable').DataTable({
                     processing: true,
@@ -40,11 +80,11 @@
                         {data: 'transaction_code', name: 'transaction_code'},
                         {data: 'payment_method', name: 'payment_method'},
                         {data: 'customer', name: 'customer'},
-                        {data: 'receiver', name: 'receiver'},
+                        {data: 'status', name: 'status'},
                         {data: 'action', name: 'action'},
+                        {data: 'receiver', name: 'receiver'},
                         {data: 'phone', name: 'phone'},
                         {data: 'proof_of_payment', name: 'proof_of_payment'},
-                        {data: 'status', name: 'status'},
                         {data: 'shipping_cost', name: 'shipping_cost'},
                         {data: 'total_payment', name: 'total_payment'},
                         {data: 'created_at', name: 'created_at'},

@@ -7,7 +7,7 @@ use App\Interfaces\TransactionInterface;
 use App\Models\ConfigurationStore;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class UserOrderController extends Controller
 {
     private $transaction;
 
@@ -18,7 +18,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        if(!auth()->check()) {
+        if (!auth()->check()) {
             return redirect()->route('login');
         }
 
@@ -84,5 +84,4 @@ class OrderController extends Controller
         $this->transaction->confirm($id, $request->all());
         return redirect()->back()->with('success', 'Transaksi berhasil dikonfirmasi');
     }
-
 }
