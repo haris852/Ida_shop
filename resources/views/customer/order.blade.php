@@ -112,7 +112,7 @@
                             @if ($order->status == 'pending')
                                 <!-- Pembayaran menggunakan E Money -->
                                 @if ($order->status == 'pending' && $order->payment_method == 1)
-                                    @if (Carbon\Carbon::parse($order->created_at)->addDay() < Carbon\Carbon::now())
+                                    @if (Carbon\Carbon::parse($order->created_at)->addHours(2) < Carbon\Carbon::now())
                                         <button class="btn btn-danger btn-block disabled">
                                             Pesanan Kadaluarsa
                                         </button>
@@ -124,7 +124,7 @@
                                         <small class="text-muted text-center mt-2 d-block">
                                             Pesanan akan kadaluarsa dalam:
                                             <span class="font-weight-bold text-danger">
-                                                {{ Carbon\Carbon::parse($order->created_at)->addDay()->diffForHumans() }}
+                                                {{ Carbon\Carbon::parse($order->created_at)->addHours(2)->diffForHumans() }}
                                             </span>
                                         </small>
                                     @endif
