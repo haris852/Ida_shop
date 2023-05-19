@@ -67,7 +67,7 @@ class ProductRepository implements ProductInterface
 
             return true;
         } catch (\Throwable $th) {
-            return false;
+            throw $th;
         }
     }
 }
