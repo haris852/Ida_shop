@@ -21,8 +21,8 @@ class ProductSeeder extends Seeder
             'stock' => 100,
             'price' => 100000,
             'is_active' => 1,
-            'created_by' => 1,
-            'updated_by' => 1,
+            // 'created_by' => 1,
+            // 'updated_by' => 1,
         ]);
     }
 }
