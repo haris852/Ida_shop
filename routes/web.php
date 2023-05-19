@@ -2,14 +2,14 @@
 
 use App\Http\Controllers\Admin\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreConfigurationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\UserOrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,8 +36,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::prefix('dashboard')->group(function () {
-    Route::post('order/confirm/{id}', [OrderController::class, 'confirm'])->name('customer.order.confirm');
-    Route::resource('order', OrderController::class, ['as' => 'customer']);
+    Route::post('user/order/confirm/{id}', [UserOrderController::class, 'confirm'])->name('user-customer.order.confirm');
+    Route::resource('user/order', UserOrderController::class, ['as' => 'user-customer']);
     Route::resource('checkout', CheckoutController::class, ['as' => 'customer']);
 })->middleware(['auth']);
 
@@ -45,7 +45,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Order
-    Route::resource('order', AdminOrderController::class, ['as' => 'admin']);
+    Route::post('order/change-status', [OrderController::class, 'changeStatus'])->name('admin.order.change-status');
+    Route::resource('order', OrderController::class, ['as' => 'admin']);
 
     // Setting
     Route::post('setting/user/list', [SettingController::class, 'store'])->name('admin.setting.user.list');
