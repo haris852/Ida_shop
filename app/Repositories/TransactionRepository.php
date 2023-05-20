@@ -73,7 +73,7 @@ class TransactionRepository implements TransactionInterface
 
     public function getTransactionByUserId($userId)
     {
-        return $this->transaction->where('user_id', $userId)->with('transactionDetail.product')->orderBy('created_at', 'desc')->get();
+        return $this->transaction->where('user_id', $userId)->with(['transactionDetail.product', 'review'])->orderBy('created_at', 'desc')->get();
     }
 
     public function destroy($id)
@@ -151,5 +151,15 @@ class TransactionRepository implements TransactionInterface
             $query->where('status', $this->transaction::STATUS_PAID)
                 ->orWhere('status', $this->transaction::STATUS_SUCCESS);
         })->get();
+    }
+
+    public function uploadPaymentCod($attributes) {
+        $filename = uniqid() . '-' . $attributes['proof_of_receipt']->getClientOriginalName();
+        $attributes['proof_of_receipt']->storeAs('public/receipt', $filename);
+
+        return $this->transaction->find($attributes['id'])->update([
+            'status' => $this->transaction::STATUS_SUCCESS,
+            'proof_of_receipt' => $filename
+        ]);
     }
 }

@@ -8,4 +8,10 @@
         {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }} {{
             $readonly ? 'readonly' : ''
         }}>
+
+    @error($name)
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+    @enderror
 </div>

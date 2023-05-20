@@ -34,4 +34,37 @@ class TransactionDetail extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
+    public function getTotalProductSales()
+    {
+        return $this->sum('qty');
+    }
+
+    public function getTotalProductSalesDaily()
+    {
+        return $this->whereDate('created_at', date('Y-m-d'))->sum('qty');
+    }
+
+    public function getTotalProductSalesDifference()
+    {
+        // return is up or down and the mount
+        $today = $this->getTotalProductSalesDaily();
+        $yesterday = $this->whereDate('created_at', date('Y-m-d', strtotime('-1 day')))->sum('qty');
+
+        if ($today > $yesterday) {
+            $difference = $today - $yesterday;
+            $status = true;
+        } else if ($today < $yesterday) {
+            $difference = $yesterday - $today;
+            $status = true;
+        } else {
+            $difference = 0;
+            $status = false;
+        }
+
+        return [
+            'is_up' => $status,
+            'difference' => $difference,
+        ];
+    }
 }

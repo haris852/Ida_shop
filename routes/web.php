@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserOrderController;
 use Illuminate\Support\Facades\Route;
+use Termwind\Components\Hr;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::get('register', [LoginController::class, 'register'])->name('register');
 Route::post('login/store', [LoginController::class, 'loginStore'])->name('login.store');
 Route::get('login', [LoginController::class, 'index'])->name('login');
 
+Route::get('menu', [HomeController::class, 'menu'])->name('menu');
 Route::post('cart/destroy', [HomeController::class, 'cartDestroy'])->name('cart.destroy');
 Route::post('cart/store', [HomeController::class, 'cartStore'])->name('cart.store');
 Route::get('cart', [HomeController::class, 'cart'])->name('cart');
@@ -36,6 +38,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::prefix('dashboard')->group(function () {
+    Route::post('user/order/review/{id}', [UserOrderController::class, 'review'])->name('user-customer.order.review');
     Route::post('user/order/confirm/{id}', [UserOrderController::class, 'confirm'])->name('user-customer.order.confirm');
     Route::resource('user/order', UserOrderController::class, ['as' => 'user-customer']);
     Route::resource('checkout', CheckoutController::class, ['as' => 'customer']);
@@ -46,6 +49,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
 
     // Order
     Route::get('order/list/detail', [OrderController::class, 'listDetail'])->name('admin.order.list-detail');
+    Route::post('order/cod/upload-payment', [OrderController::class, 'uploadPaymentCod'])->name('admin.order.cod.upload-payment');
     Route::post('order/change-status', [OrderController::class, 'changeStatus'])->name('admin.order.change-status');
     Route::resource('order', OrderController::class, ['as' => 'admin']);
 

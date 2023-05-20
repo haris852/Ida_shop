@@ -12,4 +12,5 @@ interface TransactionInterface
     public function confirm($id, $attributes);
     public function changeStatus($id, $status);
     public function listDetail();
+    public function uploadPaymentCod($attributes);
 }

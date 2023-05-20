@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\ReviewInterface;
 use App\Interfaces\TransactionInterface;
 use App\Models\ConfigurationStore;
 use Illuminate\Http\Request;
@@ -10,10 +11,12 @@ use Illuminate\Http\Request;
 class UserOrderController extends Controller
 {
     private $transaction;
+    private $review;
 
-    public function __construct(TransactionInterface $transaction)
+    public function __construct(TransactionInterface $transaction, ReviewInterface $review)
     {
         $this->transaction = $transaction;
+        $this->review = $review;
     }
 
     public function index()
@@ -83,5 +86,21 @@ class UserOrderController extends Controller
     {
         $this->transaction->confirm($id, $request->all());
         return redirect()->back()->with('success', 'Transaksi berhasil dikonfirmasi');
+    }
+
+    public function review(Request $request, string $id)
+    {
+        try {
+            $this->review->store($request->all(), $id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Review berhasil ditambahkan'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

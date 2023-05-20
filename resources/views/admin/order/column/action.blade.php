@@ -38,8 +38,8 @@
             </div>
         </div>
     @elseif ($data->status == 'delivered')
-        <button class="btn btn-primary py-2" onclick="changeStatus('{{ $data->id }}', 'success')">
-            Selesai
+        <button class="btn btn-primary py-2" onclick="uploadPayment('{{ $data->id }}')">
+            Upload Bukti
         </button>
     @endif
 @endif

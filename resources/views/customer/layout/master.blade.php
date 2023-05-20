@@ -95,7 +95,8 @@
                     <a class="nav-link" href="{{ route('home') }}">Beranda <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Menu</a>
+                    <a class="nav-link {{ request()->routeIs('menu') ? 'active' : '' }}"
+                        href="{{ route('menu') }}">Menu</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user-customer.order.index') ? 'active' : '' }}"

@@ -198,6 +198,12 @@
                                     onclick="pay('{{ $order->id }}')">
                                     Lihat Detail
                                 </button>
+                                @if ($order->review == null)
+                                    <button type="button" class="btn btn-success btn-block mt-2" data-toggle="modal"
+                                        data-target="#reviewModal" onclick="review('{{ $order->id }}')">
+                                        Beri Ulasan
+                                    </button>
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -212,14 +218,15 @@
         </div>
     @endif
 
+    <!-- Modal Payment -->
     <div class="modal fade" id="payment" tabindex="-1" role="dialog" aria-labelledby="paymentLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="paymentLabel">
+                    <p class="modal-title font-weight-bold" id="paymentLabel">
                         Formulir Pembayaran
-                    </h5>
+                    </p>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -273,6 +280,37 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Review -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title font-weight-bold" id="reviewModalLabel">
+                        Review Produk
+                    </p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span>Rating produk ini</span><br>
+                    <input type="hidden" name="id">
+                    <div id="rate"></div>
+                    <x-textarea name="review" id="review" placeholder="Tulis ulasan anda disini" required />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Tutup
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnReview">
+                        Review Produk
+                    </button>
                 </div>
             </div>
         </div>
@@ -335,8 +373,8 @@
                             $('#cod_label').html('Pesanan sedang dikirim').removeClass('d-none').addClass(
                                 'd-block');
                         } else if (data.status == 'success') {
-                            $('#cod_label').html('Pesanan telah diterima').removeClass('d-none').addClass(
-                                'd-block');
+                            $('#cod_label').html('Pesanan telah diterima').removeClass('d-none alert-warning')
+                                .addClass('alert-success d-block');
                         }
 
                         if (data.payment_method == 2) {
@@ -399,6 +437,25 @@
                 })
             }
 
+            function review(id) {
+                $('#reviewModal input[name="id"]').val(id);
+                $('#rate').html(`
+                <div class="rate ml-0">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                    </div>
+                `);
+                $('textarea[name="review"]').val('');
+            }
+
             $(function() {
                 $('#proof_of_payment').change(function() {
                     let reader = new FileReader();
@@ -445,6 +502,67 @@
                                 },
                             })
                         }
+                    })
+                });
+
+                $('#btnReview').click(function(e) {
+                    e.preventDefault();
+                    let rating = 0;
+                    let review = '';
+
+                    $('#reviewModal input[name="rate"]').each(function() {
+                        if ($(this).is(':checked')) {
+                            rating = $(this).val();
+                        }
+                    });
+
+                    review = $('#reviewModal textarea[name="review"]').val();
+
+                    if (rating == 0) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: 'Rating harus diisi',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+
+                    if (review == '') {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: 'Review harus diisi',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "{{ route('user-customer.order.review', ':id') }}"
+                            .replace(':id', $('#reviewModal input[name="id"]').val()),
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            rating: rating,
+                            review: review
+                        },
+                        success: function(response) {
+                            if (response.status == 'success') {
+                                Swal.fire({
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    icon: 'success'
+                                });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                Swal.fire({
+                                    title: 'Gagal',
+                                    text: response.message,
+                                    icon: 'error'
+                                });
+                            }
+                        },
                     })
                 });
             });

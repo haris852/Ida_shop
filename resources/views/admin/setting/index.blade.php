@@ -71,19 +71,30 @@
                                         </div>
                                     </div>
                                 </div>
-                                <x-input id="email" name="email" type="email" label="Email"
-                                    value="{{ Auth::user()->email }}" placeholder="Masukkan email" />
+                                {{-- divider --}}
+                                <div class="border-bottom my-4"></div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <x-input id="password" name="password" type="password" label="Password"
-                                            placeholder="Masukkan password" />
+                                        <x-input id="email" name="email" type="email" label="Email"
+                                            value="{{ Auth::user()->email }}" placeholder="Masukkan email" />
                                     </div>
                                     <div class="col-md-6">
-                                        <x-input id="password_confirmation" name="password_confirmation" type="password"
-                                            label="Konfirmasi Password" placeholder="Masukkan konfirmasi password" />
+                                        <x-input id="old_password" name="old_password" type="password"
+                                            label="Password Lama" placeholder="Masukkan password lama" />
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <x-input id="new_password" name="new_password" type="password"
+                                            label="Password Baru" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <x-input id="new_password_confirmation" name="new_password_confirmation"
+                                            type="password" label="Konfirmasi Password Baru" />
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
                             </form>
                         </div>
                     </div>

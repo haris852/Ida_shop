@@ -149,4 +149,20 @@ class OrderController extends Controller
         }
         return view('admin.order.list-detail');
     }
+
+    public function uploadPaymentCod(Request $request)
+    {
+        try {
+            $this->transaction->uploadPaymentCod($request->all());
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil mengupload bukti pembayaran'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ]);
+        }
+    }
 }

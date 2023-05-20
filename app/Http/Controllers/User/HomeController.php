@@ -61,4 +61,12 @@ class HomeController extends Controller
 
         return true;
     }
+
+    public function menu()
+    {
+        return view('customer.menu', [
+            'products' => $this->product->get(),
+            'categories' => $this->product->getCategories(),
+        ]);
+    }
 }

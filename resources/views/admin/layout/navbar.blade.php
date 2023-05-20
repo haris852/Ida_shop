@@ -169,7 +169,7 @@
                     <a class="dropdown-item py-2" href="{{ route('admin.setting.index') }}">
                         Pengaturan
                     </a>
-                    <a class="dropdown-item py-2" href="{{ route('logout') }}">
+                    <a class="dropdown-item py-2 border-bottom-0" href="{{ route('logout') }}">
                         Keluar
                     </a>
                 </div>

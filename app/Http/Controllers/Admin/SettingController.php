@@ -62,12 +62,15 @@ class SettingController extends Controller
             'phone' => ['required', 'string', 'max:255'],
             'address' => ['required'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'old_password' => ['nullable', 'string', 'min:8'],
+            'new_password' => ['nullable', 'string', 'min:8'],
+            'new_password_confirmation' => ['nullable', 'string', 'min:8'],
         ]);
 
         try {
             $user = User::find($id);
+
             if (isset($request->avatar)) {
                 $oldAvatar = $user->avatar;
                 if ($oldAvatar != null) {
@@ -84,9 +87,19 @@ class SettingController extends Controller
             $user->phone = $request->phone;
             $user->address = $request->address;
             $user->email = $request->email;
-            if (isset($request->password)) {
-                $user->password = password_hash($request->password, PASSWORD_DEFAULT);
+            // check if password is not null
+            if ($request->old_password != null && $request->new_password != null && $request->new_password_confirmation != null) {
+                if (Hash::check($request->old_password, $user->password)) {
+                    if ($request->new_password == $request->new_password_confirmation) {
+                        $user->password = Hash::make($request->new_password);
+                    } else {
+                        return redirect()->back()->with('error', 'Password baru dan konfirmasi password baru tidak sama!');
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Password lama tidak sesuai!');
+                }
             }
+
             $user->save();
 
             return redirect()->route('admin.setting.index')->with('success', 'Profil pengguna berhasil diperbarui!');
