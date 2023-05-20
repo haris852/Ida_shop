@@ -12,7 +12,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Membuang data untuk tabel ida_shop.configuration_store: ~1 rows (lebih kurang)
+-- Membuang data untuk tabel ida_shop.configuration_store: ~0 rows (lebih kurang)
 /*!40000 ALTER TABLE `configuration_store` DISABLE KEYS */;
 INSERT IGNORE INTO `configuration_store` (`id`, `code`, `name`, `address`, `phone`, `email`, `open_at`, `close_at`, `shipping_cost`, `is_active`, `created_at`, `updated_at`) VALUES
 	(1, 'STORE-001', 'Ida\'s Shop', 'Jl. Raya Kedung Halang No. 1', '081515144981', 'idashop@mail.com', '07:00:00', '16:00:00', 5000, 1, '2023-05-16 03:43:06', '2023-05-16 09:26:24');
@@ -22,7 +22,7 @@ INSERT IGNORE INTO `configuration_store` (`id`, `code`, `name`, `address`, `phon
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
--- Membuang data untuk tabel ida_shop.migrations: ~14 rows (lebih kurang)
+-- Membuang data untuk tabel ida_shop.migrations: ~11 rows (lebih kurang)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
@@ -52,8 +52,8 @@ INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- Membuang data untuk tabel ida_shop.products: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
 INSERT IGNORE INTO `products` (`id`, `category`, `name`, `image`, `weight`, `unit`, `description`, `stock`, `price`, `is_active`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'meat', 'Ayam Utuh', '646252f16fb0cDaging ayam utuh.jpg', 500, 'gr', 'Dada ayam tanpa kulit dan tanpa tulang di jual per 1kg. Harga yg tercantum adalah harga 1kg/kemasan  Ayam yang kami jual secara online adalah Fresh frozen Fresh frozen adalah ayam atau daging segar (FRESH) BERKUALITAS yang sengaja kami bekukan untuk menjaga kualitas produk tetap higenis dan baik.  Kami menganjurkan produk yang telah di beli langsung di masukan kedalam freezer atau dimasak agar kualitas tetap terjaga', 100, 45000, 1, 1, 1, '2023-05-15 15:41:49', '2023-05-16 05:01:58'),
-	(2, 'meat', 'Dada Ayam', '646254479b989daging dada-ayam.jpeg', 1, 'kg', 'Dada ayam tanpa kulit dan tanpa tulang di jual per 1kg. Harga yg tercantum adalah harga 1kg/kemasan  Ayam yang kami jual secara online adalah Fresh frozen Fresh frozen adalah ayam atau daging segar (FRESH) BERKUALITAS yang sengaja kami bekukan untuk menjaga kualitas produk tetap higenis dan baik.  Kami menganjurkan produk yang telah di beli langsung di masukan kedalam freezer atau dimasak agar kualitas tetap terjaga', 500, 28000, 1, 1, 1, '2023-05-15 15:48:23', '2023-05-16 05:02:06');
+	(1, 'meat', 'Ayam Utuh', '6466d5a875ae8Daging ayam utuh.jpg', 500, 'gr', 'Ini adalah ayam', 92, 45000, 1, 1, 1, '2023-05-15 15:41:49', '2023-05-20 10:15:10'),
+	(2, 'meat', 'Dada Ayam', '646254479b989daging dada-ayam.jpeg', 1, 'kg', 'Dada ayam tanpa kulit dan tanpa tulang di jual per 1kg. Harga yg tercantum adalah harga 1kg/kemasan  Ayam yang kami jual secara online adalah Fresh frozen Fresh frozen adalah ayam atau daging segar (FRESH) BERKUALITAS yang sengaja kami bekukan untuk menjaga kualitas produk tetap higenis dan baik.  Kami menganjurkan produk yang telah di beli langsung di masukan kedalam freezer atau dimasak agar kualitas tetap terjaga', 499, 28000, 1, 1, 1, '2023-05-15 15:48:23', '2023-05-20 10:15:10');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 
 -- Membuang data untuk tabel ida_shop.reviews: ~0 rows (lebih kurang)
@@ -63,11 +63,11 @@ INSERT IGNORE INTO `products` (`id`, `category`, `name`, `image`, `weight`, `uni
 -- Membuang data untuk tabel ida_shop.transactions: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
 INSERT IGNORE INTO `transactions` (`id`, `transaction_code`, `receiver_name`, `receiver_phone`, `receiver_address`, `note`, `proof_of_payment`, `status`, `is_confirmed`, `user_id`, `payment_method`, `total_price`, `shipping_price`, `total_payment`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(2, 'TRX-2023-0001', 'Ibnu', '081515144981', 'Sumber Sari, Jember, Jawa Timur', 'coba', '646538915b03e-Screenshot_16.jpg', 'paid', 0, 3, 1, 73000, 5000, 73000, 3, 3, '2023-05-17 15:59:19', '2023-05-17 20:26:57'),
-	(4, 'TRX-2023-0002', 'Ibnu', '08438537', 'Sumber Sari, Jember, Jawa Timur', NULL, NULL, 'pending', 0, 3, 2, 315000, 5000, 315000, 3, NULL, '2023-05-17 19:54:20', '2023-05-17 19:54:20');
+	(2, 'TRX-2023-0001', 'Ibnu', '081515144981', 'Sumber Sari, Jember, Jawa Timur', 'coba', '646538915b03e-Screenshot_16.jpg', 'success', 0, 3, 1, 73000, 5000, 73000, 3, 1, '2023-05-17 15:59:19', '2023-05-20 10:15:10'),
+	(4, 'TRX-2023-0002', 'Ibnu', '08438537', 'Sumber Sari, Jember, Jawa Timur', NULL, NULL, 'success', 0, 3, 2, 315000, 5000, 315000, 3, 1, '2023-05-17 19:54:20', '2023-05-20 10:14:51');
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 
--- Membuang data untuk tabel ida_shop.transaction_details: ~3 rows (lebih kurang)
+-- Membuang data untuk tabel ida_shop.transaction_details: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `transaction_details` DISABLE KEYS */;
 INSERT IGNORE INTO `transaction_details` (`id`, `transaction_id`, `product_id`, `qty`, `price`, `total_price`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 	(1, 2, 1, 1, 45000, 45000, 3, NULL, '2023-05-17 15:59:19', '2023-05-17 15:59:19'),
