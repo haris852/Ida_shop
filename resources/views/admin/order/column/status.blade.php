@@ -1,11 +1,15 @@
 @if ($data->status == 'pending')
-    <span class="badge badge-warning">Menunggu Pembayaran</span>
+    <button class="btn btn-rounded btn-dark btn-sm">
+        {{$data->payment_method == 1 ? 'Menunggu Pembayaran' : 'Menunggu Penerimaan'}}
+    </button>
 @elseif ($data->status == 'paid')
-    <span class="badge badge-primary">Menunggu Konfirmasi</span>
+    <button class="btn btn-rounded btn-warning btn-sm">Pesanan Dibayar</button>
 @elseif ($data->status == 'confirmed')
-    <span class="badge badge-primary">Pesanan Dikonfirmasi</span>
+    <button class="btn btn-rounded btn-info btn-sm">Pesanan Dikonfirmasi</button>
 @elseif ($data->status == 'delivered')
-    <span class="badge badge-success">Pesanan Dikirim</span>
+    <button class="btn btn-rounded btn-secondary btn-sm">Pesanan Dikirim</button>
 @elseif ($data->status == 'success')
-    <span class="badge badge-success">Pesanan Selesai</span>
+    <button class="btn btn-rounded btn-success btn-sm">Pesanan Selesai</button>
+@elseif ($data->status == 'failed')
+    <button class="btn btn-rounded btn-danger btn-sm">Pesanan Ditolak</button>
 @endif

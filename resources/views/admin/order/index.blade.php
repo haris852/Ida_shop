@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table" id="orderTable">
+                    <table class="table table-hover" id="orderTable">
                         <thead>
                             <tr>
                                 <th>#</th>

@@ -107,6 +107,46 @@ class OrderController extends Controller
 
     public function changeStatus(Request $request)
     {
-        dd($request->all());
+        try {
+            $this->transaction->changeStatus($request->id, $request->status);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil mengubah status pesanan ke ' . $request->status
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal mengubah status pesanan'
+            ]);
+        }
+    }
+
+    public function listDetail(Request $request)
+    {
+        if($request->ajax()) {
+            return datatables()
+            ->of($this->transaction->listDetail())
+            ->addColumn('invoice_code', function($data) {
+                return $data->transaction->transaction_code;
+            })
+            ->addColumn('product_name', function($data) {
+                return $data->product->name;
+            })
+            ->addColumn('qty', function($data) {
+                return $data->qty;
+            })
+            ->addColumn('price', function($data) {
+                return 'Rp. ' . number_format($data->price, 0, ',', '.');
+            })
+            ->addColumn('subtotal', function($data) {
+                return 'Rp. ' . number_format($data->total_price, 0, ',', '.');
+            })
+            ->addColumn('created_at', function($data) {
+                return $data->created_at->format('d-m-Y H:i') . ' WIB';
+            })
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin.order.list-detail');
     }
 }

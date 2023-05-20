@@ -45,6 +45,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Order
+    Route::get('order/list/detail', [OrderController::class, 'listDetail'])->name('admin.order.list-detail');
     Route::post('order/change-status', [OrderController::class, 'changeStatus'])->name('admin.order.change-status');
     Route::resource('order', OrderController::class, ['as' => 'admin']);
 

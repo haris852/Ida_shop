@@ -43,16 +43,41 @@
                                 </div>
                             @endforeach
                             <hr>
-                            <div class="card-text d-flex justify-content-between align-items-center">
-                                <div class="m-0">
-                                    <span class="font-weight-bold">Metode Pembayaran</span>
+
+                            @if ($order->payment_method == 1)
+                                <div class="card-text d-flex justify-content-between align-items-center">
+                                    <div class="m-0">
+                                        <span class="font-weight-bold">Metode Pembayaran</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-weight-bold">
+                                            {{ $order->payment_method == 1 ? 'E Money' : 'COD (Bayar di Tempat)' }}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="font-weight-bold">
-                                        {{ $order->payment_method == 1 ? 'E Money' : 'COD (Bayar di Tempat)' }}
-                                    </span>
+                            @elseif ($order->payment_method == 2)
+                                <div class="card-text d-flex justify-content-between align-items-center">
+                                    <div class="m-0">
+                                        <span class="font-weight-bold">Metode Pembayaran</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-weight-bold">
+                                            {{ $order->payment_method == 1 ? 'E Money' : 'COD (Bayar di Tempat)' }}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="card-text d-flex justify-content-between align-items-center">
+                                    <div class="m-0">
+                                        <span class="font-weight-bold">Status Pesanan</span>
+                                    </div>
+                                    <div>
+                                        <span
+                                            class="font-weight-bold {{ $order->status == 'pending' ? 'text-dark' : ($order->status == 'delivered' ? 'text-secondary' : ($order->status == 'confirmed' ? 'text-info' : ($order->status == 'paid' ? 'text-dark' : ($order->status == 'success' ? 'text-success' : 'text-danger')))) }}">
+                                            {{ $order->status == 'pending' ? 'Menunggu Pembayaran' : ($order->status == 'delivered' ? 'Diantar' : ($order->status == 'confirmed' ? 'Dikonfirmasi' : ($order->status == 'paid' ? 'Dibayar' : ($order->status == 'success' ? 'Selesai' : 'Dibatalkan')))) }}
+                                        </span>
+                                    </div>
+                                </div>
+                            @endif
                             @if ($order->payment_method == 1)
                                 <div class="card-text d-flex justify-content-between align-items-center">
                                     <div class="m-0">
@@ -106,6 +131,40 @@
                                             <li class="step0 text-right" id="step4">Diterima</li>
                                         </ul>
                                     @endif
+
+                                    @if ($order->status == 'confirmed')
+                                        <ul id="progressbar" class="mb-4">
+                                            <li class="step0 active" id="step1">Menunggu</li>
+                                            <li class="step0 active text-center" id="step2">Dikonfirmasi</li>
+                                            <li class="step0 text-right" id="step3">Diantar</li>
+                                            <li class="step0 text-right" id="step4">Diterima</li>
+                                        </ul>
+                                    @endif
+
+                                    @if ($order->status == 'delivered')
+                                        <ul id="progressbar" class="mb-4">
+                                            <li class="step0 active" id="step1">Menunggu</li>
+                                            <li class="step0 active text-center" id="step2">Dikonfirmasi</li>
+                                            <li class="step0 active text-right" id="step3">Diantar</li>
+                                            <li class="step0 text-right" id="step4">Diterima</li>
+                                        </ul>
+                                    @endif
+
+                                    @if ($order->status == 'success')
+                                        <ul id="progressbar" class="mb-4">
+                                            <li class="step0 active" id="step1">Menunggu</li>
+                                            <li class="step0 active text-center" id="step2">Dikonfirmasi</li>
+                                            <li class="step0 active text-right" id="step3">Diantar</li>
+                                            <li class="step0 active text-right" id="step4">Diterima</li>
+                                        </ul>
+                                    @endif
+
+                                    @if ($order->status == 'failed')
+                                        {{-- alert --}}
+                                        <div class="alert alert-danger" role="alert">
+                                            <strong>Pesanan Dibatalkan</strong>
+                                        </div>
+                                    @endif
                                 @endif
                             </div>
 
@@ -153,7 +212,8 @@
         </div>
     @endif
 
-    <div class="modal fade" id="payment" tabindex="-1" role="dialog" aria-labelledby="paymentLabel" aria-hidden="true">
+    <div class="modal fade" id="payment" tabindex="-1" role="dialog" aria-labelledby="paymentLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -177,6 +237,7 @@
                         <span class="">Metode Pembayaran</span>
                         <span class="font-weight-bold float-right" id="paymentMethod"></span>
                     </div>
+
                     <!-- Label Nomor Dana -->
                     <div class="mt-1 border-top border-bottom py-4" id="emoney_phone">
                         <span class="">Nomor Dana</span>
@@ -194,6 +255,16 @@
                         <x-input type="file" name="proof_of_payment" id="proof_of_payment"
                             placeholder="Bukti Pembayaran" />
                         <img src="" alt="" id="proof_of_payment_preview" class="img-fluid">
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="">Alamat Penerima</span>
+                        <span class="font-weight-medium float-right" id="receiver_address"></span>
+                    </div>
+
+                    <div class="mt-1">
+                        <span class="">Nomer Penerima</span>
+                        <span class="font-weight-bold float-right" id="receiver_phone"></span>
                     </div>
 
                     <!-- Label COD -->
@@ -239,27 +310,39 @@
                             $('#proof_container').addClass('d-none');
                         }
 
-                        // COD Label
+                        $('#receiver_address').html(data.receiver_address);
+                        $('#receiver_phone').html(data.receiver_phone);
+
+                        // E Money Label
                         if (data.status == 'pending') {
                             $('#cod_label').html(
                                     'Silahkan lakukan pembayaran sebesar <span class="font-weight-bold">Rp. ' + data
                                     .total_price + '</span> kepada kurir kami saat pesanan sampai di tujuan.')
                                 .removeClass('d-none').addClass('d-block');
                         } else if (data.status == 'paid') {
-                            $('#cod_label').html('Pesanan sedang diproses').removeClass('d-none').addClass(
+                            $('#cod_label').html('Menunggu konfirmasi').removeClass('d-none').addClass(
                                 'd-block');
-                            // show proof of payment
                             $('#proof_container').removeClass('d-none');
                             $('#proof_of_payment').addClass('d-none');
                             $('#proof_of_payment_preview').attr('src', "{{ asset('storage/payment') }}/" + data
                                 .proof_of_payment);
+                        } else if (data.status == 'confirmed') {
+                            $('#cod_label').html('Pesanan sedang diproses').removeClass('d-none').addClass(
+                                'd-block');
                         } else if (data.status == 'failed') {
                             $('#cod_label').html('Pembayaran gagal').removeClass('d-none').addClass('d-block');
                         } else if (data.status == 'delivered') {
-                            $('#cod_label').html('Pesanan telah dikirim').removeClass('d-none').addClass('d-block');
+                            $('#cod_label').html('Pesanan sedang dikirim').removeClass('d-none').addClass(
+                                'd-block');
                         } else if (data.status == 'success') {
                             $('#cod_label').html('Pesanan telah diterima').removeClass('d-none').addClass(
                                 'd-block');
+                        }
+
+                        if (data.payment_method == 2) {
+                            $('#emoney_phone').addClass('d-none');
+                        } else {
+                            $('#emoney_phone').removeClass('d-none');
                         }
 
                         $('#totalPrice').html('Rp. ' + data.total_price);

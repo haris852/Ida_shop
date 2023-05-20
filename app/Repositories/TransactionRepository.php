@@ -114,4 +114,42 @@ class TransactionRepository implements TransactionInterface
             'proof_of_payment' => $filename
         ]);
     }
+
+    public function changeStatus($id, $status)
+    {
+        DB::beginTransaction();
+        try {
+            $this->transaction->find($id)->update([
+                'status' => $status
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        // update stock
+        if ($status == 'success') {
+            try {
+                $transactionDetail = $this->transactionDetail->where('transaction_id', $id)->get();
+                foreach ($transactionDetail as $detail) {
+                    $detail->product->update([
+                        'stock' => $detail->product->stock - $detail->qty
+                    ]);
+                }
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                throw $th;
+            }
+        }
+
+        DB::commit();
+    }
+
+    public function listDetail()
+    {
+        return $this->transactionDetail->with(['transaction.user', 'product', 'createdBy'])->whereHas('transaction', function ($query) {
+            $query->where('status', $this->transaction::STATUS_PAID)
+                ->orWhere('status', $this->transaction::STATUS_SUCCESS);
+        })->get();
+    }
 }
