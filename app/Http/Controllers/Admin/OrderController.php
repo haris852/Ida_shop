@@ -49,6 +49,9 @@ class OrderController extends Controller
             ->addColumn('created_at', function($data) {
                 return $data->created_at->format('d-m-Y H:i') . ' WIB';
             })
+            ->addColumn('detail_transaction', function($data) {
+                return view('admin.order.column.detail_transaction', ['data' => $data]);
+            })
             ->addColumn('action', function($data) {
                 return view('admin.order.column.action', ['data' => $data]);
             })

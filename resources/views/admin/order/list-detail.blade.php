@@ -23,12 +23,31 @@
     </div>
     @push('js-internal')
         <script>
-            $(function () {
+            $(function() {
                 $('#listDetailTable').DataTable({
                     responsive: true,
                     processing: true,
                     serverSide: true,
                     autoWidth: false,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        [
+                            {
+                                extend: 'print',
+                                text: '<i class="far fa-file-pdf"></i> PRINT',
+                                titleAttr: 'Export as PDF',
+                                title: 'Detail Order',
+                                customize: function(doc) {
+                                    $(doc.document.body).find('h1').css('text-align', 'center');
+                                    $(doc.document.body).find('h1').css('font-weight', 'bold');
+                                    $(doc.document.body).find('h1').css('font-size', '14px');
+                                    $(doc.document.body).find('table')
+                                        .addClass('compact')
+                                        .css('font-size', 'inherit');
+                                }
+                            },
+                        ]
+                    ],
                     ajax: "{{ route('admin.order.list-detail') }}",
                     columns: [{
                             data: 'DT_RowIndex',

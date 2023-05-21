@@ -118,11 +118,11 @@
             @if (auth()->check())
                 {{-- dropdown image and name --}}
                 <div class="dropdown">
-                    <a class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink"
+                    <a class="dropdown-toggle text-dark text-decoration-none" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
+                        {{-- <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
                             width="40" height="40" alt="" class="rounded-circle mr-2"
-                            style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);">
+                            style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);"> --}}
                         {{ auth()->user()->name }}
                     </a>
 

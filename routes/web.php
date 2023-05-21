@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserOrderController;
+use App\Http\Controllers\Admin\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Termwind\Components\Hr;
 
@@ -64,6 +65,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
 
     //User
     Route::resource('user', UserController::class, ['as' => 'admin']);
+
+    // Review
+    Route::resource('review', ReviewController::class, ['as' => 'admin']);
 
     // Configuration Store
     Route::resource('store-configuration', StoreConfigurationController::class, ['as' => 'admin']);

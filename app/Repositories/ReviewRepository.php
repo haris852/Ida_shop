@@ -18,15 +18,10 @@ class ReviewRepository implements ReviewInterface
 
     public function store($attributes, $id)
     {
-        $products = $this->transactionDetail->where('transaction_id', $id)->get();
-        foreach ($products as $product) {
-            $attributes['product_id'] = $product->product_id;
-            $this->review->create([
-                'transaction_id' => $id,
-                'product_id'     => $product->product_id,
-                'rating'         => $attributes['rating'],
-                'review'         => $attributes['review']
-            ]);
-        }
+        $this->review->create([
+            'transaction_id' => $id,
+            'rating' => $attributes['rating'],
+            'review' => $attributes['review']
+        ]);
     }
 }

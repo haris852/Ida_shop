@@ -198,7 +198,7 @@
                                     onclick="pay('{{ $order->id }}')">
                                     Lihat Detail
                                 </button>
-                                @if ($order->review == null)
+                                @if ($order->review == null && $order->status == 'success')
                                     <button type="button" class="btn btn-success btn-block mt-2" data-toggle="modal"
                                         data-target="#reviewModal" onclick="review('{{ $order->id }}')">
                                         Beri Ulasan

@@ -6,7 +6,10 @@
         <x-sidebar-item title="Daftar Transaksi" href="{{ route('admin.order.index') }}"
             active="{{ request()->routeIs('admin.order.index') }}" icon="menu-icon mdi mdi-cart" />
         <x-sidebar-item title="Detail Transaksi" href="{{ route('admin.order.list-detail') }}"
-            active="{{ request()->routeIs('admin.order.list-detail') }}" icon="menu-icon mdi mdi-arrange-send-backward" />
+            active="{{ request()->routeIs('admin.order.list-detail') }}"
+            icon="menu-icon mdi mdi-arrange-send-backward" />
+        <x-sidebar-item title="Daftar Ulasan" href="{{ route('admin.review.index') }}"
+            active="{{ request()->routeIs('admin.review.index') }}" icon="menu-icon mdi mdi-note-text" />
         <li class="nav-item nav-category">Produk</li>
         <x-sidebar-item title="Daftar Produk" href="{{ route('admin.product.index') }}"
             active="{{ request()->routeIs('admin.product.index') }}" icon="menu-icon mdi mdi-package" />

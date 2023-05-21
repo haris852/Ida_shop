@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-hover" id="orderTable">
+                    <table class="table" id="orderTable">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -19,6 +19,7 @@
                                 <th>Biaya Pengiriman</th>
                                 <th>Total Pembayaran</th>
                                 <th>Tanggal</th>
+                                <th>Detail Pesanan</th>
                             </tr>
                         </thead>
                     </table>
@@ -40,7 +41,8 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id">
-                    <x-input type="file" name="proof_of_receipt" id="proof_of_receipt" label="Bukti Pembayaran"  required />
+                    <x-input type="file" name="proof_of_receipt" id="proof_of_receipt" label="Bukti Pembayaran"
+                        required />
                     <img src="" alt="" id="proof_of_receipt_preview" class="img-fluid mt-2"
                         style="display: none">
                 </div>
@@ -157,6 +159,10 @@
                             data: 'created_at',
                             name: 'created_at'
                         },
+                        {
+                            data: 'detail_transaction',
+                            name: 'detail_transaction'
+                        }
                     ],
                 });
 

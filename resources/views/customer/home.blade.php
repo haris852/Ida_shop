@@ -15,7 +15,8 @@
                 <p class="mbr-text mbr-fonts-style display-7 w-75">
                     Kami menyediakan berbagai macam daging dan seafood dengan kualitas terbaik dan harga yang terjangkau.
                 </p>
-                <div class="mbr-section-btn"><a href="#" class="btn btn-primary display-7">Pesan Sekarang</a></div>
+                <div class="mbr-section-btn"><a href="{{ route('menu') }}" class="btn btn-primary display-7">Pesan Sekarang</a>
+                </div>
             </div>
         </div>
         <div class="d-none d-md-block col-md">
@@ -61,11 +62,9 @@
                                     </a>
                                 @else
                                     @if ($product->stock != 0)
-                                        <a
-                                            @if (auth()->check()) onclick="addToCart('{{ $product->id }}')"
+                                        <a @if (auth()->check()) onclick="addToCart('{{ $product->id }}')"
                                                 @else
-                                                href="{{ route('login') }}"
-                                            @endif
+                                                href="{{ route('login') }}" @endif
                                             class="btn btn-block text-white btn-primary mt-3">
                                             {{ __('Tambah ke Keranjang') }}
                                         </a>
