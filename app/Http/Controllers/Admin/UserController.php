@@ -69,7 +69,6 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'max:255'],
             'address' => ['required'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
@@ -78,7 +77,7 @@ class UserController extends Controller
             $request->avatar->storeAs('public/avatar', $filename);
             $request['avatar'] = $filename;
             //
-            $request['password'] = Hash::make($request->password);
+            $request['password'] = Hash::make('password');
             User::create($request->all());
 
             return redirect()->route('admin.user.index')->with('success', 'Pengguna berhasil ditambah!');
@@ -116,7 +115,6 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'max:255'],
             'address' => ['required'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
@@ -138,9 +136,6 @@ class UserController extends Controller
             $user->phone = $request->phone;
             $user->address = $request->address;
             $user->email = $request->email;
-            if (isset($request->password)) {
-                $user->password = password_hash($request->password, PASSWORD_DEFAULT);
-            }
             $user->save();
 
             return redirect()->route('admin.user.index')->with('success', 'Profil pengguna berhasil diperbarui!');
@@ -154,7 +149,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->user->delete($id);
+        $this->user->getById($id)->update([
+            'is_active' => 0
+        ]);
         return response()->json([
             'status' => true,
             'message' => 'Produk berhasil dihapus!'

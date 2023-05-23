@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Admin\StoreConfigurationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\UserMessageController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Admin\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +39,14 @@ Route::get('cart', [HomeController::class, 'cart'])->name('cart');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+// User Message
+Route::group(['prefix' => 'message', ['middleware' => ['auth']]], function(){
+    Route::get('/', [UserMessageController::class, 'index'])->name('user.message.index');
+    Route::post('/send', [UserMessageController::class, 'send'])->name('user.message.send');
+    Route::get('/message', [UserMessageController::class, 'message'])->name('user.message.message');
+    Route::post('/message/read', [UserMessageController::class, 'read'])->name('user.message.read');
+});
 
 Route::prefix('dashboard')->group(function () {
     Route::post('user/order/review/{id}', [UserOrderController::class, 'review'])->name('user-customer.order.review');
@@ -71,4 +81,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
 
     // Configuration Store
     Route::resource('store-configuration', StoreConfigurationController::class, ['as' => 'admin']);
+
+    // Message
+    Route::prefix('message')->group(function () {
+        Route::get('/', [MessageController::class, 'index'])->name('admin.message.index');
+        Route::get('/{id}', [MessageController::class, 'show'])->name('admin.message.show');
+        Route::post('/send', [MessageController::class, 'send'])->name('admin.message.send');
+        Route::post('/message/read', [MessageController::class, 'read'])->name('admin.message.read');
+    });
 });

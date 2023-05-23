@@ -10,6 +10,7 @@
             icon="menu-icon mdi mdi-arrange-send-backward" />
         <x-sidebar-item title="Daftar Ulasan" href="{{ route('admin.review.index') }}"
             active="{{ request()->routeIs('admin.review.index') }}" icon="menu-icon mdi mdi-note-text" />
+        <x-sidebar-item title="Pesan" href="{{ route('admin.message.index') }}" icon="menu-icon mdi mdi-message-text" active="{{ request()->routeIs('admin.message.index') }}" />
         <li class="nav-item nav-category">Produk</li>
         <x-sidebar-item title="Daftar Produk" href="{{ route('admin.product.index') }}"
             active="{{ request()->routeIs('admin.product.index') }}" icon="menu-icon mdi mdi-package" />

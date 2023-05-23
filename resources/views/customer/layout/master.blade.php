@@ -72,6 +72,8 @@
         }
     </style>
 
+    @stack('css-internal')
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -113,6 +115,10 @@
                             </a>
                         </li>
                     @endif
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user.message.index') ? 'active' : '' }}"
+                            href="{{ route('user.message.index') }}">Pesan</a>
+                    </li>
                 @endauth
             </ul>
             @if (auth()->check())
@@ -162,6 +168,9 @@
 
     <!-- Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+    <!-- Pusher -->
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     @stack('js-internal')
 </body>

@@ -46,7 +46,7 @@
                                         icon: 'success',
                                         text: response.message,
                                     }).then(() => {
-                                        window.location.reload();
+                                        $('#userTable').DataTable().ajax.reload(null, false);
                                     });
                                 } else {
                                     Swal.fire({

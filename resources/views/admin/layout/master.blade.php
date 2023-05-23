@@ -11,6 +11,8 @@
 
     @include('admin.layout.header')
 
+    @stack('css-internal')
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -42,6 +44,7 @@
     </div>
     <!-- container-scroller -->
     @include('admin.layout.footer')
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     @stack('js-internal')
 </body>

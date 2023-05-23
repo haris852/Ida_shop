@@ -165,3 +165,19 @@ select.form-control {
     display: flex;
     justify-content: space-around;
 }
+
+.badge {
+    /* extra small */
+    padding: 0.25rem 0.4rem;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 100px;
+}
+.badge-danger {
+    background-color: #dc3545;
+    color: white;
+}
