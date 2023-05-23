@@ -22,7 +22,7 @@ INSERT IGNORE INTO `configuration_store` (`id`, `code`, `name`, `address`, `phon
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 
--- Membuang data untuk tabel ida_shop.messages: ~14 rows (lebih kurang)
+-- Membuang data untuk tabel ida_shop.messages: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
 INSERT IGNORE INTO `messages` (`id`, `from`, `to`, `message`, `is_read`, `created_at`, `updated_at`) VALUES
 	(93, 4, 1, 'halo mas apakah pesanan saya terkirim?', 1, '2023-05-23 01:56:57', '2023-05-23 01:57:15'),
@@ -49,7 +49,9 @@ INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(17, '2023_05_17_201526_update_status_transactions_column', 7),
 	(18, '2023_05_20_154244_add_proof_of_receipt_column_transactions', 8),
 	(19, '2023_05_22_175936_create_messages_table', 9),
-	(20, '2023_05_23_014501_add_is_active_users', 10);
+	(20, '2023_05_23_014501_add_is_active_users', 10),
+	(21, '2023_05_21_151841_remove_product_id_column_reviews', 11),
+	(22, '2023_05_23_044608_remove_product_id_transaction_details', 11);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Membuang data untuk tabel ida_shop.password_reset_tokens: ~0 rows (lebih kurang)
@@ -69,9 +71,9 @@ INSERT IGNORE INTO `products` (`id`, `category`, `name`, `image`, `weight`, `uni
 
 -- Membuang data untuk tabel ida_shop.reviews: ~2 rows (lebih kurang)
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT IGNORE INTO `reviews` (`id`, `transaction_id`, `product_id`, `rating`, `review`, `user_id`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(5, 5, 1, 5, 'Bagus', 4, 4, NULL, '2023-05-23 01:41:39', '2023-05-23 01:41:39'),
-	(6, 5, 2, 5, 'Bagus', 4, 4, NULL, '2023-05-23 01:41:39', '2023-05-23 01:41:39');
+INSERT IGNORE INTO `reviews` (`id`, `transaction_id`, `rating`, `review`, `user_id`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(5, 5, 5, 'Bagus', 4, 4, NULL, '2023-05-23 01:41:39', '2023-05-23 01:41:39'),
+	(6, 5, 5, 'Bagus', 4, 4, NULL, '2023-05-23 01:41:39', '2023-05-23 01:41:39');
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 
 -- Membuang data untuk tabel ida_shop.transactions: ~3 rows (lebih kurang)
@@ -84,12 +86,12 @@ INSERT IGNORE INTO `transactions` (`id`, `transaction_code`, `receiver_name`, `r
 
 -- Membuang data untuk tabel ida_shop.transaction_details: ~5 rows (lebih kurang)
 /*!40000 ALTER TABLE `transaction_details` DISABLE KEYS */;
-INSERT IGNORE INTO `transaction_details` (`id`, `transaction_id`, `product_id`, `qty`, `price`, `total_price`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 2, 1, 1, 45000, 45000, 3, NULL, '2023-05-17 15:59:19', '2023-05-17 15:59:19'),
-	(2, 2, 2, 1, 28000, 28000, 3, NULL, '2023-05-17 15:59:19', '2023-05-17 15:59:19'),
-	(4, 4, 1, 7, 45000, 315000, 3, NULL, '2023-05-17 19:54:20', '2023-05-17 19:54:20'),
-	(5, 5, 1, 2, 45000, 90000, 4, NULL, '2023-05-23 01:40:01', '2023-05-23 01:40:01'),
-	(6, 5, 2, 2, 28000, 56000, 4, NULL, '2023-05-23 01:40:01', '2023-05-23 01:40:01');
+INSERT IGNORE INTO `transaction_details` (`id`, `transaction_id`, `qty`, `price`, `total_price`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(1, 2, 1, 45000, 45000, 3, NULL, '2023-05-17 15:59:19', '2023-05-17 15:59:19'),
+	(2, 2, 1, 28000, 28000, 3, NULL, '2023-05-17 15:59:19', '2023-05-17 15:59:19'),
+	(4, 4, 7, 45000, 315000, 3, NULL, '2023-05-17 19:54:20', '2023-05-17 19:54:20'),
+	(5, 5, 2, 45000, 90000, 4, NULL, '2023-05-23 01:40:01', '2023-05-23 01:40:01'),
+	(6, 5, 2, 28000, 56000, 4, NULL, '2023-05-23 01:40:01', '2023-05-23 01:40:01');
 /*!40000 ALTER TABLE `transaction_details` ENABLE KEYS */;
 
 -- Membuang data untuk tabel ida_shop.users: ~2 rows (lebih kurang)
