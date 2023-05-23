@@ -9,16 +9,8 @@
                 <div class="inbox_msg rounded">
                     <div class="inbox_people">
                         <div class="headind_srch">
-                            <div class="recent_heading">
-                                <h4>Recent</h4>
-                            </div>
-                            <div class="srch_bar">
-                                <div class="stylish-input-group">
-                                    <input type="text" class="search-bar" placeholder="Search">
-                                    <span class="input-group-addon">
-                                        <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
-                                    </span>
-                                </div>
+                            <div class="recent_heading w-100 pt-3">
+                                <h5>Daftar Pengguna</h4>
                             </div>
                         </div>
                         <div class="inbox_chat overflow-y-auto">

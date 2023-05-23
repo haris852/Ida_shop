@@ -16,7 +16,10 @@ class MessageController extends Controller
 
         // get all users that auth user received message from them
         $users = User::select('id', 'name', 'avatar')
-            ->where('id', '!=', auth()->id())
+            ->where([
+                ['id', '!=', auth()->id()],
+                ['is_active', true],
+            ])
             ->get();
 
         // get all messages from user to admin that is not read

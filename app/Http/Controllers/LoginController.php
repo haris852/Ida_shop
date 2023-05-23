@@ -23,7 +23,13 @@ class LoginController extends Controller
             'email.email' => 'Email tidak valid!',
             'password.required' => 'Password harus diisi!'
         ]);
+
         if(Auth::attempt($request->only('email', 'password'))) {
+            // check if user is active
+            if(auth()->user()->is_active == false) {
+                Auth::logout();
+                return back()->with('error', 'Akun anda tidak aktif!');
+            }
             $request->session()->regenerate();
             if(auth()->user()->role == User::ADMIN_ROLE) {
                 return redirect()->route('admin.dashboard');
