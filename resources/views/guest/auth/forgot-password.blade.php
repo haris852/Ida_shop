@@ -13,9 +13,14 @@
                                 @csrf
                                 <x-input id="email" label="Masukan alamat email kamu" name="email" type="email"
                                     required />
-                                <x-button type="submit" class="py-1">
-                                    Kirim
-                                </x-button>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{{ route('login') }}" class="py-1 text-decoration-none text-gray">
+                                        Kembali
+                                    </a>
+                                    <x-button type="submit" class="py-1">
+                                        Kirim
+                                    </x-button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -26,6 +31,15 @@
 
     @push('js-internal')
         <script>
+
+            $(function () {
+                // when button click submit form show loading popup
+                $('form').submit(function () {
+                    $('button[type=submit]').html('<i class="fa fa-spinner fa-spin"></i> Mengirim link...').attr('disabled',
+                        true);
+                });
+            });
+
             @if (Session::has('success'))
                 Swal.fire({
                     icon: 'success',
