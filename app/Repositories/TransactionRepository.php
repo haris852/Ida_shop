@@ -153,13 +153,34 @@ class TransactionRepository implements TransactionInterface
         })->get();
     }
 
-    public function uploadPaymentCod($attributes) {
-        $filename = uniqid() . '-' . $attributes['proof_of_receipt']->getClientOriginalName();
-        $attributes['proof_of_receipt']->storeAs('public/receipt', $filename);
+    public function uploadPaymentCod($attributes)
+    {
+        DB::beginTransaction();
+        try {
+            $filename = uniqid() . '-' . $attributes['proof_of_receipt']->getClientOriginalName();
+            $attributes['proof_of_receipt']->storeAs('public/receipt', $filename);
 
-        return $this->transaction->find($attributes['id'])->update([
-            'status' => $this->transaction::STATUS_SUCCESS,
-            'proof_of_receipt' => $filename
-        ]);
+            $this->transaction->find($attributes['id'])->update([
+                'status' => $this->transaction::STATUS_SUCCESS,
+                'proof_of_receipt' => $filename
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        try {
+            $transactionDetail = $this->transactionDetail->where('transaction_id', $attributes['id'])->get();
+            foreach ($transactionDetail as $detail) {
+                $detail->product->update([
+                    'stock' => $detail->product->stock - $detail->qty
+                ]);
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        DB::commit();
     }
 }
