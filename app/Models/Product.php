@@ -46,7 +46,7 @@ class Product extends Model
     {
         return $this->with('transactionDetail')->get()->groupBy('category')->map(function ($item) {
             return $item->sum(function ($item) {
-                return $item->transactionDetail->sum('qty');
+                return $item->transactionDetail->where('transaction.status', 'success')->sum('total_price');
             });
         });
     }

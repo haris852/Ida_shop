@@ -11,5 +11,5 @@
 @elseif ($data->status == 'success')
     <button class="btn btn-rounded btn-success text-white btn-sm">Pesanan Selesai</button>
 @elseif ($data->status == 'failed')
-    <button class="btn btn-rounded btn-danger btn-sm">Pesanan Ditolak</button>
+    <button class="btn btn-rounded btn-danger text-white border-none outline-none btn-sm">Pesanan Ditolak</button>
 @endif

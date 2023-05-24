@@ -31,7 +31,7 @@ class HomeController extends Controller
     public function cart()
     {
         // check if user active
-        if (!auth()->user()->active) {
+        if (!auth()->user()->is_active) {
             return redirect()->route('home')->with('error', 'Anda tidak bisa melakukan pemesanan, silahkan hubungi admin untuk mengaktifkan akun anda');
         }
         $configurationStore = ConfigurationStore::first();

@@ -37,12 +37,19 @@ class TransactionDetail extends Model
 
     public function getTotalProductSales()
     {
-        return $this->sum('qty');
+        // check if transaction status is success and sum qty
+        return $this->whereHas('transaction', function ($query) {
+            $query->where('status', 'success');
+        })->sum('qty');
     }
 
     public function getTotalProductSalesDaily()
     {
-        return $this->whereDate('created_at', date('Y-m-d'))->sum('qty');
+        // return $this->whereDate('created_at', date('Y-m-d'))->sum('qty');
+        // check status is success and sum qty
+        return $this->whereHas('transaction', function ($query) {
+            $query->where('status', 'success');
+        })->whereDate('created_at', date('Y-m-d'))->sum('qty');
     }
 
     public function getTotalProductSalesDifference()
