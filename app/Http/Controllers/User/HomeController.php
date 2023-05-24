@@ -4,28 +4,37 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\ProductInterface;
+use App\Models\ConfigurationStore;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     private $product;
 
-    public function __construct(ProductInterface $product) {
+    public function __construct(ProductInterface $product)
+    {
         $this->product = $product;
     }
 
     public function index()
     {
+        $configurationStore = ConfigurationStore::first();
         return view('customer.home', [
             'products' => $this->product->get(),
-            'cart' => session()->get('cart') ?? ''
+            'cart' => session()->get('cart') ?? '',
+            'isOpen' => $configurationStore->isOpen(),
+            'openTime' => Carbon::parse($configurationStore->open_at)->format('H:i'),
         ]);
     }
 
     public function cart()
     {
+        $configurationStore = ConfigurationStore::first();
         return view('customer.cart', [
-            'carts' => session()->get('cart') ?? ''
+            'carts' => session()->get('cart') ?? '',
+            'isOpen' => $configurationStore->isOpen(),
+            'openTime' => Carbon::parse($configurationStore->open_at)->format('H:i'),
         ]);
     }
 
@@ -54,7 +63,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function cartDestroy(Request $request) {
+    public function cartDestroy(Request $request)
+    {
         $cart = $request->session()->get('cart');
         unset($cart[$request->id]);
         $request->session()->put('cart', $cart);

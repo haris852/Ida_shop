@@ -5,7 +5,7 @@
 @section('content')
     <!-- Menu -->
     <div class="text-center mt-5 mb-3">
-        <h4 class="font-weight-bold">Pesan <small>{{ $unread > 0 ? '(' . $unread . ')' : '' }}</small></h4>
+        <h4 class="font-weight-bold">Pesan</h4>
         <p>
             <a href="{{ route('home') }}" class="text-decoration-none">Home</a> / Pesan
         </p>
@@ -52,7 +52,7 @@
                         <div class="input_msg_write">
                             <input type="text" class="write_msg" id="message" placeholder="Type a message" />
                             <button class="msg_send_btn" type="button" onclick="btnSend()">
-                                <i class="mdi mdi-send"></i>
+                                <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </div>

@@ -4,7 +4,7 @@
         {!! $required ? '<span class="text-danger">*</span>' : '' !!}
     </label>
     <input type="{{ $type }}" id="{{ $id }}" placeholder="{{ $placeholder }}" name="{{ $name }}"
-        value="{{ $value }}" class="ps-3 form-control @error($name) is-invalid @enderror"
+        value="{{ $value }}" class="ps-3 form-control rounded-sm rounded @error($name) is-invalid @enderror"
         {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }} {{
             $readonly ? 'readonly' : ''
         }}>

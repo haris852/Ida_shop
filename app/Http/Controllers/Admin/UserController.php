@@ -157,4 +157,44 @@ class UserController extends Controller
             'message' => 'Produk berhasil dihapus!'
         ]);
     }
+
+    public function inactive(Request $request)
+    {
+        if ($request->ajax()) {
+            return datatables()
+                ->of($this->user->getInactive())
+                ->addColumn('name', function ($data) {
+                    return $data->name ?? '-';
+                })
+                ->addColumn('phone', function ($data) {
+                    return $data->phone ?? '-';
+                })
+                ->addColumn('address', function ($data) {
+                    return $data->address ?? '-';
+                })
+                ->addColumn('email', function ($data) {
+                    return $data->email ?? '-';
+                })
+                ->addColumn('role', function ($data) {
+                    return $data->role;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.user.column.action', ['data' => $data]);
+                })
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view("admin.user.inactive");
+    }
+
+    public function activate($id)
+    {
+        $this->user->getById($id)->update([
+            'is_active' => 1
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Pengguna berhasil diaktifkan!'
+        ]);
+    }
 }

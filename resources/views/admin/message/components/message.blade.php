@@ -4,7 +4,9 @@
             <div class="outgoing_msg mb-3">
                 <div class="sent_msg">
                     <p>{{ $message->message }}</p>
-                    <span class="time_date">{{ $message->created_at->diffForHumans() }}</span>
+                    <span class="time_date">
+                        {{ \Carbon\Carbon::parse($message->created_at)->format('h:i A | F j') }}
+                    </span>
                 </div>
             </div>
         @else
@@ -19,7 +21,6 @@
                             {{ $message->message }}
                         </p>
                         <span class="time_date">
-                            {{-- 11:01 AM | June 9 --}}
                             {{ \Carbon\Carbon::parse($message->created_at)->format('h:i A | F j') }}
                         </span>
                     </div>

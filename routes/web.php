@@ -13,20 +13,13 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserMessageController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\User\UserSettingController;
 use Illuminate\Support\Facades\Route;
-use Termwind\Components\Hr;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+Route::post('reset-password/update', [LoginController::class, 'resetPasswordUpdate'])->name('reset-password.update');
+Route::get('reset-password/{token}', [LoginController::class, 'resetPassword'])->name('reset-password');
+Route::post('forgot-password', [LoginController::class, 'forgotPasswordStore'])->name('forgot-password.store');
+Route::get('forgot-password', [LoginController::class, 'forgotPassword'])->name('forgot-password');
 Route::post('register/store', [LoginController::class, 'registerStore'])->name('register.store');
 Route::get('register', [LoginController::class, 'register'])->name('register');
 Route::post('login/store', [LoginController::class, 'loginStore'])->name('login.store');
@@ -39,6 +32,12 @@ Route::get('cart', [HomeController::class, 'cart'])->name('cart');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+// User Setting
+Route::group(['prefix' => 'setting', ['middleware' => ['auth']]], function() {
+    Route::put('/update/{id}', [UserSettingController::class, 'update'])->name('user.setting.update');
+    Route::get('/', [UserSettingController::class, 'index'])->name('user.setting.index');
+});
 
 // User Message
 Route::group(['prefix' => 'message', ['middleware' => ['auth']]], function(){
@@ -74,6 +73,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     Route::resource('product', ProductController::class, ['as' => 'admin']);
 
     //User
+    Route::put('user/activate/{id}', [UserController::class, 'activate'])->name('admin.user.activate');
+    Route::get('user/inactive', [UserController::class, 'inactive'])->name('admin.user.inactive');
     Route::resource('user', UserController::class, ['as' => 'admin']);
 
     // Review

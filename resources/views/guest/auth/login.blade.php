@@ -14,8 +14,10 @@
                             </h6>
                             <form class="pt-3" action="{{ route('login.store') }}" method="POST">
                                 @csrf
-                                <x-input id="email" label="Email" name="email" type="email" placeholder="Email" required />
-                                <x-input id="password" label="Kata sandi" name="password" type="password" placeholder="Password" required />
+                                <x-input id="email" label="Email" name="email" type="email" placeholder="Email"
+                                    required />
+                                <x-input id="password" label="Kata sandi" name="password" type="password"
+                                    placeholder="Password" required />
                                 <div class="mt-3">
                                     <x-button type="submit">
                                         Masuk
@@ -25,6 +27,11 @@
                                     Belum punya akun?
                                     <a href="{{ route('register') }}" class="text-primary">
                                         Buat
+                                    </a>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <a href="{{route('forgot-password')}}" class="ml-auto text-sm text-decoration-none text-gray">
+                                        Lupa kata sandi?
                                     </a>
                                 </div>
                             </form>

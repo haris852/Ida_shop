@@ -86,4 +86,10 @@ class User extends Authenticatable
     {
         return $this->where('is_active', true);
     }
+
+    // scope is_active = false
+    public function scopeInactive()
+    {
+        return $this->where('is_active', false);
+    }
 }
