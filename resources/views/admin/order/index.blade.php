@@ -18,6 +18,7 @@
                                 <th>Bukti Pembayaran</th>
                                 <th>Biaya Pengiriman</th>
                                 <th>Total Pembayaran</th>
+                                <th>Alamat</th>
                                 <th>Tanggal</th>
                                 <th>Detail Pesanan</th>
                             </tr>
@@ -154,6 +155,10 @@
                         {
                             data: 'total_payment',
                             name: 'total_payment'
+                        },
+                        {
+                            data: 'address',
+                            name: 'address'
                         },
                         {
                             data: 'created_at',

@@ -46,6 +46,9 @@ class OrderController extends Controller
             ->addColumn('total_payment', function($data) {
                 return 'Rp. ' . number_format($data->total_payment, 0, ',', '.');
             })
+            ->addColumn('address', function($data) {
+                return $data->receiver_address ?? '-';
+            })
             ->addColumn('created_at', function($data) {
                 return $data->created_at->format('d-m-Y H:i') . ' WIB';
             })

@@ -1,5 +1,5 @@
 @if ($data->status == 'pending')
-    <button class="btn btn-rounded btn-dark btn-sm">
+    <button class="btn btn-rounded btn-dark btn-sm text-white">
         {{$data->payment_method == 1 ? 'Menunggu Pembayaran' : 'Menunggu Penerimaan'}}
     </button>
 @elseif ($data->status == 'paid')
