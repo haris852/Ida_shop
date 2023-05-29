@@ -41,7 +41,7 @@
     <div class="text-center mt-5 mb-3">
         <h4 class="font-weight-bold">Produk</h4>
         <p>
-            Ragam menu yang kami sediakan untuk anda
+            Produk yang kami sediakan
         </p>
     </div>
 
