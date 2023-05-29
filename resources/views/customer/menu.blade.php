@@ -29,7 +29,7 @@
         <div class="col-md-6">
             <form action="{{ route('menu') }}" method="GET">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="search" placeholder="Cari Menu">
+                    <input type="text" class="form-control" name="search" placeholder="Cari Produk">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-search"></i>
