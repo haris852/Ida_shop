@@ -23,7 +23,7 @@ class OrderController extends Controller
                 return $data->transaction_code;
             })
             ->addColumn('payment_method', function($data) {
-                return $data->payment_method == 1 ? 'E Money' : 'COD (Bayar di tempat)';
+                return $data->payment_method == 1 ? 'E Wallet' : 'COD (Bayar di tempat)';
             })
             ->addColumn('customer', function($data) {
                 return $data->user->name;
@@ -134,6 +134,9 @@ class OrderController extends Controller
             ->of($this->transaction->listDetail())
             ->addColumn('invoice_code', function($data) {
                 return $data->transaction->transaction_code;
+            })
+            ->addColumn('customer_name', function($data) {
+                return $data->transaction->receiver_name;
             })
             ->addColumn('product_name', function($data) {
                 return $data->product->name;

@@ -21,8 +21,9 @@
         </div>
     @endif
 
-    <div class="border-bottom mb-3 my-5"></div>
-    @if (isset($carts) && count($carts) > 0)
+    <div class="mb-3 my-5"></div>
+    @if (session()->has('cart') && count(session()->get('cart')) > 0)
+        @if (isset($carts) && count($carts) > 0)
         <div class="row my-5">
             <div class="col-md-7">
                 <ul class="list-group list-group-flush">
@@ -106,13 +107,17 @@
                             value="{{ old('receiver_name') }}" />
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="payment_method">Metode Pembayaran</label>
                     <select class="form-control text-sm" name="payment_method" id="payment_method">
                         {{-- e money, COD --}}
-                        <option value="1">E-Money</option>
+                        <option value="1">E-Wallet</option>
                         <option value="2">COD</option>
                     </select>
+                    <small id="payment_description">
+                        <span class="text-danger">*</span>
+                        Pembayaran E Wallet dapat menggunakan OVO, Dana, Gopay, Shopee Pay
+                    </small>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mt-4">
@@ -134,6 +139,7 @@
                 </div>
             </div>
         </div>
+        @endif
     @else
         <center>
             <div class="block">
@@ -247,6 +253,21 @@
                                 }
                             }
                         });
+                    }
+                });
+
+                $('#payment_method').on('change', function(){
+                    let val = $(this).val();
+                    if(val == 2) {
+                        $('#payment_description').html(`
+                            <span class="text-danger">*</span>
+                            Pembayaran COD dilakukan ketika pesanan diterima
+                        `);
+                    } else {
+                        $('#payment_description').html(`
+                            <span class="text-danger">*</span>
+                            Pembayaran E Wallet dapat menggunakan OVO, Dana, Gopay, Shopee Pay
+                        `);
                     }
                 });
 

@@ -82,15 +82,13 @@
                                         <x-input id="old_password" name="old_password" type="password"
                                             label="Password Lama" placeholder="Masukkan password lama" />
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <x-input id="new_password" name="new_password" type="password"
-                                            label="Password Baru" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <x-input id="new_password_confirmation" name="new_password_confirmation"
-                                            type="password" label="Konfirmasi Password Baru" />
-                                    </div>
+                                <div class="col-md-6">
+                                    <x-input id="new_password" name="new_password" type="password"
+                                        label="Password Baru" />
+                                </div>
+                                <div class="col-md-6">
+                                    <x-input id="new_password_confirmation" name="new_password_confirmation"
+                                        type="password" label="Konfirmasi Password Baru" />
                                 </div>
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary">Simpan</button>

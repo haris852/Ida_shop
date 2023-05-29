@@ -98,26 +98,20 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('menu') ? 'active' : '' }}"
-                        href="{{ route('menu') }}">Menu</a>
+                        href="{{ route('menu') }}">Produk</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user-customer.order.index') ? 'active' : '' }}"
                         href="{{ route('user-customer.order.index') }}">Pesanan</a>
                 </li>
                 @auth
-                    @if (session()->has('cart') && count(session()->get('cart')) > 0)
-                        <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('cart') }}">Keranjang
-                                @if (session()->has('cart') && count(session()->get('cart')) > 0)
-                                    <span
-                                        class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) }}</span>
-                                @endif
-                            </a>
-                        </li>
-                    @endif
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('user.message.index') ? 'active' : '' }}"
-                            href="{{ route('user.message.index') }}">Pesan</a>
+                    <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('cart') }}">Keranjang
+                            @if (session()->has('cart') && count(session()->get('cart')) > 0)
+                                <span
+                                    class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) ?? 0 }}</span>
+                            @endif
+                        </a>
                     </li>
                 @endauth
             </ul>
@@ -132,6 +126,7 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a href="{{route('user.message.index')}}" class="dropdown-item">Pesan</a>
                         <a href="{{ route('user.setting.index') }}" class="dropdown-item">Pengaturan</a>
                         <a href="{{ route('logout') }}" class="dropdown-item">Keluar</a>
                     </div>

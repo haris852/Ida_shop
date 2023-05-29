@@ -103,4 +103,14 @@ class UserOrderController extends Controller
             ]);
         }
     }
+
+    public function filterStatus(Request $request)
+    {
+        $orders = $this->transaction->getTransactionByUserId(auth()->user()->id);
+
+        return view('customer.detail_order', [
+            'orders' => $orders->where('status', $request->status),
+            'storeConfiguration' => ConfigurationStore::first(),
+        ])->render();
+    }
 }
