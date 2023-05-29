@@ -42,15 +42,18 @@
 
     <div class="row mt-5">
         @foreach ($products as $product)
-            <div class="col-md-3" id="menuItem">
+            <div class="col-md-3 menu-{{$product->id}}" id="menuItem" data-name="{{ $product->name }}" data-weight="{{ $product->weight }} {{ $product->unit }}"
+                data-stock="{{ $product->stock == 0 ? 'Habis' : $product->stock }}"
+                data-description="{{ $product->description }}">
                 <div class="card">
                     <img class="card-img object-fit-cover p-2" src="{{ asset('storage/product/' . $product->image) }}"
                         alt="Vans" width="100%" height="200">
                     <div class="card-body">
-                        <h6 class="card-title">
-                            {{ $product->name }}
+                        <h6 class="card-title pointer" onclick="detailProduct('{{ $product->id }}')">
+                            {{ $product->name }} <i class="fas fa-info-circle fa-xs text-primary ml-2"></i>
                         </h6>
-                        <p class="card-subtitle mb-2 text-muted text-capitalize" id="categoryLabel">Kategori: {{ $product->category }}</p>
+                        <p class="card-subtitle mb-2 text-muted text-capitalize" id="categoryLabel">Kategori:
+                            {{ $product->category }}</p>
                         <p class="card-subtitle mb-2 text-muted text-capitalize">Berat: {{ $product->weight }}
                             {{ $product->unit }}</p>
                         <p class="card-subtitle mb-2 text-muted">
@@ -90,8 +93,51 @@
         @endforeach
     </div>
 
+    <!-- Modal Detail Product -->
+    <div class="modal fade" id="detailProductModal" tabindex="-1" role="dialog" aria-labelledby="detailProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="detailProductModalLabel">Detail Produk</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Nama Produk</span>
+                        <span class="product-name">-</span>
+                    </div>
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Berat</span>
+                        <span class="product-weight">-</span>
+                    </div>
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Stok</span>
+                        <span class="product-stock">-</span>
+                    </div>
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Deskripsi</span>
+                        <p class="product-description">-</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('js-internal')
         <script>
+            function detailProduct(id) {
+                $('#detailProductModal').modal('show');
+                $('.product-name').text($('.menu-' + id).data('name'));
+                $('.product-weight').text($('.menu-' + id).data('weight'));
+                $('.product-stock').text($('.menu-' + id).data('stock'));
+                $('.product-description').text($('.menu-' + id).data('description'));
+            }
 
             function sortCategory(category) {
                 // filter menuItem berdasarkan category
@@ -116,7 +162,7 @@
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            window.location.href = "{{ route('cart') }}";
+                            location.reload();
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -128,10 +174,10 @@
                 });
             }
 
-            $(function () {
-                $('input[name="search"]').on('keyup', function () {
+            $(function() {
+                $('input[name="search"]').on('keyup', function() {
                     let value = $(this).val().toLowerCase();
-                    $('#menuItem.col-md-3').filter(function () {
+                    $('#menuItem.col-md-3').filter(function() {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
                 });

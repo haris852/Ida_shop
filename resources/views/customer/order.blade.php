@@ -15,26 +15,55 @@
                 <img class="rounded mb-4" src="https://cdn-icons-png.flaticon.com/512/411/411786.png"
                     alt="Generic placeholder image" width="70" height="70">
                 <h5>Belum Bayar</h5>
+                @if ($orders->where('status', 'pending')->count() > 0)
+                    <p class="badge badge-warning font-weight-bold">
+                        {{ $orders->where('status', 'pending')->count() }} item
+                    </p>
+                @endif
             </div>
             <div class="col-lg text-center" onclick="detailOrder('paid')">
-                <img class="rounded mb-4" src="https://cdn-icons-png.flaticon.com/512/5132/5132578.png"
+                <img class="rounded mb-4"
+                    src="https://static.vecteezy.com/system/resources/previews/019/873/849/original/clock-icon-transparent-free-icon-free-png.png"
                     alt="Generic placeholder image" width="70" height="70">
-                <h5>Dikemas</h5>
+                <h5>Menunggu Konfirmasi</h5>
+                @if ($orders->where('status', 'paid')->count() > 0)
+                    <p class="badge badge-dark font-weight-bold">
+                        {{ $orders->where('status', 'paid')->count() }}
+                        item
+                    </p>
+                @endif
             </div>
             <div class="col-lg text-center" onclick="detailOrder('delivered')">
                 <img class="rounded mb-4" src="https://cdn-icons-png.flaticon.com/512/7615/7615749.png"
                     alt="Generic placeholder image" width="70" height="70">
                 <h5>Dikirim</h5>
+                @if ($orders->where('status', 'delivered')->count() > 0 || $orders->where('status', 'confirmed')->count() > 0)
+                    <p class="badge badge-primary font-weight-bold">
+                        {{ $orders->where('status', 'delivered')->count() + $orders->where('status', 'confirmed')->count() }}
+                        item
+                    </p>
+                @endif
             </div>
             <div class="col-lg text-center" onclick="detailOrder('success')">
-                <img class="rounded mb-4" src="https://cdn.iconscout.com/icon/free/png-256/free-delivered-2840095-2362633.png"
+                <img class="rounded mb-4"
+                    src="https://cdn.iconscout.com/icon/free/png-256/free-delivered-2840095-2362633.png"
                     alt="Generic placeholder image" width="70" height="70">
                 <h5>Selesai</h5>
+                @if ($orders->where('status', 'success')->count() > 0)
+                    <p class="badge badge-success font-weight-bold">
+                        {{ $orders->where('status', 'success')->count() }} item
+                    </p>
+                @endif
             </div>
             <div class="col-lg text-center" onclick="detailOrder('failed')">
                 <img class="rounded mb-4" src="https://cdn-icons-png.flaticon.com/512/5348/5348886.png"
                     alt="Generic placeholder image" width="70" height="70">
                 <h5>Dibatalkan</h5>
+                @if ($orders->where('status', 'failed')->count() > 0)
+                    <p class="badge badge-danger font-weight-bold">
+                        {{ $orders->where('status', 'failed')->count() }} item
+                    </p>
+                @endif
             </div>
         </div>
     </div>
@@ -138,7 +167,6 @@
 
     @push('js-internal')
         <script>
-
             function detailOrder(status) {
                 $.ajax({
                     url: '{{ route('user-customer.order.filter-status') }}',
