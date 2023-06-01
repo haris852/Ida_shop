@@ -80,7 +80,12 @@
                         @if ($order->payment_method == 1)
                             <div class="card-text d-flex justify-content-between align-items-center">
                                 <div class="m-0">
-                                    <span class="font-weight-bold">Nomor Dana</span>
+                                    <span class="font-weight-bold">Nomor Wallet</span>
+                                    <p>
+                                        <small>
+                                            <span class="text-danger">*</span>OVO, Dana, Gopay, Shopee Pay
+                                        </small>
+                                    </p>
                                 </div>
                                 <div>
                                     <span class="font-weight-bold">

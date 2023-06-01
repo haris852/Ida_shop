@@ -95,11 +95,20 @@
                     </div>
 
                     <!-- Label Nomor Dana -->
-                    <div class="mt-1 border-top border-bottom py-4" id="emoney_phone">
-                        <span class="">Nomor Dana</span>
-                        <span class="font-weight-bold float-right" id="accountNumber">{{ $storeConfiguration->phone }}
+                    <div class="mt-1 border-top border-bottom py-4 d-sm-flex items-center justify-content-between"
+                        id="emoney_phone">
+                        <div>
+                            <span class="font-weight-bold">Nomor Wallet</span>
+                            <p>
+                                <small>
+                                    <span class="text-danger">*</span>OVO, Dana, Gopay, Shopee Pay
+                                </small>
+                            </p>
+                        </div>
+                        <span class="font-weight-bold my-auto" id="accountNumber">{{ $storeConfiguration->phone }}
                             (a.n
                             {{ $storeConfiguration->name }})
+                        </span>
                     </div>
                     <div class="d-none mt-3" id="proof_container">
                         <!-- Label E Money -->

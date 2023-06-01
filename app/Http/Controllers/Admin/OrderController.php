@@ -136,6 +136,9 @@ class OrderController extends Controller
                 return $data->transaction->transaction_code;
             })
             ->addColumn('customer_name', function($data) {
+                return $data->transaction->user->name;
+            })
+            ->addColumn('receiver_name', function($data) {
                 return $data->transaction->receiver_name;
             })
             ->addColumn('product_name', function($data) {

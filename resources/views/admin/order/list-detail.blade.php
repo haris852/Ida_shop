@@ -10,6 +10,7 @@
                                 <th>#</th>
                                 <th>No. Invoice</th>
                                 <th>Pelanggan</th>
+                                <th>Penerima</th>
                                 <th>Nama Produk</th>
                                 <th>Jumlah</th>
                                 <th>Harga</th>
@@ -63,6 +64,10 @@
                         {
                             data: 'customer_name',
                             name: 'customer_name'
+                        },
+                        {
+                            data: 'receiver_name',
+                            name: 'receiver_name'
                         },
                         {
                             data: 'product_name',
