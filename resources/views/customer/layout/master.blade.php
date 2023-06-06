@@ -87,55 +87,57 @@
             aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse container" id="navbarTogglerDemo01">
-            <a class="navbar-brand d-none-md" href="/">
-                <img src="{{ asset('customer_asset/img/logo.svg') }}" width="40" height="40" alt=""
-                    style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);">
-            </a>
-            <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('home') }}">Beranda <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('menu') ? 'active' : '' }}"
-                        href="{{ route('menu') }}">Produk</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('user-customer.order.index') ? 'active' : '' }}"
-                        href="{{ route('user-customer.order.index') }}">Pesanan</a>
-                </li>
-                @auth
-                    <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('cart') }}">Keranjang
-                            @if (session()->has('cart') && count(session()->get('cart')) > 0)
-                                <span
-                                    class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) ?? 0 }}</span>
-                            @endif
-                        </a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <div class="d-flex justify-content-between w-100 align-items-center container">
+                <a class="navbar-brand d-none-md" href="/">
+                    <img src="{{ asset('customer_asset/img/logo.svg') }}" width="40" height="40" alt=""
+                        style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);">
+                </a>
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                    <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('home') }}">Beranda <span class="sr-only">(current)</span></a>
                     </li>
-                @endauth
-            </ul>
-            @if (auth()->check())
-                {{-- dropdown image and name --}}
-                <div class="dropdown">
-                    <a class="dropdown-toggle text-dark text-decoration-none" href="#" role="button"
-                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
-                            width="40" height="40" alt="" class="rounded-circle mr-2">
-                        {{ auth()->user()->name }}
-                    </a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('menu') ? 'active' : '' }}"
+                            href="{{ route('menu') }}">Produk</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user-customer.order.index') ? 'active' : '' }}"
+                            href="{{ route('user-customer.order.index') }}">Pesanan</a>
+                    </li>
+                    @auth
+                        <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('cart') }}">Keranjang
+                                @if (session()->has('cart') && count(session()->get('cart')) > 0)
+                                    <span
+                                        class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) ?? 0 }}</span>
+                                @endif
+                            </a>
+                        </li>
+                    @endauth
+                </ul>
+                @if (auth()->check())
+                    {{-- dropdown image and name --}}
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-dark text-decoration-none" href="#" role="button"
+                            id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
+                                width="40" height="40" alt="" class="rounded-circle mr-2">
+                            {{ auth()->user()->name }}
+                        </a>
 
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a href="{{route('user.message.index')}}" class="dropdown-item">Pesan</a>
-                        <a href="{{ route('user.setting.index') }}" class="dropdown-item">Pengaturan</a>
-                        <a href="{{ route('logout') }}" class="dropdown-item">Keluar</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a href="{{route('user.message.index')}}" class="dropdown-item">Pesan</a>
+                            <a href="{{ route('user.setting.index') }}" class="dropdown-item">Pengaturan</a>
+                            <a href="{{ route('logout') }}" class="dropdown-item">Keluar</a>
+                        </div>
                     </div>
-                </div>
-            @else
-                <form class="form-inline my-2 my-lg-0">
-                    <a href="{{ route('login') }}" class="btn btn-primary my-2 my-sm-0">Masuk</a>
-                </form>
-            @endif
+                @else
+                    <form class="form-inline my-2 my-lg-0">
+                        <a href="{{ route('login') }}" class="btn btn-primary my-2 my-sm-0">Masuk</a>
+                    </form>
+                @endif
+            </div>
         </div>
     </nav>
 
