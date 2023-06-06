@@ -113,4 +113,12 @@ class UserOrderController extends Controller
             'storeConfiguration' => ConfigurationStore::first(),
         ])->render();
     }
+
+    public function print(string $id)
+    {
+        return view('customer.print-order', [
+            'order' => $this->transaction->getById($id),
+            'configuration' => ConfigurationStore::first(),
+        ]);
+    }
 }

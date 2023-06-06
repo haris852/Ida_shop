@@ -48,6 +48,7 @@ Route::group(['prefix' => 'message', ['middleware' => ['auth']]], function(){
 });
 
 Route::prefix('dashboard')->group(function () {
+    Route::get('user/order/{id}/print', [UserOrderController::class, 'print'])->name('user-customer.order.print');
     Route::get('user/order/filter/status', [UserOrderController::class, 'filterStatus'])->name('user-customer.order.filter-status');
     Route::post('user/order/review/{id}', [UserOrderController::class, 'review'])->name('user-customer.order.review');
     Route::post('user/order/confirm/{id}', [UserOrderController::class, 'confirm'])->name('user-customer.order.confirm');

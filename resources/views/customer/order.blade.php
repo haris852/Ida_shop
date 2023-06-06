@@ -84,6 +84,12 @@
                     <input type="hidden" id="order_id" name="order_id">
                     <span class="badge badge-dark" id="orderStatus"></span>
 
+                    <!-- order item -->
+                    <div class="mt-3" id="transactionDetail">
+                    </div>
+
+                    <hr class="my-3">
+
                     <div class="mt-3">
                         <span class="">Total Pembayaran</span>
                         <span class="font-weight-bold float-right" id="totalPrice"></span>
@@ -137,6 +143,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" id="btnPrint" class="btn btn-secondary">
+                        Cetak Invoice
+                    </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
             </div>
@@ -218,6 +227,26 @@
                         } else {
                             $('#proof_container').addClass('d-none');
                         }
+
+                        $('#transactionDetail').html('');
+                        data.transaction_detail.forEach(function(item) {
+                            $('#transactionDetail').append(`
+                                <div class="card-text mb-3 d-flex justify-content-between align-items-center">
+                                    <div class="m-0">
+                                        <span>${item.product.name}</span><br>
+                                        <span class="text-muted">
+                                            ${item.qty} ${item.product.unit} x
+                                            Rp.${item.product.price}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="font-weight-bold">
+                                            ${item.qty * item.product.price}
+                                        </span>
+                                    </div>
+                                </div>
+                            `);
+                        });
 
                         $('#receiver_address').html(data.receiver_address);
                         $('#receiver_phone').html(data.receiver_phone);
@@ -435,6 +464,13 @@
                             }
                         },
                     })
+                });
+
+                $('#btnPrint').click(function() {
+                    let id = $('#order_id').val();
+                    let url = "{{ route('user-customer.order.print', ':id') }}";
+                    url = url.replace(':id', id);
+                    window.open(url, '_blank');
                 });
             });
         </script>
