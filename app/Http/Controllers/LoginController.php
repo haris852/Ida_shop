@@ -98,22 +98,30 @@ class LoginController extends Controller
             'email.exists' => 'Email tidak terdaftar!'
         ]);
 
-        if (DB::table('password_reset_tokens')->where('email', $request->email)->first()) {
-            return back()->with('error', 'Email reset password sudah dikirim! Periksa email anda!');
-        } else {
-            DB::table('password_reset_tokens')->insert([
-                'email' => $request->email,
-                'token' => uniqid(),
-                'created_at' => now()
-            ]);
+        // if (DB::table('password_reset_tokens')->where('email', $request->email)->first()) {
+        //     return back()->with('error', 'Email reset password sudah dikirim! Periksa email anda!');
+        // } else {
+        //     DB::table('password_reset_tokens')->insert([
+        //         'email' => $request->email,
+        //         'token' => uniqid(),
+        //         'created_at' => now()
+        //     ]);
 
-            $token = DB::table('password_reset_tokens')->where('email', $request->email)->first();
-            if ($this->sendResetEmail($request->email, $token->token)) {
-                return back()->with('success', 'Email reset password telah dikirim!');
-            } else {
-                return back()->with('error', 'Email reset password gagal dikirim!');
-            }
+        //     $token = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        //     if ($this->sendResetEmail($request->email, $token->token)) {
+        //         return back()->with('success', 'Email reset password telah dikirim!');
+        //     } else {
+        //         return back()->with('error', 'Email reset password gagal dikirim!');
+        //     }
+        // }
+
+        // check if email is exist in users
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return back()->with('error', 'Email tidak terdaftar!');
         }
+
+        return redirect()->route('reset-password');
     }
 
     private function sendResetEmail($email, $token)
@@ -129,13 +137,9 @@ class LoginController extends Controller
         }
     }
 
-    public function resetPassword(Request $request, $token)
+    public function resetPassword(Request $request)
     {
-        $token = DB::table('password_reset_tokens')->where('token', $token)->first();
-        if (!$token) {
-            return redirect()->route('forgot-password')->with('error', 'Token tidak valid!');
-        }
-        return view('guest.auth.reset-password', compact('token'));
+        return view('guest.auth.reset-password');
     }
 
     public function resetPasswordUpdate(Request $request)
@@ -154,8 +158,6 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
         $user->password = password_hash($request->password, PASSWORD_DEFAULT);
         $user->save();
-
-        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
         return redirect()->route('login')->with('success', 'Password berhasil diubah!');
     }

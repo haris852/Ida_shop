@@ -11,8 +11,6 @@
                             </h5>
                             <form action="{{route('reset-password.update')}}" method="POST">
                                 @csrf
-                                {{-- token --}}
-                                <input type="hidden" name="token" value="{{ request()->route('token') }}">
                                 {{-- email --}}
                                 <x-input id="email" label="Masukan alamat email kamu" name="email" type="email"
                                     required />

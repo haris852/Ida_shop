@@ -17,7 +17,7 @@ use App\Http\Controllers\User\UserSettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('reset-password/update', [LoginController::class, 'resetPasswordUpdate'])->name('reset-password.update');
-Route::get('reset-password/{token}', [LoginController::class, 'resetPassword'])->name('reset-password');
+Route::get('reset-password', [LoginController::class, 'resetPassword'])->name('reset-password');
 Route::post('forgot-password', [LoginController::class, 'forgotPasswordStore'])->name('forgot-password.store');
 Route::get('forgot-password', [LoginController::class, 'forgotPassword'])->name('forgot-password');
 Route::post('register/store', [LoginController::class, 'registerStore'])->name('register.store');
