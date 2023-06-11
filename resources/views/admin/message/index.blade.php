@@ -19,7 +19,7 @@
                                     <div class="chat_people">
                                         <div class="chat_img">
                                             <img src="{{ $user->avatar ? asset('storage/avatar/' . $user->avatar) : asset('assets/image/defaultuser.jpg') }}"
-                                                alt="sunil" class="rounded-circle">
+                                                alt="sunil" class="rounded-circle object-cover" width="40" height="40">
                                         </div>
                                         <div class="chat_ib d-flex justify-content-between">
                                             <h5 class="mb-0">{{ ucfirst($user->name) }}</h5>

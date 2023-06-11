@@ -122,7 +122,7 @@
                         <a class="dropdown-toggle text-dark text-decoration-none" href="#" role="button"
                             id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
-                                width="40" height="40" alt="" class="rounded-circle mr-2">
+                                height="40" width="40" alt="" class="rounded-circle mr-2 object-cover">
                             {{ auth()->user()->name }}
                         </a>
 

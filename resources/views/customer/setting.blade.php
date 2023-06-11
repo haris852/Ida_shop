@@ -16,7 +16,7 @@
                         <div class="col-lg-4">
                             <div class="text-center">
                                 <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
-                                    alt="profile" id="thumbnail" class="img-md rounded-circle mb-3" width="100"
+                                    alt="profile" id="thumbnail" class="img-md rounded-circle mb-3 object-cover" width="100"
                                     height="100">
                                 <div class="mb-3">
                                     <h5>

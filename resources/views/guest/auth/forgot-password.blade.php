@@ -35,7 +35,7 @@
             $(function () {
                 // when button click submit form show loading popup
                 $('form').submit(function () {
-                    $('button[type=submit]').html('<i class="fa fa-spinner fa-spin"></i> Mengirim link...').attr('disabled',
+                    $('button[type=submit]').html('<i class="fa fa-spinner fa-spin"></i> Cek email...').attr('disabled',
                         true);
                 });
             });

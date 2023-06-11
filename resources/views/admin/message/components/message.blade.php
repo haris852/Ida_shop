@@ -13,7 +13,7 @@
             <div class="incoming_msg mb-3">
                 <div class="incoming_msg_img"> <img
                         src="{{ $message->user->avatar ? asset('storage/avatar/' . $message->user->avatar) : asset('assets/image/defaultuser.jpg') }}"
-                        alt="sunil" class="rounded-circle">
+                        alt="sunil" class="rounded-circle object-cover" width="40" height="40">
                 </div>
                 <div class="received_msg">
                     <div class="received_withd_msg">

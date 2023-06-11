@@ -47,7 +47,7 @@
 
     <div class="row mt-5">
         @foreach ($products as $product)
-            <div class="col-md-3" data-name="{{ $product->name }}" data-weight="{{ $product->weight }} {{ $product->unit }}"
+            <div class="col-md-3 mb-4" data-name="{{ $product->name }}" data-weight="{{ $product->weight }} {{ $product->unit }}"
                 data-stock="{{ $product->stock == 0 ? 'Habis' : $product->stock }}"
                 data-description="{{ $product->description }}" id="{{ $product->id }}">
                 <div class="card">
