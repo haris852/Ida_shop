@@ -8,6 +8,8 @@
     <title>
         {{ env('APP_NAME') }}
     </title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('customer_asset/img/logo.svg') }}">
+
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">

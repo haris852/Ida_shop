@@ -8,6 +8,8 @@
     <title>
         {{ env('APP_NAME') }}
     </title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('customer_asset/img/logo.svg') }}">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -95,7 +97,8 @@
                 </a>
                 <ul class="navbar-nav me-auto mt-2 mt-lg-0">
                     <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('home') }}">Beranda <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{{ route('home') }}">Beranda <span
+                                class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('menu') ? 'active' : '' }}"
@@ -127,7 +130,7 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a href="{{route('user.message.index')}}" class="dropdown-item">Pesan</a>
+                            <a href="{{ route('user.message.index') }}" class="dropdown-item">Pesan</a>
                             <a href="{{ route('user.setting.index') }}" class="dropdown-item">Pengaturan</a>
                             <a href="{{ route('logout') }}" class="dropdown-item">Keluar</a>
                         </div>
