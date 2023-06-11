@@ -8,6 +8,7 @@
     <title>
         {{ env('APP_NAME') }}
     </title>
+    <link rel="icon" type="image/x-icon" href="{{asset('assets/image/logo.png')}}">
 
     @include('admin.layout.header')
 
