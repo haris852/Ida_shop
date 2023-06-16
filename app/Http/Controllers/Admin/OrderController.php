@@ -116,6 +116,8 @@ class OrderController extends Controller
     {
         try {
             $this->transaction->changeStatus($request->id, $request->status);
+            $transaction = $this->transaction->getById($request->id);
+            event(new OrderStatusEvent($transaction->transaction_code, $this->translateStaus($request->status)));
             return response()->json([
                 'status' => 'success',
                 'message' => 'Berhasil mengubah status pesanan ke ' . $request->status
@@ -125,6 +127,33 @@ class OrderController extends Controller
                 'status' => 'error',
                 'message' => 'Gagal mengubah status pesanan'
             ]);
+        }
+    }
+
+    public function translateStaus($status)
+    {
+        switch ($status) {
+            case 'pending':
+                return 'Menunggu Pembayaran';
+                break;
+            case 'paid':
+                return 'Dibayar';
+                break;
+            case 'confirmed':
+                return 'Dikonfirmasi';
+                break;
+            case 'failed':
+                return 'Gagal';
+                break;
+            case 'delivered':
+                return 'Dikirim';
+                break;
+            case 'success':
+                return 'Selesai';
+                break;
+            default:
+                return 'Menunggu Pembayaran';
+                break;
         }
     }
 

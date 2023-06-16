@@ -199,7 +199,7 @@
         var orderStatusChannel = pusher.subscribe('order-status');
         orderStatusChannel.bind('order-status-event', function(data) {
             Push.create('Status pesanan berubah', {
-                body: 'Pesanan ' + data.order_code + ' status ' + data.status,
+                body: 'Pesanan ' + data.transaction_code + ' status ' + data.status,
                 icon: '{{ asset('customer_asset/img/logo.svg') }}',
                 timeout: 5000,
             });
