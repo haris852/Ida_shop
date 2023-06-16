@@ -1,25 +1,33 @@
 @extends('admin.layout.master')
 @section('content')
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <x-input type="text" name="search" id="search" label="Cari Pesanan"
-                                placeholder="Cari Pesanan" />
-                            <x-input type="date" name="start_date" id="start_date" label="Tanggal Awal" />
-                            <x-input type="date" name="end_date" id="end_date" label="Tanggal Akhir" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex justify-content-between">
+                            <div class="form-group me-3">
+                                <label for="monthly">Bulan</label>
+                                <select class="form-control text-sm" name="monthly" id="monthly">
+                                    <option value="">-- Pilih Bulan --</option>
+                                    @foreach ($months as $month)
+                                        <option value="{{ $month }}">{{ $month }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="me-3">
+                                <x-input type="date" name="start_date" id="start_date" label="Tanggal Awal" />
+                            </div>
+                            <div class="me-3">
+                                <x-input type="date" name="end_date" id="end_date" label="Tanggal Akhir" />
+                            </div>
+                            <div class="my-auto">
+                                <button type="button" id="btnFilter" class="btn btn-primary py-2">
+                                    Filter Range Tanggal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table" id="orderTable">
                         <thead>
                             <tr>
@@ -259,6 +267,101 @@
                         });
                     }
                 });
+
+                $('#monthly').change(function(e) {
+                    e.preventDefault();
+                    let monthlyIndex = $('#monthly option:selected').index();
+                    $.ajax({
+                        url: "{{ route('admin.order.filter-monthly') }}",
+                        type: "POST",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            month: monthlyIndex,
+                        },
+                        success: function(response) {
+                            $('#orderTable').DataTable().clear().destroy();
+                            $('#orderTable').DataTable({
+                                processing: true,
+                                responsive: true,
+                                autoWidth: false,
+                                data: response.data,
+                                columns: [{
+                                        data: 'DT_RowIndex',
+                                        name: 'DT_RowIndex',
+                                        orderable: false,
+                                        searchable: false
+                                    },
+                                    {
+                                        data: 'transaction_code',
+                                        name: 'transaction_code'
+                                    },
+                                    {
+                                        data: 'payment_method',
+                                        name: 'payment_method'
+                                    },
+                                    {
+                                        data: 'customer',
+                                        name: 'customer'
+                                    },
+                                    {
+                                        data: 'status',
+                                        name: 'status'
+                                    },
+                                    {
+                                        data: 'action',
+                                        name: 'action'
+                                    },
+                                    {
+                                        data: 'receiver',
+                                        name: 'receiver'
+                                    },
+                                    {
+                                        data: 'phone',
+                                        name: 'phone'
+                                    },
+                                    {
+                                        data: 'proof_of_payment',
+                                        name: 'proof_of_payment',
+                                    },
+                                    {
+                                        data: 'shipping_cost',
+                                        name: 'shipping_cost'
+                                    },
+                                    {
+                                        data: 'total_payment',
+                                        name: 'total_payment'
+                                    },
+                                    {
+                                        data: 'address',
+                                        name: 'address'
+                                    },
+                                    {
+                                        data: 'created_at',
+                                        name: 'created_at'
+                                    },
+                                    {
+                                        data: 'detail_transaction',
+                                        name: 'detail_transaction'
+                                    }
+                                ],
+                            });
+                        }
+                    });
+                });
+
+                $('#btnFilter').click(function(e) {
+                    e.preventDefault();
+                    let start_date = $('#start_date').val();
+                    let end_date = $('#end_date').val();
+                    if (start_date == '' || end_date == '') {
+                        Swal.fire({
+                            icon: 'warning',
+                            text: 'Pastikan range tanggal telah diisi!'
+                        });
+                    } else {
+                        console.log(start_date, end_date);
+                    }
+                })
             });
 
             @if (Session::has('success'))

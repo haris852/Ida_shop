@@ -62,7 +62,22 @@ class OrderController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('admin.order.index');
+        return view('admin.order.index', [
+            'months' => [
+                '01' => 'Januari',
+                '02' => 'Februari',
+                '03' => 'Maret',
+                '04' => 'April',
+                '05' => 'Mei',
+                '06' => 'Juni',
+                '07' => 'Juli',
+                '08' => 'Agustus',
+                '09' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember',
+            ]
+        ]);
     }
 
     /**
@@ -206,5 +221,32 @@ class OrderController extends Controller
                 'message' => $th->getMessage()
             ]);
         }
+    }
+
+    public function filterMonthly(Request $request)
+    {
+        $transaction = $this->transaction->filterMonthly($request->month);
+        $data = $transaction->map(function($item) {
+            return [
+                'DT_RowIndex' => $item->id,
+                'transaction_code' => $item->transaction_code,
+                'payment_method' => $item->payment_method == 1 ? 'E Wallet' : 'COD (Bayar di tempat)',
+                'customer' => $item->user->name,
+                'receiver' => $item->receiver_name,
+                'phone' => $item->receiver_phone,
+                'proof_of_payment' => view('admin.order.column.proof_of_payment', ['data' => $item])->render(),
+                'status' => view('admin.order.column.status', ['data' => $item])->render(),
+                'shipping_cost' => 'Rp. ' . number_format($item->shipping_price, 0, ',', '.'),
+                'total_payment' => 'Rp. ' . number_format($item->total_payment, 0, ',', '.'),
+                'address' => $item->receiver_address ?? '-',
+                'created_at' => $item->created_at->format('d-m-Y H:i') . ' WIB',
+                'detail_transaction' => view('admin.order.column.detail_transaction', ['data' => $item])->render(),
+                'action' => view('admin.order.column.action', ['data' => $item])->render(),
+            ];
+        });
+
+        return response()->json([
+            'data' => $data,
+        ]);
     }
 }

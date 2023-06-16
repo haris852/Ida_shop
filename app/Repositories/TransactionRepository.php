@@ -203,4 +203,12 @@ class TransactionRepository implements TransactionInterface
 
         DB::commit();
     }
+
+    public function filterMonthly($month)
+    {
+        return $this->transaction->where(
+            DB::raw('MONTH(created_at)'),
+            $month
+        )->with(['user', 'transactionDetail.product'])->orderBy('created_at', 'desc')->get();
+    }
 }

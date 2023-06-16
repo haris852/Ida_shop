@@ -36,13 +36,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // User Setting
-Route::group(['prefix' => 'setting', ['middleware' => ['auth']]], function() {
+Route::group(['prefix' => 'setting', ['middleware' => ['auth']]], function () {
     Route::put('/update/{id}', [UserSettingController::class, 'update'])->name('user.setting.update');
     Route::get('/', [UserSettingController::class, 'index'])->name('user.setting.index');
 });
 
 // User Message
-Route::group(['prefix' => 'message', ['middleware' => ['auth']]], function(){
+Route::group(['prefix' => 'message', ['middleware' => ['auth']]], function () {
     Route::get('/', [UserMessageController::class, 'index'])->name('user.message.index');
     Route::post('/send', [UserMessageController::class, 'send'])->name('user.message.send');
     Route::get('/message', [UserMessageController::class, 'message'])->name('user.message.message');
@@ -62,6 +62,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Order
+    Route::post('order/filter/monthly', [OrderController::class, 'filterMonthly'])->name('admin.order.filter-monthly');
     Route::get('order/list/detail', [OrderController::class, 'listDetail'])->name('admin.order.list-detail');
     Route::post('order/cod/upload-payment', [OrderController::class, 'uploadPaymentCod'])->name('admin.order.cod.upload-payment');
     Route::post('order/change-status', [OrderController::class, 'changeStatus'])->name('admin.order.change-status');
