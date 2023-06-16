@@ -87,7 +87,7 @@ class UserOrderController extends Controller
     {
         $this->transaction->confirm($id, $request->all());
         $transaction = $this->transaction->getById($id);
-        event(new OrderStatusEvent($transaction->transaction_code, 'Pesanan dibayar'));
+        event(new OrderStatusEvent($transaction->transaction_code, 'Pesanan dibayar', $transaction->user_id));
         return redirect()->back()->with('success', 'Transaksi berhasil dibayar');
     }
 

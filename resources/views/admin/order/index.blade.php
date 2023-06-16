@@ -1,5 +1,21 @@
 @extends('admin.layout.master')
 @section('content')
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <x-input type="text" name="search" id="search" label="Cari Pesanan"
+                                placeholder="Cari Pesanan" />
+                            <x-input type="date" name="start_date" id="start_date" label="Tanggal Awal" />
+                            <x-input type="date" name="end_date" id="end_date" label="Tanggal Akhir" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card">

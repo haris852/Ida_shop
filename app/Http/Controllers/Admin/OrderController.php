@@ -117,7 +117,7 @@ class OrderController extends Controller
         try {
             $this->transaction->changeStatus($request->id, $request->status);
             $transaction = $this->transaction->getById($request->id);
-            event(new OrderStatusEvent($transaction->transaction_code, $this->translateStaus($request->status)));
+            event(new OrderStatusEvent($transaction->transaction_code, $this->translateStaus($request->status), $transaction->user_id));
             return response()->json([
                 'status' => 'success',
                 'message' => 'Berhasil mengubah status pesanan ke ' . $request->status

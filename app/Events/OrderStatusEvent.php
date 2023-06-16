@@ -17,11 +17,13 @@ class OrderStatusEvent implements ShouldBroadcast
 
     public $transaction_code;
     public $status;
+    public $user_id;
 
-    public function __construct($transaction_code, $status)
+    public function __construct($transaction_code, $status, $user_id)
     {
         $this->transaction_code = $transaction_code;
         $this->status = $status;
+        $this->user_id = $user_id;
     }
 
     public function broadcastOn()

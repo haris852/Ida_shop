@@ -15,11 +15,13 @@ class NewOrderEvent implements ShouldBroadcast
 
     public $name;
     public $status;
+    public $user_id;
 
-    public function __construct($name, $status)
+    public function __construct($name, $status, $user_id)
     {
         $this->name = $name;
         $this->status = $status;
+        $this->user_id = $user_id;
     }
 
     public function broadcastOn()

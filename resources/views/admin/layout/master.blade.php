@@ -59,26 +59,30 @@
             cluster: 'ap1'
         });
 
-        var channel = pusher.subscribe('new-order');
-        channel.bind('new-order-event', function(data) {
-            Push.create('Anda berhasil memesan', {
-                body: 'Pesanan baru dari ' + data.name + ' status ' + data.status,
-                icon: '{{ asset('customer_asset/img/logo.svg') }}',
-                timeout: 5000,
-                onClick: function() {
-                    window.location.href = "{{ route('home') }}"
+        @if (auth()->check())
+            let user = {!! auth()->user() !!}
+            var channel = pusher.subscribe('new-order');
+            channel.bind('new-order-event', function(data) {
+                if (user.id == data.user_id) {
+                    Push.create('Pesanan baru', {
+                        body: 'Pesanan baru dengan kode ' + data.code,
+                        icon: '{{ asset('customer_asset/img/logo.svg') }}',
+                        timeout: 5000
+                    });
                 }
             });
-        });
 
-        var orderStatusChannel = pusher.subscribe('order-status');
-        orderStatusChannel.bind('order-status-event', function(data) {
-            Push.create('Status pesanan berubah', {
-                body: 'Pesanan ' + data.transaction_code + ' status ' + data.status,
-                icon: '{{ asset('customer_asset/img/logo.svg') }}',
-                timeout: 5000,
+            var orderStatusChannel = pusher.subscribe('order-status');
+            orderStatusChannel.bind('order-status-event', function(data) {
+                if (user.id == data.user_id) {
+                    Push.create('Status pesanan anda berubah', {
+                        body: 'Pesanan anda dengan kode ' + data.code + ' status ' + data.status,
+                        icon: '{{ asset('customer_asset/img/logo.svg') }}',
+                        timeout: 5000
+                    });
+                }
             });
-        });
+        @endif
     </script>
 
     @stack('js-internal')
