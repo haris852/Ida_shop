@@ -8,6 +8,7 @@
     <title>
         {{ env('APP_NAME') }}
     </title>
+    <link rel="icon" type="image/x-icon" href="{{asset('assets/image/logo.png')}}">
 
     @include('admin.layout.header')
 
@@ -42,6 +43,7 @@
     </div>
     <!-- container-scroller -->
     @include('admin.layout.footer')
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     @stack('js-internal')
 </body>

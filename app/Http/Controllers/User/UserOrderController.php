@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\OrderStatusEvent;
 use App\Http\Controllers\Controller;
 use App\Interfaces\TransactionInterface;
 use App\Models\ConfigurationStore;
@@ -82,6 +83,8 @@ class UserOrderController extends Controller
     public function confirm(Request $request, string $id)
     {
         $this->transaction->confirm($id, $request->all());
-        return redirect()->back()->with('success', 'Transaksi berhasil dikonfirmasi');
+        $transaction = $this->transaction->getById($id);
+        event(new OrderStatusEvent($transaction->transaction_code, 'Pesanan dibayar'));
+        return redirect()->back()->with('success', 'Transaksi berhasil dibayar');
     }
 }

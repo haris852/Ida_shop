@@ -70,4 +70,9 @@ class ProductRepository implements ProductInterface
             return false;
         }
     }
+
+    public function getCategories()
+    {
+        return $this->product->select('category')->groupBy('category')->get();
+    }
 }

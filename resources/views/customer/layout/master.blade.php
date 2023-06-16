@@ -125,15 +125,18 @@
                         {{ auth()->user()->name }}
                     </a>
 
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a href="{{ route('logout') }}" class="dropdown-item">Keluar</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a href="{{ route('user.message.index') }}" class="dropdown-item">Pesan</a>
+                            <a href="{{ route('user.setting.index') }}" class="dropdown-item">Pengaturan</a>
+                            <a href="{{ route('logout') }}" class="dropdown-item">Keluar</a>
+                        </div>
                     </div>
-                </div>
-            @else
-                <form class="form-inline my-2 my-lg-0">
-                    <a href="{{ route('login') }}" class="btn btn-primary my-2 my-sm-0">Masuk</a>
-                </form>
-            @endif
+                @else
+                    <form class="form-inline my-2 my-lg-0">
+                        <a href="{{ route('login') }}" class="btn btn-primary my-2 my-sm-0">Masuk</a>
+                    </form>
+                @endif
+            </div>
         </div>
     </nav>
 
@@ -161,6 +164,9 @@
 
     <!-- Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+    <!-- Pusher -->
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     @stack('js-internal')
 </body>

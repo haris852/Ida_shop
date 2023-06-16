@@ -34,6 +34,13 @@ class TransactionRepository implements TransactionInterface
 
         // transaction
         try {
+            foreach ($attributes['carts'] as $cart) {
+                $product = $this->transactionDetail->where('product_id', $cart['id'])->first();
+                if ($product->product->stock < $cart['quantity']) {
+                    throw new \Exception('Stock ' . $product->product->name . ' tidak mencukupi');
+                }
+            }
+
             $transaction = $this->transaction->create([
                 'transaction_code' => $this->transaction->generateTransactionCode(),
                 'receiver_name' => $attributes['receiver_name'],
@@ -61,6 +68,19 @@ class TransactionRepository implements TransactionInterface
                     'qty' => $cart['quantity'],
                     'price' => $cart['price'],
                     'total_price' => $cart['subtotal']
+                ]);
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        // change stock
+        try {
+            foreach ($attributes['carts'] as $cart) {
+                $product = $this->transactionDetail->where('product_id', $cart['id'])->first();
+                $product->product->update([
+                    'stock' => $product->product->stock - $cart['quantity']
                 ]);
             }
         } catch (\Throwable $th) {
