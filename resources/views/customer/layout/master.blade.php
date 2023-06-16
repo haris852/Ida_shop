@@ -125,7 +125,7 @@
                         <a class="dropdown-toggle text-dark text-decoration-none" href="#" role="button"
                             id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
-                                height="40" width="40" alt="" class="rounded-circle mr-2 object-cover">
+                                width="40" height="40" alt="" class="rounded-circle mr-2">
                             {{ auth()->user()->name }}
                         </a>
 
@@ -171,6 +171,40 @@
 
     <!-- Pusher -->
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
+    <!-- Push Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.8/push.min.js"
+        integrity="sha512-eiqtDDb4GUVCSqOSOTz/s/eiU4B31GrdSb17aPAA4Lv/Cjc8o+hnDvuNkgXhSI5yHuDvYkuojMaQmrB5JB31XQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('d41022a17b37cc76c142', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('new-order');
+        channel.bind('new-order-event', function(data) {
+            Push.create('Anda berhasil memesan', {
+                body: 'Pesanan baru dari ' + data.name + ' status ' + data.status,
+                icon: '{{ asset('customer_asset/img/logo.svg') }}',
+                timeout: 5000,
+                onClick: function() {
+                    window.location.href = "{{ route('home') }}"
+                }
+            });
+        });
+
+        var orderStatusChannel = pusher.subscribe('order-status');
+        orderStatusChannel.bind('order-status-event', function(data) {
+            Push.create('Status pesanan berubah', {
+                body: 'Pesanan ' + data.order_code + ' status ' + data.status,
+                icon: '{{ asset('customer_asset/img/logo.svg') }}',
+                timeout: 5000,
+            });
+        });
+    </script>
 
     @stack('js-internal')
 </body>

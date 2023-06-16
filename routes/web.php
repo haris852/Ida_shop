@@ -26,6 +26,7 @@ Route::post('login/store', [LoginController::class, 'loginStore'])->name('login.
 Route::get('login', [LoginController::class, 'index'])->name('login');
 
 Route::get('menu', [HomeController::class, 'menu'])->name('menu');
+Route::post('cart/check-stock', [HomeController::class, 'cartCheckStock'])->name('cart.check-stock');
 Route::post('cart/destroy', [HomeController::class, 'cartDestroy'])->name('cart.destroy');
 Route::post('cart/store', [HomeController::class, 'cartStore'])->name('cart.store');
 Route::get('cart', [HomeController::class, 'cart'])->name('cart');

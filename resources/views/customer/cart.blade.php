@@ -1,6 +1,6 @@
 @extends('customer.layout.master')
 @section('content')
-    <div class="pt-5 pb-3 text-center">
+    <div class="py-5 text-center">
         <h4>
             {{-- <i class="fas fa-shopping-cart mr-3 text-primary"></i> --}}
             Keranjang
@@ -9,136 +9,125 @@
             <span class="text-danger">*</span>Item yang ada pada keranjang anda akan kadaluarsa dalam waktu 1 hari
         </p>
     </div>
-    @if (!$isOpen)
-        <div class="row justify-content-center">
-            <div class="alert alert-danger col-md-6" role="alert">
-                <i class="fas fa-clock mr-2"></i>
-                <strong>Toko Tutup</strong>
-                <p class="mb-0">
-                    Toko akan buka kembali pada pukul {{ $openTime }}
-                </p>
-            </div>
-        </div>
-    @endif
-
     <div class="mb-3 my-5"></div>
     @if (session()->has('cart') && count(session()->get('cart')) > 0)
         @if (isset($carts) && count($carts) > 0)
-        <div class="row my-5">
-            <div class="col-md-7">
-                <ul class="list-group list-group-flush">
-                    @forelse ($carts as $cart)
-                        <li class="list-group-item py-3 ps-0 cart-item" data-id="{{ $cart['id'] }}"
-                            data-price="{{ $cart['price'] }}">
-                            <!-- row -->
-                            <div class="row align-items-center">
-                                <div class="col-2 col-md-2">
-                                    <!-- img --> <img src="{{ asset('storage/product/' . $cart['image']) }}" alt="Ecommerce"
-                                        class="img-fluid">
-                                </div>
-                                <div class="col-4 col-md-5 col-lg-4">
-                                    <!-- title -->
-                                    <span class="">
-                                        <h6 class="mb-0 font-weight-bold">
-                                            {{ $cart['name'] }}
-                                        </h6>
-                                    </span>
-                                    <span>
-                                        <small class="text-muted">
-                                            {{ $cart['weight'] . ' / ' . $cart['unit'] }} — Rp
-                                            {{ number_format($cart['price'], 0, ',', '.') }}
-                                        </small>
-                                    </span>
-                                    <!-- text -->
-                                    <div class="mt-2 small lh-1"> <a type="button"
-                                            onclick="deleteItemCart('{{ $cart['id'] }}')" href="#!"
-                                            class="text-decoration-none text-inherit">
-                                            <span class="me-1 align-text-bottom">
-                                                <i class="fas fa-trash-alt text-danger mr-2"></i>
-                                            </span><span class="text-muted">Hapus</span></a></div>
-                                </div>
-                                <!-- input group -->
-                                <div class="col-3 col-md-3 col-lg-3">
-                                    <!-- input -->
-                                    <div class="input-group input-spinner  ">
-                                        <input type="number" value="1" min="1" data-id="{{ $cart['id'] }}"
-                                            name="quantity" class="form-control">
+            <div class="row my-5">
+                <div class="col-md-7">
+                    <ul class="list-group list-group-flush">
+                        @forelse ($carts as $cart)
+                            <li class="list-group-item py-3 ps-0 cart-item" data-id="{{ $cart['id'] }}"
+                                data-price="{{ $cart['price'] }}">
+                                <!-- row -->
+                                <div class="row align-items-center">
+                                    <div class="col-2 col-md-2">
+                                        <!-- img --> <img src="{{ asset('storage/product/' . $cart['image']) }}"
+                                            alt="Ecommerce" class="img-fluid">
                                     </div>
+                                    <div class="col-4 col-md-5 col-lg-4">
+                                        <!-- title -->
+                                        <span class="">
+                                            <h6 class="mb-0 font-weight-bold">
+                                                {{ $cart['name'] }}
+                                            </h6>
+                                        </span>
+                                        <span>
+                                            <small class="text-muted">
+                                                {{ $cart['weight'] . ' / ' . $cart['unit'] }} — Rp
+                                                {{ number_format($cart['price'], 0, ',', '.') }}
+                                            </small>
+                                        </span>
+                                        <!-- text -->
+                                        <div class="mt-2 small lh-1"> <a type="button"
+                                                onclick="deleteItemCart('{{ $cart['id'] }}')" href="#!"
+                                                class="text-decoration-none text-inherit">
+                                                <span class="me-1 align-text-bottom">
+                                                    <i class="fas fa-trash-alt text-danger mr-2"></i>
+                                                </span><span class="text-muted">Hapus</span></a></div>
+                                    </div>
+                                    <!-- input group -->
+                                    <div class="col-3 col-md-3 col-lg-3">
+                                        <!-- input -->
+                                        <div class="input-group input-spinner">
+                                            <input type="number" value="1" min="1"
+                                                data-id="{{ $cart['id'] }}" name="quantity" class="form-control"
+                                                onkeyup="checkStock('{{ $cart['id'] }}')">
+                                        </div>
 
+                                    </div>
+                                    <!-- price -->
+                                    <div class="col-3 text-lg-end text-start text-md-end col-md-3">
+                                        <span class="fw-bold">Rp. <span class="subTotal">{{ $cart['subtotal'] }}
+                                            </span></span>
+                                    </div>
                                 </div>
-                                <!-- price -->
-                                <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                    <span class="fw-bold">Rp. <span class="subTotal">{{ $cart['subtotal'] }}</span></span>
-
+                            </li>
+                        @empty
+                            <center>
+                                <div class="block">
+                                    <p class="text-center">
+                                        Sepertinya anda belum memesan apapun
+                                    </p>
+                                    <a href="{{ route('home') }}" class="btn btn-primary btn-sm">Lanjutkan Belanja</a>
                                 </div>
-                            </div>
-                        </li>
-                    @empty
-                        <center>
-                            <div class="block">
-                                <p class="text-center">
-                                    Sepertinya anda belum memesan apapun
-                                </p>
-                                <a href="{{ route('home') }}" class="btn btn-primary btn-sm">Lanjutkan Belanja</a>
-                            </div>
-                        </center>
-                    @endforelse
-                </ul>
-            </div>
-            <div class="col-md mt-3 mt-md-0">
-                <p class="font-weight-bold mb-4">
-                    Detail Pemesanan
-                </p>
-                <x-textarea id="address" name="address" label="Alamat" placeholder="Nama dusun, RT, RW, Nomor Rumah"
-                    required value="{{ old('address') }}" />
-                <small class="text-secondary d-block mb-3">
-                    <span class="text-danger">*</span>
-                    Silahkan isi alamat dengan lengkap dan jelas
-                </small>
-                <x-textarea id="note" name="note" label="Catatan" placeholder="Catatan tambahan"
-                    value="{{ old('note') }}" />
-                <div class="row">
-                    <div class="col-md-6">
-                        <x-input id="receiver_phone" name="receiver_phone" label="Nomor Telepon Penerima" type="number"
-                            required value="{{ old('receiver_phone') }}" />
-                    </div>
-                    <div class="col-md-6">
-                        <x-input id="receiver_name" name="receiver_name" label="Nama Penerima" type="text" required
-                            value="{{ old('receiver_name') }}" />
-                    </div>
+                            </center>
+                        @endforelse
+                    </ul>
                 </div>
-                <div class="form-group mb-3">
-                    <label for="payment_method">Metode Pembayaran</label>
-                    <select class="form-control text-sm" name="payment_method" id="payment_method">
-                        {{-- e money, COD --}}
-                        <option value="1">E-Wallet</option>
-                        <option value="2">COD</option>
-                    </select>
-                    <small id="payment_description">
+                <div class="col-md mt-3 mt-md-0">
+                    <p class="font-weight-bold mb-4">
+                        Detail Pemesanan
+                    </p>
+                    <x-textarea id="address" name="address" label="Alamat" placeholder="Nama dusun, RT, RW, Nomor Rumah"
+                        required value="{{ old('address') }}" />
+                    <small class="text-secondary d-block mb-3">
                         <span class="text-danger">*</span>
-                        Pembayaran E Wallet dapat menggunakan OVO, Dana, Gopay, Shopee Pay
+                        Silahkan isi alamat dengan lengkap dan jelas
                     </small>
-                </div>
+                    <x-textarea id="note" name="note" label="Catatan" placeholder="Catatan tambahan"
+                        value="{{ old('note') }}" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <x-input id="receiver_phone" name="receiver_phone" label="Nomor Telepon Penerima" type="number"
+                                required value="{{ old('receiver_phone') }}" />
+                        </div>
+                        <div class="col-md-6">
+                            <x-input id="receiver_name" name="receiver_name" label="Nama Penerima" type="text" required
+                                value="{{ old('receiver_name') }}" />
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="payment_method">Metode Pembayaran</label>
+                        <select class="form-control text-sm" name="payment_method" id="payment_method">
+                            {{-- e money, COD --}}
+                            <option value="1">E-Wallet</option>
+                            <option value="2">COD</option>
+                        </select>
+                        <small id="payment_description">
+                            <span class="text-danger">*</span>
+                            Pembayaran E Wallet dapat menggunakan OVO, Dana, Gopay, Shopee Pay
+                        </small>
+                    </div>
 
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <a class="btn btn-light" href="{{ route('home') }}">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Kembali
-                    </a>
-                    @if ($isOpen && count($carts) > 0)
-                        <button class="btn btn-primary" id="btnCheckout">
-                            <i class="fas fa-shopping-cart mr-2"></i>
-                            Pesan Sekarang
-                        </button>
-                    @else
-                        <button class="btn btn-primary" disabled>
-                            <i class="fas fa-clock mr-2"></i>
-                            Toko Tutup
-                        </button>
-                    @endif
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a class="btn btn-light" href="{{ route('home') }}">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Kembali
+                        </a>
+                        @if ($isOpen && count($carts) > 0)
+                            <button class="btn btn-primary" id="btnCheckout">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Pesan Sekarang
+                            </button>
+                        @else
+                            <button class="btn btn-primary" disabled>
+                                <i class="fas fa-clock mr-2"></i>
+                                Toko Tutup
+                            </button>
+                        @endif
+                    </div>
                 </div>
             </div>
-        </div>
         @endif
     @else
         <center>
@@ -150,6 +139,7 @@
             </div>
         </center>
     @endif
+
     @push('js-internal')
         <script>
             function deleteItemCart(id) {
@@ -179,6 +169,32 @@
                         }
                     })
                 }
+            }
+
+            function checkStock(id) {
+                let amount = $(`input[data-id="${id}"]`).val() == '' ? 0 : $(`input[data-id="${id}"]`).val();
+                $.ajax({
+                    url: "{{ route('cart.check-stock') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id,
+                        qty: amount
+                    },
+                    success: function(response) {
+                        if (response.status == false) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Pemesanan melebihi stok yang tersedia: ' + response.stock
+                            });
+
+                            $(`input[data-id="${id}"]`).val(1);
+                        }
+
+                        return false;
+                    }
+                });
             }
 
             $(function() {
@@ -255,10 +271,9 @@
                         });
                     }
                 });
-
-                $('#payment_method').on('change', function(){
+                $('#payment_method').on('change', function() {
                     let val = $(this).val();
-                    if(val == 2) {
+                    if (val == 2) {
                         $('#payment_description').html(`
                             <span class="text-danger">*</span>
                             Pembayaran COD dilakukan ketika pesanan diterima
@@ -270,7 +285,6 @@
                         `);
                     }
                 });
-
                 // get value if quantity stop change
                 $('input[name="quantity"]').on('input', function() {
                     if ($(this).val() == 0) {

@@ -83,4 +83,13 @@ class HomeController extends Controller
             'categories' => $this->product->getCategories(),
         ]);
     }
+
+    public function cartCheckStock(Request $request)
+    {
+        $product = $this->product->getById($request->id);
+        return response()->json([
+            'status' => $product->stock >= $request->qty ? true : false,
+            'stock' => $product->stock
+        ]);
+    }
 }
