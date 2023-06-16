@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\NewOrderEvent;
 use App\Http\Controllers\Controller;
 use App\Interfaces\TransactionInterface;
 use Illuminate\Http\Request;
@@ -41,6 +42,9 @@ class CheckoutController extends Controller
         try {
             $this->transaction->store($request->all());
             $request->session()->forget('cart');
+
+            event(new NewOrderEvent(auth()->user()->name, 'Menunggu Pembayaran'));
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Transaksi berhasil dilakukan'

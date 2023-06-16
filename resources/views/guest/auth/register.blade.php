@@ -12,9 +12,11 @@
                             <h6 class="fw-light">
                                 Daftarkan diri anda untuk melanjutkan.
                             </h6>
-                            <form class="pt-3" action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
+                            <form class="pt-3" action="{{ route('register.store') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
-                                <x-input id="name" name="name" type="text" placeholder="Nama Lengkap" required label="Nama Lengkap"/>
+                                <x-input id="name" name="name" type="text" placeholder="Nama Lengkap" required
+                                    label="Nama Lengkap" />
                                 <div class="form-group row">
                                     <label for="">
                                         Jenis Kelamin
@@ -38,13 +40,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <x-input id="avatar" name="avatar" type="file" placeholder="Foto Profil" required label="Foto Profil"/>
-                                <x-input id="phone" name="phone" type="text" placeholder="Nomor Telepon" required label="Nomor Telepon"/>
-                                <x-input id="address" name="address" type="text" placeholder="Alamat" required label="Alamat"/>
-                                <x-input id="email" name="email" type="email" placeholder="Email" required label="Email"/>
-                                <x-input id="password" name="password" type="password" placeholder="Password" required label="Password"/>
+                                <x-input id="avatar" name="avatar" type="file" placeholder="Foto Profil" required
+                                    label="Foto Profil" />
+                                <x-input id="phone" name="phone" type="text" placeholder="Nomor Telepon" required
+                                    label="Nomor Telepon" />
+                                <x-input id="address" name="address" type="text" placeholder="Alamat" required
+                                    label="Alamat" />
+                                <x-input id="email" name="email" type="email" placeholder="Email" required
+                                    label="Email" />
+                                <x-input id="password" name="password" type="password" placeholder="Password" required
+                                    label="Password" />
                                 <x-input id="password_confirmation" name="password_confirmation" type="password"
-                                    placeholder="Konfirmasi Password" required label="Konfirmasi Password"/>
+                                    placeholder="Konfirmasi Password" required label="Konfirmasi Password" />
                                 <div class="mt-3">
                                     <x-button type="submit">
                                         Daftar
@@ -75,6 +82,16 @@
                 title: 'Berhasil',
                 text: '{{ Session::get('success') }}',
             })
+
+            Push.create('Pengguna baru', {
+                body: 'Ada pengguna baru yang mendaftar',
+                icon: '{{ asset('customer_asset/img/logo.svg') }}',
+                timeout: 5000,
+                onClick: function() {
+                    window.focus();
+                    this.close();
+                }
+            });
         @endif
 
         @if (Session::has('error'))

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\OrderStatusEvent;
 use App\Http\Controllers\Controller;
 use App\Interfaces\TransactionInterface;
 use Illuminate\Http\Request;
