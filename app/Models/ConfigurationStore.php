@@ -21,4 +21,17 @@ class ConfigurationStore extends Model
         'shipping_cost',
         'is_active',
     ];
+
+    public function isOpen()
+    {
+        $open_at = \Carbon\Carbon::parse($this->open_at);
+        $close_at = \Carbon\Carbon::parse($this->close_at);
+        $now = \Carbon\Carbon::now();
+
+        if ($now->between($open_at, $close_at)) {
+            return true;
+        }
+
+        return false;
+    }
 }

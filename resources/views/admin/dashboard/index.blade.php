@@ -7,46 +7,98 @@
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="statistics-details d-flex align-items-center justify-content-between">
+                                <div
+                                    class="statistics-details
+                                    align-items-center justify-content-between
+                                    d-sm-block d-md-flex">
+                                    <!-- Total Sales -->
                                     <div>
-                                        <p class="statistics-title">Bounce Rate</p>
-                                        <h3 class="rate-percentage">32.53%</h3>
-                                        <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span>
-                                        </p>
+                                        <p class="statistics-title">Total Pendapatan</p>
+                                        <h3 class="rate-percentage">{{ $totalSales ?? '-' }}</h3>
+                                        @if ($totalSalesDifference['is_up'] == true)
+                                            <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>
+                                                    {{ $totalSalesDifference['percentage'] }}%
+                                                </span>
+                                            </p>
+                                        @else
+                                            <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>
+                                                    {{ $totalSalesDifference['percentage'] }}%
+                                                </span>
+                                            </p>
+                                        @endif
                                     </div>
+                                    <!-- Total Sales Daily -->
                                     <div>
-                                        <p class="statistics-title">Page Views</p>
-                                        <h3 class="rate-percentage">7,682</h3>
-                                        <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>+0.1%</span></p>
+                                        <p class="statistics-title">Total Pendapatan Harian</p>
+                                        <h3 class="rate-percentage">{{ $totalSalesDaily ?? '-' }}</h3>
+                                        @if ($totalSalesDifference['is_up'] == true)
+                                            <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>
+                                                    {{ $totalSalesDifference['percentage'] }}%
+                                                </span>
+                                            </p>
+                                        @else
+                                            <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>
+                                                    {{ $totalSalesDifference['percentage'] }}%
+                                                </span>
+                                            </p>
+                                        @endif
                                     </div>
+                                    <!-- Total Customer -->
                                     <div>
-                                        <p class="statistics-title">New Sessions</p>
-                                        <h3 class="rate-percentage">68.8</h3>
-                                        <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8</span></p>
+                                        <p class="statistics-title">Total Pelanggan</p>
+                                        <h3 class="rate-percentage">{{ $totalCustomer ?? '-' }}</h3>
+                                        @if ($totalCustomerDifference['is_up'] == true)
+                                            <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>
+                                                    {{ $totalCustomerDifference['difference'] }}
+                                                </span>
+                                            </p>
+                                        @else
+                                            <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>
+                                                    {{ $totalCustomerDifference['difference'] }}
+                                                </span>
+                                            </p>
+                                        @endif
                                     </div>
-                                    <div class="d-none d-md-block">
-                                        <p class="statistics-title">Avg. Time on Site</p>
-                                        <h3 class="rate-percentage">2m:35s</h3>
-                                        <p class="text-success d-flex"><i class="mdi mdi-menu-down"></i><span>+0.8%</span>
-                                        </p>
+
+                                    <!-- Total Customer Daily -->
+                                    <div>
+                                        <p class="statistics-title">Total Pelanggan Harian</p>
+                                        <h3 class="rate-percentage">{{ $totalCustomerDaily ?? '-' }}</h3>
+                                        @if ($totalCustomerDifference['is_up'] == true)
+                                            <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>
+                                                    {{ $totalCustomerDifference['difference'] }}
+                                                </span>
+                                            </p>
+                                        @else
+                                            <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>
+                                                    {{ $totalCustomerDifference['difference'] }}
+                                                </span>
+                                            </p>
+                                        @endif
                                     </div>
-                                    <div class="d-none d-md-block">
-                                        <p class="statistics-title">New Sessions</p>
-                                        <h3 class="rate-percentage">68.8</h3>
-                                        <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8</span></p>
+                                    <!-- Total Produk Terjual -->
+                                    <div>
+                                        <p class="statistics-title">Total Produk Terjual</p>
+                                        <h3 class="rate-percentage">{{ $totalProductSales ?? '-' }}</h3>
+                                        @if ($totalProductSalesDifference['is_up'] == true)
+                                            <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>
+                                                    {{ $totalProductSalesDifference['difference'] }}
+                                                </span>
+                                            </p>
+                                        @else
+                                            <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>
+                                                    {{ $totalProductSalesDifference['difference'] }}
+                                                </span>
+                                            </p>
+                                        @endif
                                     </div>
-                                    <div class="d-none d-md-block">
-                                        <p class="statistics-title">Avg. Time on Site</p>
-                                        <h3 class="rate-percentage">2m:35s</h3>
-                                        <p class="text-success d-flex"><i class="mdi mdi-menu-down"></i><span>+0.8%</span>
-                                        </p>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-8 d-flex flex-column">
-                                <div class="row flex-grow">
+                                {{-- <div class="row flex-grow">
                                     <div class="col-12 grid-margin stretch-card">
                                         <div class="card card-rounded">
                                             <div class="card-body">
@@ -96,268 +148,36 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row flex-grow">
                                     <div class="col-12 grid-margin stretch-card">
                                         <div class="card card-rounded">
                                             <div class="card-body">
                                                 <div class="d-sm-flex justify-content-between align-items-start">
                                                     <div>
-                                                        <h4 class="card-title card-title-dash">Pending
-                                                            Requests</h4>
-                                                        <p class="card-subtitle card-subtitle-dash">You
-                                                            have 50+ new requests</p>
+                                                        <h4 class="card-title card-title-dash">
+                                                            Pemesanan Terbaru</h4>
+                                                        <p class="card-subtitle card-subtitle-dash">
+                                                            Data pemesanan terbaru</p>
                                                     </div>
                                                     <div>
-                                                        <button class="btn btn-primary btn-lg text-white mb-0 me-0"
-                                                            type="button"><i class="mdi mdi-account-plus"></i>Add
-                                                            new member</button>
+                                                        <a class="btn btn-primary btn-lg text-white mb-0 me-0"
+                                                            href="{{ route('admin.order.index') }}">
+                                                            Lihat Semua
+                                                        </a>
                                                     </div>
                                                 </div>
-                                                <div class="table-responsive  mt-1">
-                                                    <table class="table select-table">
+                                                <div class="mt-1">
+                                                    <table class="table table-small" id="orderTable">
                                                         <thead>
                                                             <tr>
-                                                                <th>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox" class="form-check-input"
-                                                                                aria-checked="false"><i
-                                                                                class="input-helper"></i></label>
-                                                                    </div>
-                                                                </th>
-                                                                <th>Customer</th>
-                                                                <th>Company</th>
-                                                                <th>Progress</th>
+                                                                <th>#</th>
+                                                                {{-- <th>Pelanggan</th> --}}
+                                                                <th>No. Invoice</th>
+                                                                <th>Total Pemesanan</th>
                                                                 <th>Status</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox" class="form-check-input"
-                                                                                aria-checked="false"><i
-                                                                                class="input-helper"></i></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex ">
-                                                                        <img src="images/faces/face1.jpg" alt="">
-                                                                        <div>
-                                                                            <h6>Brandon Washington</h6>
-                                                                            <p>Head admin</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h6>Company name 1</h6>
-                                                                    <p>company type</p>
-                                                                </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div
-                                                                            class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                            <p class="text-success">79%
-                                                                            </p>
-                                                                            <p>85/162</p>
-                                                                        </div>
-                                                                        <div class="progress progress-md">
-                                                                            <div class="progress-bar bg-success"
-                                                                                role="progressbar" style="width: 85%"
-                                                                                aria-valuenow="25" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="badge badge-opacity-warning">
-                                                                        In progress</div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox"
-                                                                                class="form-check-input"
-                                                                                aria-checked="false"><i
-                                                                                class="input-helper"></i></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex">
-                                                                        <img src="images/faces/face2.jpg" alt="">
-                                                                        <div>
-                                                                            <h6>Laura Brooks</h6>
-                                                                            <p>Head admin</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h6>Company name 1</h6>
-                                                                    <p>company type</p>
-                                                                </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div
-                                                                            class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                            <p class="text-success">65%
-                                                                            </p>
-                                                                            <p>85/162</p>
-                                                                        </div>
-                                                                        <div class="progress progress-md">
-                                                                            <div class="progress-bar bg-success"
-                                                                                role="progressbar" style="width: 65%"
-                                                                                aria-valuenow="65" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="badge badge-opacity-warning">
-                                                                        In progress</div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox"
-                                                                                class="form-check-input"
-                                                                                aria-checked="false"><i
-                                                                                class="input-helper"></i></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex">
-                                                                        <img src="images/faces/face3.jpg" alt="">
-                                                                        <div>
-                                                                            <h6>Wayne Murphy</h6>
-                                                                            <p>Head admin</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h6>Company name 1</h6>
-                                                                    <p>company type</p>
-                                                                </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div
-                                                                            class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                            <p class="text-success">65%
-                                                                            </p>
-                                                                            <p>85/162</p>
-                                                                        </div>
-                                                                        <div class="progress progress-md">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar" style="width: 38%"
-                                                                                aria-valuenow="38" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="badge badge-opacity-warning">
-                                                                        In progress</div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox"
-                                                                                class="form-check-input"
-                                                                                aria-checked="false"><i
-                                                                                class="input-helper"></i></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex">
-                                                                        <img src="images/faces/face4.jpg" alt="">
-                                                                        <div>
-                                                                            <h6>Matthew Bailey</h6>
-                                                                            <p>Head admin</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h6>Company name 1</h6>
-                                                                    <p>company type</p>
-                                                                </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div
-                                                                            class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                            <p class="text-success">65%
-                                                                            </p>
-                                                                            <p>85/162</p>
-                                                                        </div>
-                                                                        <div class="progress progress-md">
-                                                                            <div class="progress-bar bg-danger"
-                                                                                role="progressbar" style="width: 15%"
-                                                                                aria-valuenow="15" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="badge badge-opacity-danger">
-                                                                        Pending</div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check form-check-flat mt-0">
-                                                                        <label class="form-check-label">
-                                                                            <input type="checkbox"
-                                                                                class="form-check-input"
-                                                                                aria-checked="false"><i
-                                                                                class="input-helper"></i></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex">
-                                                                        <img src="images/faces/face5.jpg" alt="">
-                                                                        <div>
-                                                                            <h6>Katherine Butler</h6>
-                                                                            <p>Head admin</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h6>Company name 1</h6>
-                                                                    <p>company type</p>
-                                                                </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div
-                                                                            class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                            <p class="text-success">65%
-                                                                            </p>
-                                                                            <p>85/162</p>
-                                                                        </div>
-                                                                        <div class="progress progress-md">
-                                                                            <div class="progress-bar bg-success"
-                                                                                role="progressbar" style="width: 65%"
-                                                                                aria-valuenow="65" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="badge badge-opacity-success">
-                                                                        Completed</div>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -373,13 +193,11 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        <div
-                                                            class="d-flex justify-content-between align-items-center mb-3">
-                                                            <h4 class="card-title card-title-dash">Type
-                                                                By Amount</h4>
+                                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                                            <h4 class="card-title card-title-dash">
+                                                                Total Pemesanan</h4>
                                                         </div>
-                                                        <canvas class="my-auto" id="doughnutChart"
-                                                            height="200"></canvas>
+                                                        <canvas class="my-auto" id="doughnutChart" height="200"></canvas>
                                                         <div id="doughnut-chart-legend" class="mt-5 text-center"></div>
                                                     </div>
                                                 </div>
@@ -394,4 +212,101 @@
             </div>
         </div>
     </div>
+
+    @push('js-internal')
+        <script>
+
+            let totalSalesProductCategory = @json($totalSalesProductCategory);
+            let totalSalesProductCategoryLabel = [];
+            let totalSalesProductCategoryData = [];
+            let totalSalesProductCategoryColor = [];
+
+            Object.keys(totalSalesProductCategory).forEach(function (key) {
+                totalSalesProductCategoryLabel.push(key);
+                totalSalesProductCategoryData.push(totalSalesProductCategory[key]);
+                totalSalesProductCategoryColor.push('#' + Math.floor(Math.random() * 16777215).toString(16));
+            });
+
+            let totalSalesProductCategoryChart = document.getElementById('doughnutChart').getContext('2d');
+            let doughnutChart = new Chart(totalSalesProductCategoryChart, {
+                type: 'doughnut',
+                data: {
+                    labels: totalSalesProductCategoryLabel.map(function (label) {
+                        return label.charAt(0).toUpperCase() + label.slice(1);
+                    }),
+                    datasets: [{
+                        data: totalSalesProductCategoryData,
+                        backgroundColor: totalSalesProductCategoryColor,
+                        borderWidth: 0
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                        position: 'bottom',
+                        labels: {
+                            fontColor: '#333',
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    tooltips: {
+                        enabled: true,
+                        mode: 'single',
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + ': ' + data.datasets[0].data[tooltipItems.index].toLocaleString('id-ID', {
+                                    style: 'currency',
+                                    currency: 'IDR'
+                                });
+                            }
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            display: false,
+                            color: 'white'
+                        }
+                    }
+                }
+            });
+
+            let totalSalesProductCategoryLegend = doughnutChart.generateLegend();
+            $('#doughnut-chart-legend').html(totalSalesProductCategoryLegend);
+
+
+            $(function() {
+                $('#orderTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    autoWidth: false,
+                    ajax: "{{ route('admin.order.index') }}",
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        // {
+                        //     data: 'customer',
+                        //     name: 'customer'
+                        // },
+                        {
+                            data: 'transaction_code',
+                            name: 'transaction_code'
+                        },
+                        {
+                            data: 'total_payment',
+                            name: 'total_payment'
+                        },
+                        {
+                            data: 'status',
+                            name: 'status'
+                        },
+                    ]
+                });
+            });
+        </script>
+    @endpush
 @endsection

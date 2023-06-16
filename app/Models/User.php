@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'is_active',
     ];
 
     /**
@@ -63,5 +64,32 @@ class User extends Authenticatable
     public function products()
     {
         return $this->hasMany(Product::class, 'user_id', 'id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'from', 'id');
+    }
+
+    public function messagesTo()
+    {
+        return $this->hasMany(Message::class, 'to', 'id');
+    }
+
+    // scope is_active = true
+    public function scopeActive()
+    {
+        return $this->where('is_active', true);
+    }
+
+    // scope is_active = false
+    public function scopeInactive()
+    {
+        return $this->where('is_active', false);
     }
 }

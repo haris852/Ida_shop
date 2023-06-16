@@ -8,7 +8,7 @@
                         <div class="col-md-3">
                             <div class="text-center">
                                 <img src="{{ $data->image ? asset('storage/product/' . $data->image) : asset('assets/image/defaultmenu.jpg') }}"
-                                    alt="menu image" id="thumbnail" class="img-lg rounded mb-3 object-fit-cover">
+                                    alt="menu image" id="thumbnail" class="img-lg rounded mb-3 object-fit-cover"><br>
                                 <button class="btn btn-primary mt-2" id="btnUpload">
                                     {{ $data->image ? 'Ubah Foto' : 'Upload Foto' }}
                                 </button>
@@ -76,7 +76,7 @@
                                         required />
                                     <div class="form-group">
                                         <label for="description">Deskripsi</label>
-                                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                                        <textarea class="form-control" id="description" name="description" rows="4">{{ $data->description }}</textarea>
                                     </div>
                                 </div>
                             </div>

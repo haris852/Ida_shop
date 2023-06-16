@@ -1,6 +1,6 @@
 @extends('customer.layout.master')
 @section('content')
-    <div class="py-5 text-center">
+    <div class="pt-5 pb-3 text-center">
         <h4>
             {{-- <i class="fas fa-shopping-cart mr-3 text-primary"></i> --}}
             Keranjang
@@ -9,9 +9,21 @@
             <span class="text-danger">*</span>Item yang ada pada keranjang anda akan kadaluarsa dalam waktu 1 hari
         </p>
     </div>
+    @if (!$isOpen)
+        <div class="row justify-content-center">
+            <div class="alert alert-danger col-md-6" role="alert">
+                <i class="fas fa-clock mr-2"></i>
+                <strong>Toko Tutup</strong>
+                <p class="mb-0">
+                    Toko akan buka kembali pada pukul {{ $openTime }}
+                </p>
+            </div>
+        </div>
+    @endif
 
-    <div class="border-bottom mb-3 my-5"></div>
-    @if (isset($carts) && count($carts) > 0)
+    <div class="mb-3 my-5"></div>
+    @if (session()->has('cart') && count(session()->get('cart')) > 0)
+        @if (isset($carts) && count($carts) > 0)
         <div class="row my-5">
             <div class="col-md-7">
                 <ul class="list-group list-group-flush">
@@ -128,7 +140,8 @@
                     <span class="text-danger">*</span>
                     Silahkan isi alamat dengan lengkap dan jelas
                 </small>
-                <x-textarea id="note" name="note" label="Catatan" placeholder="Catatan tambahan" value="{{ old('note') }}" />
+                <x-textarea id="note" name="note" label="Catatan" placeholder="Catatan tambahan"
+                    value="{{ old('note') }}" />
                 <div class="row">
                     <div class="col-md-6">
                         <x-input id="receiver_phone" name="receiver_phone" label="Nomor Telepon Penerima" type="number"
@@ -139,13 +152,17 @@
                             value="{{ old('receiver_name') }}" />
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="payment_method">Metode Pembayaran</label>
                     <select class="form-control text-sm" name="payment_method" id="payment_method">
                         {{-- e money, COD --}}
-                        <option value="1">E-Money</option>
+                        <option value="1">E-Wallet</option>
                         <option value="2">COD</option>
                     </select>
+                    <small id="payment_description">
+                        <span class="text-danger">*</span>
+                        Pembayaran E Wallet dapat menggunakan OVO, Dana, Gopay, Shopee Pay
+                    </small>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mt-4">
@@ -153,10 +170,17 @@
                         <i class="fas fa-arrow-left mr-2"></i>
                         Kembali
                     </a>
-                    <button class="btn btn-primary" id="btnCheckout">
-                        <i class="fas fa-shopping-cart mr-2"></i>
-                        Pesan Sekarang
-                    </button>
+                    @if ($isOpen && count($carts) > 0)
+                        <button class="btn btn-primary" id="btnCheckout">
+                            <i class="fas fa-shopping-cart mr-2"></i>
+                            Pesan Sekarang
+                        </button>
+                    @else
+                        <button class="btn btn-primary" disabled>
+                            <i class="fas fa-clock mr-2"></i>
+                            Toko Tutup
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -327,13 +351,13 @@
                     let payment_method = $('#payment_method').val();
                     let note = $('#note').val();
 
-                    if(address == '' || receiver_name == '' || receiver_phone == ''){
+                    if (address == '' || receiver_name == '' || receiver_phone == '') {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Mohon isi semua form dengan benar',
                         });
-                    }else{
+                    } else {
                         $.ajax({
                             url: "{{ route('customer.checkout.store') }}",
                             method: "POST",
@@ -370,9 +394,10 @@
                         });
                     }
                 });
-                $('#payment_method').on('change', function() {
+
+                $('#payment_method').on('change', function(){
                     let val = $(this).val();
-                    if (val == 2) {
+                    if(val == 2) {
                         $('#payment_description').html(`
                             <span class="text-danger">*</span>
                             Pembayaran COD dilakukan ketika pesanan diterima
@@ -384,6 +409,7 @@
                         `);
                     }
                 });
+                
                 // get value if quantity stop change
                 $('input[name="quantity"]').on('input', function() {
                     if ($(this).val() == 0) {

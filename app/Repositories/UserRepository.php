@@ -15,7 +15,13 @@ class UserRepository implements UserInterface
 
     public function get()
     {
-        return $this->user->where('role', 'user')->get();
+        // use scopeActive() and where role is not admin
+        return $this->user->active()->where('role', '!=', User::ADMIN_ROLE)->get();
+    }
+
+    public function getInactive()
+    {
+        return $this->user->inactive()->where('role', '!=', User::ADMIN_ROLE)->get();
     }
 
     public function getById($id)

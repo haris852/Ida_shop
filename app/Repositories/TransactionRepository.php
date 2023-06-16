@@ -93,7 +93,7 @@ class TransactionRepository implements TransactionInterface
 
     public function getTransactionByUserId($userId)
     {
-        return $this->transaction->where('user_id', $userId)->with('transactionDetail.product')->orderBy('created_at', 'desc')->get();
+        return $this->transaction->where('user_id', $userId)->with(['transactionDetail.product', 'review'])->orderBy('created_at', 'desc')->get();
     }
 
     public function destroy($id)
@@ -133,5 +133,74 @@ class TransactionRepository implements TransactionInterface
             'status' => $this->transaction::STATUS_PAID,
             'proof_of_payment' => $filename
         ]);
+    }
+
+    public function changeStatus($id, $status)
+    {
+        DB::beginTransaction();
+        try {
+            $this->transaction->find($id)->update([
+                'status' => $status
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        // update stock
+        if ($status == 'success') {
+            try {
+                $transactionDetail = $this->transactionDetail->where('transaction_id', $id)->get();
+                foreach ($transactionDetail as $detail) {
+                    $detail->product->update([
+                        'stock' => $detail->product->stock - $detail->qty
+                    ]);
+                }
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                throw $th;
+            }
+        }
+
+        DB::commit();
+    }
+
+    public function listDetail()
+    {
+        return $this->transactionDetail->with(['transaction.user', 'product', 'createdBy'])->whereHas('transaction', function ($query) {
+            $query->where('status', $this->transaction::STATUS_PAID)
+                ->orWhere('status', $this->transaction::STATUS_SUCCESS);
+        })->get();
+    }
+
+    public function uploadPaymentCod($attributes)
+    {
+        DB::beginTransaction();
+        try {
+            $filename = uniqid() . '-' . $attributes['proof_of_receipt']->getClientOriginalName();
+            $attributes['proof_of_receipt']->storeAs('public/receipt', $filename);
+
+            $this->transaction->find($attributes['id'])->update([
+                'status' => $this->transaction::STATUS_SUCCESS,
+                'proof_of_receipt' => $filename
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        try {
+            $transactionDetail = $this->transactionDetail->where('transaction_id', $attributes['id'])->get();
+            foreach ($transactionDetail as $detail) {
+                $detail->product->update([
+                    'stock' => $detail->product->stock - $detail->qty
+                ]);
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        DB::commit();
     }
 }

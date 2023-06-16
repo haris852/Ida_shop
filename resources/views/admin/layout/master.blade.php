@@ -12,6 +12,8 @@
 
     @include('admin.layout.header')
 
+    @stack('css-internal')
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

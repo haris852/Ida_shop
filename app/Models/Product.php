@@ -36,4 +36,23 @@ class Product extends Model
     {
         return $this->hasMany(TransactionDetail::class, 'product_id', 'id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'product_id', 'id');
+    }
+
+    public function getTotalSalesByCategory()
+    {
+        return $this->with('transactionDetail')->get()->groupBy('category')->map(function ($item) {
+            return $item->sum(function ($item) {
+                return $item->transactionDetail->where('transaction.status', 'success')->sum('total_price');
+            });
+        });
+    }
+
+    public function getCategories()
+    {
+        return $this->select('category')->groupBy('category')->get();
+    }
 }

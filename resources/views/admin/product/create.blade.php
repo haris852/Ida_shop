@@ -8,7 +8,7 @@
                         <div class="col-md-3">
                             <div class="text-center">
                                 <img src="{{ asset('assets/image/defaultmenu.jpg') }}" alt="menu image" id="thumbnail"
-                                    class="img-lg rounded mb-3 object-fit-cover">
+                                    class="img-lg rounded mb-3 object-fit-cover"><br>
                                 <button class="btn btn-primary mt-2" id="btnUpload">
                                     Upload Foto
                                 </button>

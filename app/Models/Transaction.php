@@ -25,6 +25,7 @@ class Transaction extends Model
         'note',
         'proof_of_payment',
         'status',
+        'proof_of_receipt',
         'is_confirmed',
         'user_id',
         'payment_method',
@@ -38,6 +39,11 @@ class Transaction extends Model
     public function transactionDetail()
     {
         return $this->hasMany(TransactionDetail::class, 'transaction_id', 'id');
+    }
+
+    public function review()
+    {
+        return $this->hasOne(Review::class, 'transaction_id', 'id');
     }
 
     public function user()
@@ -59,5 +65,69 @@ class Transaction extends Model
         $newCode = (int) $lastCode + 1;
 
         return $prefix . sprintf('%04s', $newCode);
+    }
+
+    public function getTotalSales()
+    {
+        return $this->where('status', self::STATUS_SUCCESS)->sum('total_payment');
+    }
+
+    public function getTotalSalesDaily()
+    {
+        return $this->where('status', self::STATUS_SUCCESS)->whereDate('created_at', date('Y-m-d'))->sum('total_payment');
+    }
+
+    public function getTotalSalesDifference()
+    {
+        $today = $this->getTotalSalesDaily();
+        $yesterday = $this->where('status', self::STATUS_SUCCESS)->whereDate('created_at', date('Y-m-d', strtotime('-1 day')))->sum('total_payment');
+
+        // return if up or down and percentage, fix if yesterday is 0
+        if ($yesterday == 0) {
+            return [
+                'is_up' => true,
+                'percentage' => 100,
+            ];
+        }
+
+        $percentage = (($today - $yesterday) / $yesterday) * 100;
+
+        return [
+            'is_up' => $percentage > 0,
+            'percentage' => abs($percentage) > 100 ? 100 : abs($percentage),
+        ];
+    }
+
+    public function getTotalCustomers()
+    {
+        return $this->where('status', self::STATUS_SUCCESS)->groupBy('user_id')->count();
+    }
+
+    public function getTotalCustomersDaily()
+    {
+        return $this->where('status', self::STATUS_SUCCESS)->whereDate('created_at', date('Y-m-d'))->groupBy('user_id')->count();
+    }
+
+    public function getTotalCustomersDifference()
+    {
+        $today = $this->getTotalCustomersDaily();
+        $yesterday = $this->where('status', self::STATUS_SUCCESS)->whereDate('created_at', date('Y-m-d', strtotime('-1 day')))->groupBy('user_id')->count();
+
+        // return if up or down and difference in number
+        if ($today > $yesterday) {
+            $difference = $today - $yesterday;
+            $status = true;
+        } else if ($today < $yesterday) {
+            $difference = $yesterday - $today;
+            $status = false;
+        } else {
+            $difference = 0;
+            $status = true;
+        }
+
+        return [
+            'is_up' => $status,
+            'difference' => $difference,
+        ];
     }
 }

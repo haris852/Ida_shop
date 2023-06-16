@@ -24,7 +24,7 @@ class OrderController extends Controller
                 return $data->transaction_code;
             })
             ->addColumn('payment_method', function($data) {
-                return $data->payment_method == 1 ? 'E Money' : 'COD (Bayar di tempat)';
+                return $data->payment_method == 1 ? 'E Wallet' : 'COD (Bayar di tempat)';
             })
             ->addColumn('customer', function($data) {
                 return $data->user->name;
@@ -47,8 +47,14 @@ class OrderController extends Controller
             ->addColumn('total_payment', function($data) {
                 return 'Rp. ' . number_format($data->total_payment, 0, ',', '.');
             })
+            ->addColumn('address', function($data) {
+                return $data->receiver_address ?? '-';
+            })
             ->addColumn('created_at', function($data) {
                 return $data->created_at->format('d-m-Y H:i') . ' WIB';
+            })
+            ->addColumn('detail_transaction', function($data) {
+                return view('admin.order.column.detail_transaction', ['data' => $data]);
             })
             ->addColumn('action', function($data) {
                 return view('admin.order.column.action', ['data' => $data]);

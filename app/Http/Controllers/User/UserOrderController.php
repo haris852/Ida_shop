@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Events\OrderStatusEvent;
 use App\Http\Controllers\Controller;
+use App\Interfaces\ReviewInterface;
 use App\Interfaces\TransactionInterface;
 use App\Models\ConfigurationStore;
 use Illuminate\Http\Request;
@@ -11,10 +12,12 @@ use Illuminate\Http\Request;
 class UserOrderController extends Controller
 {
     private $transaction;
+    private $review;
 
-    public function __construct(TransactionInterface $transaction)
+    public function __construct(TransactionInterface $transaction, ReviewInterface $review)
     {
         $this->transaction = $transaction;
+        $this->review = $review;
     }
 
     public function index()
@@ -86,5 +89,39 @@ class UserOrderController extends Controller
         $transaction = $this->transaction->getById($id);
         event(new OrderStatusEvent($transaction->transaction_code, 'Pesanan dibayar'));
         return redirect()->back()->with('success', 'Transaksi berhasil dibayar');
+    }
+
+    public function review(Request $request, string $id)
+    {
+        try {
+            $this->review->store($request->all(), $id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Review berhasil ditambahkan'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function filterStatus(Request $request)
+    {
+        $orders = $this->transaction->getTransactionByUserId(auth()->user()->id);
+
+        return view('customer.detail_order', [
+            'orders' => $orders->where('status', $request->status),
+            'storeConfiguration' => ConfigurationStore::first(),
+        ])->render();
+    }
+
+    public function print(string $id)
+    {
+        return view('customer.print-order', [
+            'order' => $this->transaction->getById($id),
+            'configuration' => ConfigurationStore::first(),
+        ]);
     }
 }

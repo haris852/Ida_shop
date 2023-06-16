@@ -10,4 +10,7 @@ interface TransactionInterface
     public function store($attributes);
     public function destroy($id);
     public function confirm($id, $attributes);
+    public function changeStatus($id, $status);
+    public function listDetail();
+    public function uploadPaymentCod($attributes);
 }

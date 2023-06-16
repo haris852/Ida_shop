@@ -58,10 +58,6 @@
                                         required />
                                     <x-input id="address" name="address" type="text" label="Alamat" :value="$data->address"
                                         required />
-                                    <x-input id="password" name="password" type="text" label="Password" />
-                                    <x-input id="confirmpassword" name="confirmpassword" type="text"
-                                        label="Confirm Password" />
-
                                 </div>
                             </div>
                         </div>

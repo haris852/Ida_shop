@@ -160,7 +160,7 @@
             </li> --}}
             <li class="nav-item dropdown d-none d-lg-block user-dropdown">
                 <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="img-xs rounded-circle me-2"
+                    <img class="img-xs rounded-circle me-2 object-cover"
                         src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
                         alt="Profile image">
                     <span class="font-weight-normal">{{ Auth::user()->name }}</span>
@@ -169,7 +169,7 @@
                     <a class="dropdown-item py-2" href="{{ route('admin.setting.index') }}">
                         Pengaturan
                     </a>
-                    <a class="dropdown-item py-2" href="{{ route('logout') }}">
+                    <a class="dropdown-item py-2 border-bottom-0" href="{{ route('logout') }}">
                         Keluar
                     </a>
                 </div>

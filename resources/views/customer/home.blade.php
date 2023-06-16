@@ -1,5 +1,17 @@
 @extends('customer.layout.master')
 @section('content')
+    @if (!$isOpen)
+        <div class="row justify-content-center mt-5">
+            <div class="alert alert-danger col-md" role="alert">
+                <i class="fas fa-clock mr-2"></i>
+                <strong>Toko Tutup</strong>
+                <p class="mb-0">
+                    Toko akan buka kembali pada pukul {{ $openTime }}
+                </p>
+            </div>
+        </div>
+    @endif
+
     <!-- Header -->
     <div class="row d-flex justify-content-between align-items-center">
         <div class="col-md-7">
@@ -15,7 +27,9 @@
                 <p class="mbr-text mbr-fonts-style display-7 w-75">
                     Kami menyediakan berbagai macam daging dan seafood dengan kualitas terbaik dan harga yang terjangkau.
                 </p>
-                <div class="mbr-section-btn"><a href="#" class="btn btn-primary display-7">Pesan Sekarang</a></div>
+                <div class="mbr-section-btn"><a href="{{ route('menu') }}" class="btn btn-primary display-7">Pesan
+                        Sekarang</a>
+                </div>
             </div>
         </div>
         <div class="d-none d-md-block col-md">
@@ -25,21 +39,23 @@
 
     <!-- Menu -->
     <div class="text-center mt-5 mb-3">
-        <h4 class="font-weight-bold">Menu Kami</h4>
+        <h4 class="font-weight-bold">Produk</h4>
         <p>
-            Ragam menu yang kami sediakan untuk anda
+            Produk yang kami sediakan
         </p>
     </div>
 
     <div class="row mt-5">
         @foreach ($products as $product)
-            <div class="col-md-3">
+            <div class="col-md-3 mb-4" data-name="{{ $product->name }}" data-weight="{{ $product->weight }} {{ $product->unit }}"
+                data-stock="{{ $product->stock == 0 ? 'Habis' : $product->stock }}"
+                data-description="{{ $product->description }}" id="{{ $product->id }}">
                 <div class="card">
                     <img class="card-img object-fit-cover p-2" src="{{ asset('storage/product/' . $product->image) }}"
-                        alt="Vans" width="100%" height="200">
+                        alt="product image" width="100%" height="200">
                     <div class="card-body">
-                        <h6 class="card-title">
-                            {{ $product->name }}
+                        <h6 class="card-title pointer" onclick="detailProduct('{{ $product->id }}')">
+                            {{ $product->name }} <i class="fas fa-info-circle fa-xs text-primary ml-2"></i>
                         </h6>
                         <p class="card-subtitle mb-2 text-muted text-capitalize">Kategori: {{ $product->category }}</p>
                         <p class="card-subtitle mb-2 text-muted text-capitalize">Berat: {{ $product->weight }}
@@ -61,11 +77,9 @@
                                     </a>
                                 @else
                                     @if ($product->stock != 0)
-                                        <a
-                                            @if (auth()->check()) onclick="addToCart('{{ $product->id }}')"
+                                        <a @if (auth()->check()) onclick="addToCart('{{ $product->id }}')"
                                                 @else
-                                                href="{{ route('login') }}"
-                                            @endif
+                                                href="{{ route('login') }}" @endif
                                             class="btn btn-block text-white btn-primary mt-3">
                                             {{ __('Tambah ke Keranjang') }}
                                         </a>
@@ -83,8 +97,52 @@
         @endforeach
     </div>
 
+    <!-- Modal Detail Product -->
+    <div class="modal fade" id="detailProductModal" tabindex="-1" role="dialog" aria-labelledby="detailProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="detailProductModalLabel">Detail Produk</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Nama Produk</span>
+                        <span class="product-name">-</span>
+                    </div>
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Berat</span>
+                        <span class="product-weight">-</span>
+                    </div>
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Stok</span>
+                        <span class="product-stock">-</span>
+                    </div>
+                    <div class="d-lg-flex mb-1 justify-content-between">
+                        <span class="text-gray">Deskripsi</span>
+                        <p class="product-description">-</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('js-internal')
         <script>
+            function detailProduct(id) {
+                $('#detailProductModal').modal('show');
+                $('.product-name').text($('#' + id).data('name'));
+                $('.product-weight').text($('#' + id).data('weight'));
+                $('.product-stock').text($('#' + id).data('stock'));
+                $('.product-description').text($('#' + id).data('description') || '-');
+            }
+
             function addToCart(id) {
                 $.ajax({
                     url: "{{ route('cart.store') }}",
@@ -101,7 +159,7 @@
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            window.location.href = "{{ route('cart') }}";
+                            location.reload();
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -112,6 +170,22 @@
                     }
                 });
             }
+
+            @if (Session::has('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: "{{ Session::get('success') }}"
+                });
+            @endif
+
+            @if (Session::has('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: "{{ Session::get('error') }}"
+                });
+            @endif
         </script>
     @endpush
 @endsection

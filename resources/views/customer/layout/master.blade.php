@@ -8,6 +8,8 @@
     <title>
         {{ env('APP_NAME') }}
     </title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('customer_asset/img/logo.svg') }}">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -72,6 +74,8 @@
         }
     </style>
 
+    @stack('css-internal')
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -85,45 +89,45 @@
             aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse container" id="navbarTogglerDemo01">
-            <a class="navbar-brand d-none-md" href="/">
-                <img src="{{ asset('customer_asset/img/logo.svg') }}" width="40" height="40" alt=""
-                    style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);">
-            </a>
-            <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('home') }}">Beranda <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Menu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('user-customer.order.index') ? 'active' : '' }}"
-                        href="{{ route('user-customer.order.index') }}">Pesanan</a>
-                </li>
-                @auth
-                    @if (session()->has('cart') && count(session()->get('cart')) > 0)
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <div class="d-flex justify-content-between w-100 align-items-center container">
+                <a class="navbar-brand d-none-md" href="/">
+                    <img src="{{ asset('customer_asset/img/logo.svg') }}" width="40" height="40" alt=""
+                        style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);">
+                </a>
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                    <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('home') }}">Beranda <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('menu') ? 'active' : '' }}"
+                            href="{{ route('menu') }}">Produk</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user-customer.order.index') ? 'active' : '' }}"
+                            href="{{ route('user-customer.order.index') }}">Pesanan</a>
+                    </li>
+                    @auth
                         <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('cart') }}">Keranjang
                                 @if (session()->has('cart') && count(session()->get('cart')) > 0)
                                     <span
-                                        class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) }}</span>
+                                        class="ml-1 badge badge-pill badge-danger">{{ count(session()->get('cart')) ?? 0 }}</span>
                                 @endif
                             </a>
                         </li>
-                    @endif
-                @endauth
-            </ul>
-            @if (auth()->check())
-                {{-- dropdown image and name --}}
-                <div class="dropdown">
-                    <a class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
-                            width="40" height="40" alt="" class="rounded-circle mr-2"
-                            style="filter: invert(1) sepia(1) saturate(1) hue-rotate(180deg);">
-                        {{ auth()->user()->name }}
-                    </a>
+                    @endauth
+                </ul>
+                @if (auth()->check())
+                    {{-- dropdown image and name --}}
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-dark text-decoration-none" href="#" role="button"
+                            id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('assets/image/defaultuser.jpg') }}"
+                                height="40" width="40" alt="" class="rounded-circle mr-2 object-cover">
+                            {{ auth()->user()->name }}
+                        </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a href="{{ route('user.message.index') }}" class="dropdown-item">Pesan</a>

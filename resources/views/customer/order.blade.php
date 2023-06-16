@@ -5,161 +5,77 @@
             Daftar Pesanan
         </h4>
         <p class="mt-2">
-            <span class="text-danger">*</span>Segera lakukan pembayaran dalam 1x24 jam
+            <span class="text-danger">*</span>Segera lakukan pembayaran dalam 2 jam kedepan semenjak pemesanan produk
         </p>
     </div>
-    @if (isset($orders) && count($orders) > 0)
+
+    <div class="mt-4" id="statusContainer">
         <div class="row">
-            @foreach ($orders as $order)
-                <div class="col-md-4 mb-3">
-                    <div class="card rounded-lg">
-                        <div class="card-body">
-                            <h6 class="card-title">
-                                Invoice
-                            </h6>
-                            <div class=" d-sm-block d-md-flex justify-content-between mb-4">
-                                <p class="card-text m-0">
-                                    {{ \Carbon\Carbon::parse($order->created_at)->isoFormat('D MMMM Y, H:MM') }} WIB
-                                </p>
-                                <p class="card-text m-0">
-                                    {{ $order->transaction_code }}
-                                </p>
-                            </div>
-                            <hr>
-                            @foreach ($order->transactionDetail as $td)
-                                <div class="card-text mb-3 d-flex justify-content-between align-items-center">
-                                    <div class="m-0">
-                                        <span>{{ $td->product->name }}</span><br>
-                                        <span class="text-muted">
-                                            {{ $td->qty }} {{ $td->product->unit }} x
-                                            {{ number_format($td->product->price, 0, ',', '.') }}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span class="font-weight-bold">
-                                            {{ number_format($td->total_price, 0, ',', '.') }}
-                                        </span>
-                                    </div>
-                                </div>
-                            @endforeach
-                            <hr>
-                            <div class="card-text d-flex justify-content-between align-items-center">
-                                <div class="m-0">
-                                    <span class="font-weight-bold">Metode Pembayaran</span>
-                                </div>
-                                <div>
-                                    <span class="font-weight-bold">
-                                        {{ $order->payment_method == 1 ? 'E Money' : 'COD (Bayar di Tempat)' }}
-                                    </span>
-                                </div>
-                            </div>
-                            @if ($order->payment_method == 1)
-                                <div class="card-text d-flex justify-content-between align-items-center">
-                                    <div class="m-0">
-                                        <span class="font-weight-bold">Nomor Dana</span>
-                                    </div>
-                                    <div>
-                                        <span class="font-weight-bold">
-                                            {{ $storeConfiguration->phone }}
-                                        </span>
-                                    </div>
-                                </div>
-                            @endif
-                            <hr>
-                            <div class="card-text d-flex justify-content-between align-items-center">
-                                <div class="m-0">
-                                    <span class="font-weight-bold">Ongkos Kirim</span>
-                                </div>
-                                <div>
-                                    <span class="font-weight-bold">
-                                        {{ number_format($order->shipping_price, 0, ',', '.') }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="card-text mb-3 d-flex justify-content-between align-items-center">
-                                <div class="m-0">
-                                    <span class="font-weight-bold">Total</span>
-                                </div>
-                                <div>
-                                    <span class="font-weight-bold">
-                                        {{ number_format($order->total_price, 0, ',', '.') }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="mt-4"></div>
-                            <div class="progress-track">
-                                @if ($order->payment_method == 1)
-                                    @if ($order->status == 'pending')
-                                        <ul id="progressbar" class="mb-4">
-                                            <li class="step0 active" id="step1">Menunggu</li>
-                                            <li class="step0 text-center" id="step2">Dibayar</li>
-                                            <li class="step0 text-right" id="step3">Diantar</li>
-                                            <li class="step0 text-right" id="step4">Diterima</li>
-                                        </ul>
-                                    @endif
-
-                                    @if ($order->status == 'paid')
-                                        <ul id="progressbar" class="mb-4">
-                                            <li class="step0 active" id="step1">Menunggu</li>
-                                            <li class="step0 active text-center" id="step2">Dibayar</li>
-                                            <li class="step0 text-right" id="step3">Diantar</li>
-                                            <li class="step0 text-right" id="step4">Diterima</li>
-                                        </ul>
-                                    @endif
-                                @endif
-                            </div>
-
-                            @if ($order->status == 'pending')
-                                <!-- Pembayaran menggunakan E Money -->
-                                @if ($order->status == 'pending' && $order->payment_method == 1)
-                                    @if (Carbon\Carbon::parse($order->created_at)->addDay() < Carbon\Carbon::now())
-                                        <button class="btn btn-danger btn-block disabled">
-                                            Pesanan Kadaluarsa
-                                        </button>
-                                    @else
-                                        <button type="button" class="btn btn-primary btn-block"
-                                            onclick="pay('{{ $order->id }}')">
-                                            {{ $order->is_confirmed == 1 ? 'Lihat Detail' : 'Bayar Sekarang' }}
-                                        </button>
-                                        <small class="text-muted text-center mt-2 d-block">
-                                            Pesanan akan kadaluarsa dalam:
-                                            <span class="font-weight-bold text-danger">
-                                                {{ Carbon\Carbon::parse($order->created_at)->addDay()->diffForHumans() }}
-                                            </span>
-                                        </small>
-                                    @endif
-                                @elseif ($order->status == 'pending' && $order->payment_method == 2)
-                                    <button type="button" class="btn btn-primary btn-block"
-                                        onclick="pay('{{ $order->id }}')">
-                                        Lihat Detail
-                                    </button>
-                                @endif
-                            @elseif ($order->status !== 'pending')
-                                <button type="button" class="btn btn-primary btn-block"
-                                    onclick="pay('{{ $order->id }}')">
-                                    Lihat Detail
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @endforeach
+            <div class="col-lg text-center" onclick="detailOrder('pending')">
+                <img class="rounded mb-4" src="https://cdn-icons-png.flaticon.com/512/411/411786.png"
+                    alt="Generic placeholder image" width="70" height="70">
+                <h5>Belum Bayar</h5>
+                @if ($orders->where('status', 'pending')->count() > 0)
+                    <p class="badge badge-warning font-weight-bold">
+                        {{ $orders->where('status', 'pending')->count() }} item
+                    </p>
+                @endif
+            </div>
+            <div class="col-lg text-center" onclick="detailOrder('paid')">
+                <img class="rounded mb-4"
+                    src="https://static.vecteezy.com/system/resources/previews/019/873/849/original/clock-icon-transparent-free-icon-free-png.png"
+                    alt="Generic placeholder image" width="70" height="70">
+                <h5>Menunggu Konfirmasi</h5>
+                @if ($orders->where('status', 'paid')->count() > 0)
+                    <p class="badge badge-dark font-weight-bold">
+                        {{ $orders->where('status', 'paid')->count() }}
+                        item
+                    </p>
+                @endif
+            </div>
+            <div class="col-lg text-center" onclick="detailOrder('delivered')">
+                <img class="rounded mb-4" src="https://cdn-icons-png.flaticon.com/512/7615/7615749.png"
+                    alt="Generic placeholder image" width="70" height="70">
+                <h5>Dikirim</h5>
+                @if ($orders->where('status', 'delivered')->count() > 0 || $orders->where('status', 'confirmed')->count() > 0)
+                    <p class="badge badge-primary font-weight-bold">
+                        {{ $orders->where('status', 'delivered')->count() + $orders->where('status', 'confirmed')->count() }}
+                        item
+                    </p>
+                @endif
+            </div>
+            <div class="col-lg text-center" onclick="detailOrder('success')">
+                <img class="rounded mb-4"
+                    src="https://cdn.iconscout.com/icon/free/png-256/free-delivered-2840095-2362633.png"
+                    alt="Generic placeholder image" width="70" height="70">
+                <h5>Selesai</h5>
+                @if ($orders->where('status', 'success')->count() > 0)
+                    <p class="badge badge-success font-weight-bold">
+                        {{ $orders->where('status', 'success')->count() }} item
+                    </p>
+                @endif
+            </div>
+            <div class="col-lg text-center" onclick="detailOrder('failed')">
+                <img class="rounded mb-4" src="https://cdn-icons-png.flaticon.com/512/5348/5348886.png"
+                    alt="Generic placeholder image" width="70" height="70">
+                <h5>Dibatalkan</h5>
+                @if ($orders->where('status', 'failed')->count() > 0)
+                    <p class="badge badge-danger font-weight-bold">
+                        {{ $orders->where('status', 'failed')->count() }} item
+                    </p>
+                @endif
+            </div>
         </div>
-    @else
-        <div class="text-center">
-            <h5>
-                Tidak ada pesanan
-            </h5>
-        </div>
-    @endif
+    </div>
 
+    <!-- Modal Payment -->
     <div class="modal fade" id="payment" tabindex="-1" role="dialog" aria-labelledby="paymentLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="paymentLabel">
+                    <p class="modal-title font-weight-bold" id="paymentLabel">
                         Formulir Pembayaran
-                    </h5>
+                    </p>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -167,6 +83,12 @@
                 <div class="modal-body">
                     <input type="hidden" id="order_id" name="order_id">
                     <span class="badge badge-dark" id="orderStatus"></span>
+
+                    <!-- order item -->
+                    <div class="mt-3" id="transactionDetail">
+                    </div>
+
+                    <hr class="my-3">
 
                     <div class="mt-3">
                         <span class="">Total Pembayaran</span>
@@ -177,12 +99,22 @@
                         <span class="">Metode Pembayaran</span>
                         <span class="font-weight-bold float-right" id="paymentMethod"></span>
                     </div>
+
                     <!-- Label Nomor Dana -->
-                    <div class="mt-1 border-top border-bottom py-4" id="emoney_phone">
-                        <span class="">Nomor Dana</span>
-                        <span class="font-weight-bold float-right" id="accountNumber">{{ $storeConfiguration->phone }}
+                    <div class="mt-1 border-top border-bottom py-4 d-sm-flex items-center justify-content-between"
+                        id="emoney_phone">
+                        <div>
+                            <span class="font-weight-bold">Nomor Wallet</span>
+                            <p>
+                                <small>
+                                    <span class="text-danger">*</span>OVO, Dana, Gopay, Shopee Pay
+                                </small>
+                            </p>
+                        </div>
+                        <span class="font-weight-bold my-auto" id="accountNumber">{{ $storeConfiguration->phone }}
                             (a.n
                             {{ $storeConfiguration->name }})
+                        </span>
                     </div>
                     <div class="d-none mt-3" id="proof_container">
                         <!-- Label E Money -->
@@ -196,12 +128,56 @@
                         <img src="" alt="" id="proof_of_payment_preview" class="img-fluid">
                     </div>
 
+                    <div class="mt-3">
+                        <span class="">Alamat Penerima</span>
+                        <span class="font-weight-medium float-right" id="receiver_address"></span>
+                    </div>
+
+                    <div class="mt-1">
+                        <span class="">Nomer Penerima</span>
+                        <span class="font-weight-bold float-right" id="receiver_phone"></span>
+                    </div>
+
                     <!-- Label COD -->
                     <div class="alert alert-warning mt-3 d-none" id="cod_label">
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" id="btnPrint" class="btn btn-secondary">
+                        Cetak Invoice
+                    </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Review -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title font-weight-bold" id="reviewModalLabel">
+                        Review Produk
+                    </p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span>Rating produk ini</span><br>
+                    <input type="hidden" name="id">
+                    <div id="rate"></div>
+                    <x-textarea name="review" id="review" placeholder="Tulis ulasan anda disini" required />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Tutup
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnReview">
+                        Review Produk
+                    </button>
                 </div>
             </div>
         </div>
@@ -209,6 +185,19 @@
 
     @push('js-internal')
         <script>
+            function detailOrder(status) {
+                $.ajax({
+                    url: '{{ route('user-customer.order.filter-status') }}',
+                    type: 'GET',
+                    data: {
+                        status: status
+                    },
+                    success: function(data) {
+                        $('#statusContainer').html(data);
+                    }
+                });
+            }
+
             function translateStatus(status) {
                 if (status == 'pending') {
                     return 'Silahkan lakukan pembayaran';
@@ -239,31 +228,63 @@
                             $('#proof_container').addClass('d-none');
                         }
 
-                        // COD Label
+                        $('#transactionDetail').html('');
+                        data.transaction_detail.forEach(function(item) {
+                            $('#transactionDetail').append(`
+                                <div class="card-text mb-3 d-flex justify-content-between align-items-center">
+                                    <div class="m-0">
+                                        <span>${item.product.name}</span><br>
+                                        <span class="text-muted">
+                                            ${item.qty} ${item.product.unit} x
+                                            Rp.${item.product.price}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="font-weight-bold">
+                                            ${item.qty * item.product.price}
+                                        </span>
+                                    </div>
+                                </div>
+                            `);
+                        });
+
+                        $('#receiver_address').html(data.receiver_address);
+                        $('#receiver_phone').html(data.receiver_phone);
+
+                        // E Money Label
                         if (data.status == 'pending') {
                             $('#cod_label').html(
                                     'Silahkan lakukan pembayaran sebesar <span class="font-weight-bold">Rp. ' + data
                                     .total_price + '</span> kepada kurir kami saat pesanan sampai di tujuan.')
                                 .removeClass('d-none').addClass('d-block');
                         } else if (data.status == 'paid') {
-                            $('#cod_label').html('Pesanan sedang diproses').removeClass('d-none').addClass(
+                            $('#cod_label').html('Menunggu konfirmasi').removeClass('d-none').addClass(
                                 'd-block');
-                            // show proof of payment
                             $('#proof_container').removeClass('d-none');
                             $('#proof_of_payment').addClass('d-none');
                             $('#proof_of_payment_preview').attr('src', "{{ asset('storage/payment') }}/" + data
                                 .proof_of_payment);
+                        } else if (data.status == 'confirmed') {
+                            $('#cod_label').html('Pesanan sedang diproses').removeClass('d-none').addClass(
+                                'd-block');
                         } else if (data.status == 'failed') {
                             $('#cod_label').html('Pembayaran gagal').removeClass('d-none').addClass('d-block');
                         } else if (data.status == 'delivered') {
-                            $('#cod_label').html('Pesanan telah dikirim').removeClass('d-none').addClass('d-block');
-                        } else if (data.status == 'success') {
-                            $('#cod_label').html('Pesanan telah diterima').removeClass('d-none').addClass(
+                            $('#cod_label').html('Pesanan sedang dikirim').removeClass('d-none').addClass(
                                 'd-block');
+                        } else if (data.status == 'success') {
+                            $('#cod_label').html('Pesanan telah diterima').removeClass('d-none alert-warning')
+                                .addClass('alert-success d-block');
+                        }
+
+                        if (data.payment_method == 2) {
+                            $('#emoney_phone').addClass('d-none');
+                        } else {
+                            $('#emoney_phone').removeClass('d-none');
                         }
 
                         $('#totalPrice').html('Rp. ' + data.total_price);
-                        $('#paymentMethod').html(data.payment_method == 1 ? 'E-Money' : 'COD (Cash On Delivery)');
+                        $('#paymentMethod').html(data.payment_method == 1 ? 'E-Wallet' : 'COD (Cash On Delivery)');
 
                         if (data.payment_method == 1 && data.status == 'pending') {
                             $('#emoney_phone').removeClass('d-none');
@@ -316,6 +337,25 @@
                 })
             }
 
+            function review(id) {
+                $('#reviewModal input[name="id"]').val(id);
+                $('#rate').html(`
+                <div class="rate ml-0">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                    </div>
+                `);
+                $('textarea[name="review"]').val('');
+            }
+
             $(function() {
                 $('#proof_of_payment').change(function() {
                     let reader = new FileReader();
@@ -363,6 +403,74 @@
                             })
                         }
                     })
+                });
+
+                $('#btnReview').click(function(e) {
+                    e.preventDefault();
+                    let rating = 0;
+                    let review = '';
+
+                    $('#reviewModal input[name="rate"]').each(function() {
+                        if ($(this).is(':checked')) {
+                            rating = $(this).val();
+                        }
+                    });
+
+                    review = $('#reviewModal textarea[name="review"]').val();
+
+                    if (rating == 0) {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: 'Rating harus diisi',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+
+                    if (review == '') {
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: 'Review harus diisi',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "{{ route('user-customer.order.review', ':id') }}"
+                            .replace(':id', $('#reviewModal input[name="id"]').val()),
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            rating: rating,
+                            review: review
+                        },
+                        success: function(response) {
+                            if (response.status == 'success') {
+                                Swal.fire({
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    icon: 'success'
+                                });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                Swal.fire({
+                                    title: 'Gagal',
+                                    text: response.message,
+                                    icon: 'error'
+                                });
+                            }
+                        },
+                    })
+                });
+
+                $('#btnPrint').click(function() {
+                    let id = $('#order_id').val();
+                    let url = "{{ route('user-customer.order.print', ':id') }}";
+                    url = url.replace(':id', id);
+                    window.open(url, '_blank');
                 });
             });
         </script>
