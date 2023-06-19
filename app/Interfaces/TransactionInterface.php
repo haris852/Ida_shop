@@ -14,4 +14,5 @@ interface TransactionInterface
     public function listDetail();
     public function uploadPaymentCod($attributes);
     public function filterMonthly($month);
+    public function filterYearly($year);
 }

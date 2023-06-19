@@ -7,7 +7,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex justify-content-between">
                             <div class="form-group me-3">
-                                <label for="monthly">Bulan</label>
+                                <label for="monthly">Filter Bulanan</label>
                                 <select class="form-control text-sm" name="monthly" id="monthly">
                                     <option value="">-- Pilih Bulan --</option>
                                     @foreach ($months as $month)
@@ -15,16 +15,14 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="me-3">
-                                <x-input type="date" name="start_date" id="start_date" label="Tanggal Awal" />
-                            </div>
-                            <div class="me-3">
-                                <x-input type="date" name="end_date" id="end_date" label="Tanggal Akhir" />
-                            </div>
-                            <div class="my-auto">
-                                <button type="button" id="btnFilter" class="btn btn-primary py-2">
-                                    Filter Range Tanggal
-                                </button>
+                            <div class="form-group me-3">
+                                <label for="monthly">Filter Tahunan</label>
+                                <select class="form-control text-sm" name="yearly" id="yearly">
+                                    <option value="">-- Pilih Tahun --</option>
+                                    @foreach (range(date('Y'), 2015) as $year)
+                                        <option value="{{ $year }}">{{ $year }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -349,19 +347,85 @@
                     });
                 });
 
-                $('#btnFilter').click(function(e) {
-                    e.preventDefault();
-                    let start_date = $('#start_date').val();
-                    let end_date = $('#end_date').val();
-                    if (start_date == '' || end_date == '') {
-                        Swal.fire({
-                            icon: 'warning',
-                            text: 'Pastikan range tanggal telah diisi!'
-                        });
-                    } else {
-                        console.log(start_date, end_date);
-                    }
-                })
+                $('#yearly').change(function(e){
+                    let year = $('#yearly').val();
+                    $.ajax({
+                        url: "{{ route('admin.order.filter-yearly') }}",
+                        type: "POST",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            year: year,
+                        },
+                        success: function(response) {
+                            $('#orderTable').DataTable().clear().destroy();
+                            $('#orderTable').DataTable({
+                                processing: true,
+                                responsive: true,
+                                autoWidth: false,
+                                data: response.data,
+                                columns: [{
+                                        data: 'DT_RowIndex',
+                                        name: 'DT_RowIndex',
+                                        orderable: false,
+                                        searchable: false
+                                    },
+                                    {
+                                        data: 'transaction_code',
+                                        name: 'transaction_code'
+                                    },
+                                    {
+                                        data: 'payment_method',
+                                        name: 'payment_method'
+                                    },
+                                    {
+                                        data: 'customer',
+                                        name: 'customer'
+                                    },
+                                    {
+                                        data: 'status',
+                                        name: 'status'
+                                    },
+                                    {
+                                        data: 'action',
+                                        name: 'action'
+                                    },
+                                    {
+                                        data: 'receiver',
+                                        name: 'receiver'
+                                    },
+                                    {
+                                        data: 'phone',
+                                        name: 'phone'
+                                    },
+                                    {
+                                        data: 'proof_of_payment',
+                                        name: 'proof_of_payment',
+                                    },
+                                    {
+                                        data: 'shipping_cost',
+                                        name: 'shipping_cost'
+                                    },
+                                    {
+                                        data: 'total_payment',
+                                        name: 'total_payment'
+                                    },
+                                    {
+                                        data: 'address',
+                                        name: 'address'
+                                    },
+                                    {
+                                        data: 'created_at',
+                                        name: 'created_at'
+                                    },
+                                    {
+                                        data: 'detail_transaction',
+                                        name: 'detail_transaction'
+                                    }
+                                ],
+                            });
+                        }
+                    })
+                });
             });
 
             @if (Session::has('success'))

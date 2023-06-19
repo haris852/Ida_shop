@@ -211,4 +211,12 @@ class TransactionRepository implements TransactionInterface
             $month
         )->with(['user', 'transactionDetail.product'])->orderBy('created_at', 'desc')->get();
     }
+
+    public function filterYearly($year)
+    {
+        return $this->transaction->where(
+            DB::raw('YEAR(created_at)'),
+            $year
+        )->with(['user', 'transactionDetail.product'])->orderBy('created_at', 'desc')->get();
+    }
 }

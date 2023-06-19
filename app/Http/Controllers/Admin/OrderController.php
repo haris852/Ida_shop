@@ -11,56 +11,57 @@ class OrderController extends Controller
 {
     private $transaction;
 
-    public function __construct(TransactionInterface $transaction) {
+    public function __construct(TransactionInterface $transaction)
+    {
         $this->transaction = $transaction;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->transaction->getAll())
-            ->addColumn('transaction_code', function($data) {
-                return $data->transaction_code;
-            })
-            ->addColumn('payment_method', function($data) {
-                return $data->payment_method == 1 ? 'E Wallet' : 'COD (Bayar di tempat)';
-            })
-            ->addColumn('customer', function($data) {
-                return $data->user->name;
-            })
-            ->addColumn('receiver', function($data) {
-                return $data->receiver_name;
-            })
-            ->addColumn('phone', function($data) {
-                return $data->receiver_phone;
-            })
-            ->addColumn('proof_of_payment', function($data) {
-                return view('admin.order.column.proof_of_payment', ['data' => $data]);
-            })
-            ->addColumn('status', function($data) {
-                return view('admin.order.column.status', ['data' => $data]);
-            })
-            ->addColumn('shipping_cost', function($data) {
-                return 'Rp. ' . number_format($data->shipping_price, 0, ',', '.');
-            })
-            ->addColumn('total_payment', function($data) {
-                return 'Rp. ' . number_format($data->total_payment, 0, ',', '.');
-            })
-            ->addColumn('address', function($data) {
-                return $data->receiver_address ?? '-';
-            })
-            ->addColumn('created_at', function($data) {
-                return $data->created_at->format('d-m-Y H:i') . ' WIB';
-            })
-            ->addColumn('detail_transaction', function($data) {
-                return view('admin.order.column.detail_transaction', ['data' => $data]);
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.order.column.action', ['data' => $data]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->transaction->getAll())
+                ->addColumn('transaction_code', function ($data) {
+                    return $data->transaction_code;
+                })
+                ->addColumn('payment_method', function ($data) {
+                    return $data->payment_method == 1 ? 'E Wallet' : 'COD (Bayar di tempat)';
+                })
+                ->addColumn('customer', function ($data) {
+                    return $data->user->name;
+                })
+                ->addColumn('receiver', function ($data) {
+                    return $data->receiver_name;
+                })
+                ->addColumn('phone', function ($data) {
+                    return $data->receiver_phone;
+                })
+                ->addColumn('proof_of_payment', function ($data) {
+                    return view('admin.order.column.proof_of_payment', ['data' => $data]);
+                })
+                ->addColumn('status', function ($data) {
+                    return view('admin.order.column.status', ['data' => $data]);
+                })
+                ->addColumn('shipping_cost', function ($data) {
+                    return 'Rp. ' . number_format($data->shipping_price, 0, ',', '.');
+                })
+                ->addColumn('total_payment', function ($data) {
+                    return 'Rp. ' . number_format($data->total_payment, 0, ',', '.');
+                })
+                ->addColumn('address', function ($data) {
+                    return $data->receiver_address ?? '-';
+                })
+                ->addColumn('created_at', function ($data) {
+                    return $data->created_at->format('d-m-Y H:i') . ' WIB';
+                })
+                ->addColumn('detail_transaction', function ($data) {
+                    return view('admin.order.column.detail_transaction', ['data' => $data]);
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.order.column.action', ['data' => $data]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.order.index', [
             'months' => [
@@ -174,35 +175,35 @@ class OrderController extends Controller
 
     public function listDetail(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->transaction->listDetail())
-            ->addColumn('invoice_code', function($data) {
-                return $data->transaction->transaction_code;
-            })
-            ->addColumn('customer_name', function($data) {
-                return $data->transaction->user->name;
-            })
-            ->addColumn('receiver_name', function($data) {
-                return $data->transaction->receiver_name;
-            })
-            ->addColumn('product_name', function($data) {
-                return $data->product->name;
-            })
-            ->addColumn('qty', function($data) {
-                return $data->qty;
-            })
-            ->addColumn('price', function($data) {
-                return 'Rp. ' . number_format($data->price, 0, ',', '.');
-            })
-            ->addColumn('subtotal', function($data) {
-                return 'Rp. ' . number_format($data->total_price, 0, ',', '.');
-            })
-            ->addColumn('created_at', function($data) {
-                return $data->created_at->format('d-m-Y H:i') . ' WIB';
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->transaction->listDetail())
+                ->addColumn('invoice_code', function ($data) {
+                    return $data->transaction->transaction_code;
+                })
+                ->addColumn('customer_name', function ($data) {
+                    return $data->transaction->user->name;
+                })
+                ->addColumn('receiver_name', function ($data) {
+                    return $data->transaction->receiver_name;
+                })
+                ->addColumn('product_name', function ($data) {
+                    return $data->product->name;
+                })
+                ->addColumn('qty', function ($data) {
+                    return $data->qty;
+                })
+                ->addColumn('price', function ($data) {
+                    return 'Rp. ' . number_format($data->price, 0, ',', '.');
+                })
+                ->addColumn('subtotal', function ($data) {
+                    return 'Rp. ' . number_format($data->total_price, 0, ',', '.');
+                })
+                ->addColumn('created_at', function ($data) {
+                    return $data->created_at->format('d-m-Y H:i') . ' WIB';
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.order.list-detail');
     }
@@ -226,7 +227,34 @@ class OrderController extends Controller
     public function filterMonthly(Request $request)
     {
         $transaction = $this->transaction->filterMonthly($request->month);
-        $data = $transaction->map(function($item) {
+        $data = $transaction->map(function ($item) {
+            return [
+                'DT_RowIndex' => $item->id,
+                'transaction_code' => $item->transaction_code,
+                'payment_method' => $item->payment_method == 1 ? 'E Wallet' : 'COD (Bayar di tempat)',
+                'customer' => $item->user->name,
+                'receiver' => $item->receiver_name,
+                'phone' => $item->receiver_phone,
+                'proof_of_payment' => view('admin.order.column.proof_of_payment', ['data' => $item])->render(),
+                'status' => view('admin.order.column.status', ['data' => $item])->render(),
+                'shipping_cost' => 'Rp. ' . number_format($item->shipping_price, 0, ',', '.'),
+                'total_payment' => 'Rp. ' . number_format($item->total_payment, 0, ',', '.'),
+                'address' => $item->receiver_address ?? '-',
+                'created_at' => $item->created_at->format('d-m-Y H:i') . ' WIB',
+                'detail_transaction' => view('admin.order.column.detail_transaction', ['data' => $item])->render(),
+                'action' => view('admin.order.column.action', ['data' => $item])->render(),
+            ];
+        });
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
+
+    public function filterYearly(Request $request)
+    {
+        $transaction = $this->transaction->filterYearly($request->year);
+        $data = $transaction->map(function ($item) {
             return [
                 'DT_RowIndex' => $item->id,
                 'transaction_code' => $item->transaction_code,
