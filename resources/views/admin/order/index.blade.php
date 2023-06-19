@@ -267,6 +267,7 @@
                 });
 
                 $('#monthly').change(function(e) {
+                    $('#yearly').val('');
                     e.preventDefault();
                     let monthlyIndex = $('#monthly option:selected').index();
                     $.ajax({
@@ -348,6 +349,7 @@
                 });
 
                 $('#yearly').change(function(e){
+                    $('#monthly').val('');
                     let year = $('#yearly').val();
                     $.ajax({
                         url: "{{ route('admin.order.filter-yearly') }}",
