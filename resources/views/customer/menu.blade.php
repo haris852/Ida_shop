@@ -43,7 +43,7 @@
     <div class="row mt-5">
         @foreach ($products as $product)
             <div class="col-md-3 menu-{{$product->id}} mb-3" id="menuItem" data-name="{{ $product->name }}" data-weight="{{ $product->weight }} {{ $product->unit }}"
-                data-stock="{{ $product->stock == 0 ? 'Habis' : $product->stock }}"
+                data-stock="{{ $product->stock > 0 ? $product->stock : 'Habis' }}"
                 data-description="{{ $product->description }}">
                 <div class="card">
                     <img class="card-img object-fit-cover p-2" src="{{ asset('storage/product/' . $product->image) }}"
@@ -57,7 +57,7 @@
                         <p class="card-subtitle mb-2 text-muted text-capitalize">Berat: {{ $product->weight }}
                             {{ $product->unit }}</p>
                         <p class="card-subtitle mb-2 text-muted">
-                            Stok: {{ $product->stock == 0 ? 'Habis' : $product->stock }}
+                            Stok: {{ $product->stock > 0 ? $product->stock : 'Habis' }}
                         </p>
                         <div>
                             <div class="price">
