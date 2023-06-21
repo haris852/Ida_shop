@@ -76,7 +76,7 @@
                                         Lihat Keranjang
                                     </a>
                                 @else
-                                    @if ($product->stock != 0)
+                                    @if ($product->stock != 0 || $product->stock > 0)
                                         <a @if (auth()->check()) onclick="addToCart('{{ $product->id }}')"
                                                 @else
                                                 href="{{ route('login') }}" @endif
