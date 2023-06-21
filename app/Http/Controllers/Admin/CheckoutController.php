@@ -43,7 +43,7 @@ class CheckoutController extends Controller
             $this->transaction->store($request->all());
             $request->session()->forget('cart');
 
-            event(new NewOrderEvent(auth()->user()->name, 'Menunggu Pembayaran'));
+            event(new NewOrderEvent(auth()->user()->name, 'Menunggu Pembayaran', auth()->user()->id));
 
             return response()->json([
                 'status' => 'success',
