@@ -25,6 +25,7 @@
                                 </select>
                             </div>
                         </div>
+                        <p id="periodicLabel">Bulan, Tahun</p>
                     </div>
                     <table class="table" id="orderTable">
                         <thead>
@@ -266,18 +267,183 @@
                     }
                 });
 
-                $('#monthly').change(function(e) {
-                    $('#yearly').val('');
-                    e.preventDefault();
+                // $('#monthly').change(function(e) {
+                //     $('#yearly').val('');
+                //     e.preventDefault();
+                //     let monthlyIndex = $('#monthly option:selected').index();
+                //     $.ajax({
+                //         url: "{{ route('admin.order.filter-monthly') }}",
+                //         type: "POST",
+                //         data: {
+                //             _token: '{{ csrf_token() }}',
+                //             month: monthlyIndex,
+                //         },
+                //         success: function(response) {
+                //             $('#orderTable').DataTable().clear().destroy();
+                //             $('#orderTable').DataTable({
+                //                 processing: true,
+                //                 responsive: true,
+                //                 autoWidth: false,
+                //                 data: response.data,
+                //                 columns: [{
+                //                         data: 'DT_RowIndex',
+                //                         name: 'DT_RowIndex',
+                //                         orderable: false,
+                //                         searchable: false
+                //                     },
+                //                     {
+                //                         data: 'transaction_code',
+                //                         name: 'transaction_code'
+                //                     },
+                //                     {
+                //                         data: 'payment_method',
+                //                         name: 'payment_method'
+                //                     },
+                //                     {
+                //                         data: 'customer',
+                //                         name: 'customer'
+                //                     },
+                //                     {
+                //                         data: 'status',
+                //                         name: 'status'
+                //                     },
+                //                     {
+                //                         data: 'action',
+                //                         name: 'action'
+                //                     },
+                //                     {
+                //                         data: 'receiver',
+                //                         name: 'receiver'
+                //                     },
+                //                     {
+                //                         data: 'phone',
+                //                         name: 'phone'
+                //                     },
+                //                     {
+                //                         data: 'proof_of_payment',
+                //                         name: 'proof_of_payment',
+                //                     },
+                //                     {
+                //                         data: 'shipping_cost',
+                //                         name: 'shipping_cost'
+                //                     },
+                //                     {
+                //                         data: 'total_payment',
+                //                         name: 'total_payment'
+                //                     },
+                //                     {
+                //                         data: 'address',
+                //                         name: 'address'
+                //                     },
+                //                     {
+                //                         data: 'created_at',
+                //                         name: 'created_at'
+                //                     },
+                //                     {
+                //                         data: 'detail_transaction',
+                //                         name: 'detail_transaction'
+                //                     }
+                //                 ],
+                //             });
+                //         }
+                //     });
+                // });
+
+                // $('#yearly').change(function(e){
+                //     $('#monthly').val('');
+                //     let year = $('#yearly').val();
+                //     $.ajax({
+                //         url: "{{ route('admin.order.filter-yearly') }}",
+                //         type: "POST",
+                //         data: {
+                //             _token: '{{ csrf_token() }}',
+                //             year: year,
+                //         },
+                //         success: function(response) {
+                //             $('#orderTable').DataTable().clear().destroy();
+                //             $('#orderTable').DataTable({
+                //                 processing: true,
+                //                 responsive: true,
+                //                 autoWidth: false,
+                //                 data: response.data,
+                //                 columns: [{
+                //                         data: 'DT_RowIndex',
+                //                         name: 'DT_RowIndex',
+                //                         orderable: false,
+                //                         searchable: false
+                //                     },
+                //                     {
+                //                         data: 'transaction_code',
+                //                         name: 'transaction_code'
+                //                     },
+                //                     {
+                //                         data: 'payment_method',
+                //                         name: 'payment_method'
+                //                     },
+                //                     {
+                //                         data: 'customer',
+                //                         name: 'customer'
+                //                     },
+                //                     {
+                //                         data: 'status',
+                //                         name: 'status'
+                //                     },
+                //                     {
+                //                         data: 'action',
+                //                         name: 'action'
+                //                     },
+                //                     {
+                //                         data: 'receiver',
+                //                         name: 'receiver'
+                //                     },
+                //                     {
+                //                         data: 'phone',
+                //                         name: 'phone'
+                //                     },
+                //                     {
+                //                         data: 'proof_of_payment',
+                //                         name: 'proof_of_payment',
+                //                     },
+                //                     {
+                //                         data: 'shipping_cost',
+                //                         name: 'shipping_cost'
+                //                     },
+                //                     {
+                //                         data: 'total_payment',
+                //                         name: 'total_payment'
+                //                     },
+                //                     {
+                //                         data: 'address',
+                //                         name: 'address'
+                //                     },
+                //                     {
+                //                         data: 'created_at',
+                //                         name: 'created_at'
+                //                     },
+                //                     {
+                //                         data: 'detail_transaction',
+                //                         name: 'detail_transaction'
+                //                     }
+                //                 ],
+                //             });
+                //         }
+                //     })
+                // });
+
+                $('#monthly').change(function(e){
                     let monthlyIndex = $('#monthly option:selected').index();
+                    let year = $('#yearly').val();
+
                     $.ajax({
-                        url: "{{ route('admin.order.filter-monthly') }}",
-                        type: "POST",
+                        url: '{{route('admin.order.filter-periodic')}}',
+                        type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
                             month: monthlyIndex,
+                            year: year,
                         },
-                        success: function(response) {
+                        success: function(response){
+                            console.log(response);
                             $('#orderTable').DataTable().clear().destroy();
                             $('#orderTable').DataTable({
                                 processing: true,
@@ -346,19 +512,29 @@
                             });
                         }
                     });
+
+                    if(year)
+                    {
+                        $('#periodicLabel').text($('#monthly option:selected').text() + ', ' + year);
+                    } else {
+                        $('#periodicLabel').text($('#monthly option:selected').text());
+                    }
                 });
 
                 $('#yearly').change(function(e){
-                    $('#monthly').val('');
+                    let monthlyIndex = $('#monthly option:selected').index();
                     let year = $('#yearly').val();
+
                     $.ajax({
-                        url: "{{ route('admin.order.filter-yearly') }}",
-                        type: "POST",
+                        url: '{{route('admin.order.filter-periodic')}}',
+                        type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
+                            month: monthlyIndex,
                             year: year,
                         },
-                        success: function(response) {
+                        success: function(response){
+                            console.log(response);
                             $('#orderTable').DataTable().clear().destroy();
                             $('#orderTable').DataTable({
                                 processing: true,
@@ -426,7 +602,14 @@
                                 ],
                             });
                         }
-                    })
+                    });
+
+                    if(monthlyIndex)
+                    {
+                        $('#periodicLabel').text($('#monthly option:selected').text() + ', ' + year);
+                    } else {
+                        $('#periodicLabel').text(year);
+                    }
                 });
             });
 

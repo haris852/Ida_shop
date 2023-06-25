@@ -62,6 +62,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role.admin']], 
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Order
+    Route::post('order/filter/periodic', [OrderController::class, 'filterPeriodic'])->name('admin.order.filter-periodic');
     Route::post('order/filter/yearly', [OrderController::class, 'filterYearly'])->name('admin.order.filter-yearly');
     Route::post('order/filter/monthly', [OrderController::class, 'filterMonthly'])->name('admin.order.filter-monthly');
     Route::get('order/list/detail', [OrderController::class, 'listDetail'])->name('admin.order.list-detail');

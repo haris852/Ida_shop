@@ -277,4 +277,31 @@ class OrderController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function filterPeriodic(Request $request)
+    {
+        $transaction = $this->transaction->filterPeriodic($request->month, $request->year);
+        $data = $transaction->map(function ($item) {
+            return [
+                'DT_RowIndex' => $item->id,
+                'transaction_code' => $item->transaction_code,
+                'payment_method' => $item->payment_method == 1 ? 'E Wallet' : 'COD (Bayar di tempat)',
+                'customer' => $item->user->name,
+                'receiver' => $item->receiver_name,
+                'phone' => $item->receiver_phone,
+                'proof_of_payment' => view('admin.order.column.proof_of_payment', ['data' => $item])->render(),
+                'status' => view('admin.order.column.status', ['data' => $item])->render(),
+                'shipping_cost' => 'Rp. ' . number_format($item->shipping_price, 0, ',', '.'),
+                'total_payment' => 'Rp. ' . number_format($item->total_payment, 0, ',', '.'),
+                'address' => $item->receiver_address ?? '-',
+                'created_at' => $item->created_at->format('d-m-Y H:i') . ' WIB',
+                'detail_transaction' => view('admin.order.column.detail_transaction', ['data' => $item])->render(),
+                'action' => view('admin.order.column.action', ['data' => $item])->render(),
+            ];
+        });
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
 }
