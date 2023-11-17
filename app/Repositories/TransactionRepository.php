@@ -29,7 +29,7 @@ class TransactionRepository implements TransactionInterface
     public function store($attributes)
     {
         $shippingCost = $this->storeConfiguration->first()->shipping_cost;
-
+        dd($this->transaction);
         DB::beginTransaction();
 
         // transaction

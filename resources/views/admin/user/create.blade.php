@@ -48,7 +48,7 @@
                                             </div>
                                             </div>
                                     <div class="col-md-6">
-                                        <x-input id="phone" name="phone" type="text" label="No. HP" required/>
+                                        <x-input id="phone" name="phone" type="number" label="No. HP" required/>
                                         <x-input id="address" name="address" type="text" label="Alamat" required/>
                                     </div>
                                 </div>
